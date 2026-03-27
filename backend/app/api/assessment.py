@@ -84,32 +84,32 @@ def submit_assessment(body: SubmitAssessmentRequest, db: Session = Depends(get_d
 
     correct_count = 0
     total = len(body.answers)
-
     details = []
 
     for q_id, a_id in body.answers.items():
-        # Validate answer belongs to question
-        answer = db.query(Answer).filter(Answer.id == a_id, Answer.question_id == q_id).first()
-        if not answer:
-            # Save as incorrect if invalid
-            db.add(UserResponse(
-                session_id=session.id,
-                question_id=q_id,
-                answer_id=a_id,
-                is_correct=False,
-                answered_at=datetime.utcnow()
-            ))
-            details.append({
-                "question_id": str(q_id),
-                "answer_id": str(a_id),
-                "is_correct": False
-            })
-            continue
+        q = db.query(Question).filter(Question.id == q_id).first()
 
-        is_correct = bool(answer.is_correct)
+        # Get correct answer text
+        correct_ans = db.query(Answer).filter(
+            Answer.question_id == q_id,
+            Answer.is_correct == True
+        ).first()
+
+        correct_text = correct_ans.answer_text if correct_ans else None
+
+        # Get selected answer (must belong to that question)
+        selected = db.query(Answer).filter(
+            Answer.id == a_id,
+            Answer.question_id == q_id
+        ).first()
+
+        selected_text = selected.answer_text if selected else None
+        is_correct = bool(selected.is_correct) if selected else False
+
         if is_correct:
             correct_count += 1
 
+        # Save response
         db.add(UserResponse(
             session_id=session.id,
             question_id=q_id,
@@ -120,9 +120,13 @@ def submit_assessment(body: SubmitAssessmentRequest, db: Session = Depends(get_d
 
         details.append({
             "question_id": str(q_id),
-            "answer_id": str(a_id),
+            "question_text": q.question_text if q else "",
+            "selected_answer": selected_text,
+            "correct_answer": correct_text,
             "is_correct": is_correct
         })
+
+  
 
     # Decide level (simple thresholds)
     if correct_count <= 4:

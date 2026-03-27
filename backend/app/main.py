@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api import auth
 from app.api import assessment
-
+from app.api import recommender
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -19,7 +19,7 @@ app.add_middleware(
 
 app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 app.include_router(assessment.router, prefix="/assessment", tags=["Assessment"])
-
+app.include_router(recommender.router, prefix="/recommender", tags=["Recommender"])
 @app.get("/")
 def root():
     return {"message": "DigitalLogicHub backend running 🚀"}

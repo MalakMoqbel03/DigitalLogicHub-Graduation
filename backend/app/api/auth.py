@@ -13,7 +13,9 @@ from typing import List
 from uuid import UUID
 router = APIRouter()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
+from sqlalchemy import func
+from app.models.assessment import AssessmentSession, UserResponse
+from app.models.vark import UserVarkResponse, VarkOption
 
 def generate_verification_code() -> str:
     return str(random.randint(100000, 999999))
@@ -119,12 +121,62 @@ def login(body: LoginRequest, db: Session = Depends(get_db)):
     if not user.is_verified:
         raise HTTPException(status_code=401, detail="Please verify your email before logging in")
 
+    # -------- VARK scores (rebuild from user_vark_responses) --------
+    scores = {"visual": 0, "auditory": 0, "reading": 0, "kinesthetic": 0}
+
+    vark_counts = (
+        db.query(VarkOption.vark_type, func.count(UserVarkResponse.id))
+        .join(UserVarkResponse, UserVarkResponse.vark_option_id == VarkOption.id)
+        .filter(UserVarkResponse.user_id == user.id)
+        .group_by(VarkOption.vark_type)
+        .all()
+    )
+
+    for vark_type, count in vark_counts:
+        scores[vark_type] = count
+
+    varkResult = None
+    if user.learning_style:
+        varkResult = {"learning_style": user.learning_style, "scores": scores}
+
+    # -------- Assessment history (latest sessions) --------
+    sessions = (
+        db.query(AssessmentSession)
+        .filter(AssessmentSession.user_id == user.id)
+        .order_by(AssessmentSession.completed_at.desc())
+        .limit(10)
+        .all()
+    )
+
+    assessmentResults = []
+    for s in sessions:
+        total = db.query(UserResponse).filter(UserResponse.session_id == s.id).count()
+        percentage = round((s.score / total) * 100) if total else 0
+        assessmentResults.append({
+            "session_id": str(s.id),
+            "score": s.score,
+            "total": total,
+            "percentage": percentage,
+            "level": s.level,
+            "date": s.completed_at.isoformat() if s.completed_at else None
+        })
+
     return {
         "message": "Login successful",
-        "user": {"id": str(user.id), "name": user.name, "email": user.email,
-                 "learning_style": user.learning_style, "level": user.level}
-    }
+        "user": {
+            "id": str(user.id),
+            "name": user.name,
+            "email": user.email,
 
+            # keep old fields
+            "learning_style": user.learning_style,
+            "level": user.level,
+
+            # ✅ add what frontend expects
+            "varkResult": varkResult,
+            "assessmentResults": assessmentResults
+        }
+    }
 
 @router.post("/forgot")
 def forgot_password(body: ForgotRequest, db: Session = Depends(get_db)):
