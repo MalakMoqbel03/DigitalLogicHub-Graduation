@@ -1,0 +1,31 @@
+﻿concept_code,question_text,difficulty,is_entry
+C1,How many values can a binary digit represent?,beginner,TRUE
+C1,Which symbols represent binary values?,beginner,FALSE
+C2,How many rows are in a truth table with 2 inputs?,beginner,FALSE
+C2,Truth table rows are calculated using:,beginner,FALSE
+C3,Which gate outputs 1 only when both inputs are 1?,beginner,FALSE
+C3,Which gate inverts its input?,beginner,FALSE
+C4,Boolean expression for AND operation is:,beginner,FALSE
+C4,Boolean OR operation is represented by:,beginner,FALSE
+C5,Which law converts (A·B)’ into A’ + B’?,intermediate,FALSE
+C5,Simplify: A + A =,intermediate,FALSE
+C5,Which law states A·1 = A?,intermediate,FALSE
+C5,Simplify: A·0 =,intermediate,FALSE
+C6,Combinational circuit output depends on:,beginner,FALSE
+C6,Which is a combinational circuit?,beginner,FALSE
+C7,Multiplexer is used to:,intermediate,FALSE
+C7,Decoder converts:,intermediate,FALSE
+C8,Sequential circuit output depends on:,intermediate,FALSE
+C8,Which element stores one bit of data?,intermediate,FALSE
+C8,Flip-flops are:,intermediate,FALSE
+C8,Latch differs from flip-flop because it is:,intermediate,FALSE
+C9,Register is a group of:,intermediate,FALSE
+C9,Counter is used to:,intermediate,FALSE
+C9,Modulo-8 counter has how many states?,intermediate,FALSE
+C10,FSM state represents:,advanced,FALSE
+C10,FSM transitions are triggered by:,advanced,FALSE
+C10,FSM whose outputs depend on state and input is:,advanced,FALSE
+C11,Which memory is volatile?,advanced,FALSE
+C11,ROM is mainly used to:,advanced,FALSE
+C12,Setup time violation may cause:,advanced,FALSE
+C12,Hold time refers to:,advanced,FALSE

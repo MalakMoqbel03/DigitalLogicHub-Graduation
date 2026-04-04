@@ -1,0 +1,22 @@
+# DigitalLogicHub — Backend Python dependencies
+# Install with: pip install -r requirements.txt
+
+# Web framework
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+
+# Database
+sqlalchemy==2.0.30
+alembic==1.13.1
+psycopg2-binary==2.9.9
+
+# Auth & security
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
+
+# Request validation
+pydantic[email]==2.7.1
+python-dotenv==1.0.1
+
+# Email
+# (uses stdlib smtplib — no extra package needed)

@@ -10,9 +10,9 @@ class Question(Base):
     __tablename__ = "questions"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    concept_id = Column(UUID(as_uuid=True), nullable=True)  # FK exists in DB; keep nullable for safety
+    concept_id = Column(UUID(as_uuid=True), nullable=True)
     question_text = Column(String, nullable=False)
-    difficulty = Column(String, nullable=False)  # beginner/intermediate/advanced
+    difficulty = Column(String, nullable=False)   # beginner | intermediate | advanced
     is_entry = Column(Boolean, default=False)
 
 
@@ -24,6 +24,10 @@ class Answer(Base):
     answer_text = Column(String, nullable=False)
     is_correct = Column(Boolean, default=False)
 
+    # Populated for wrong-answer options — links this distractor to a concept tag
+    # e.g. "boolean_algebra", "sequential_logic", "karnaugh_map"
+    misconception_tag = Column(String(255), nullable=True)
+
 
 class AssessmentSession(Base):
     __tablename__ = "assessment_sessions"
@@ -33,7 +37,7 @@ class AssessmentSession(Base):
     started_at = Column(DateTime, default=datetime.utcnow)
     completed_at = Column(DateTime, default=datetime.utcnow)
     score = Column(Integer, default=0)
-    level = Column(String, nullable=True)  # beginner/intermediate/advanced
+    level = Column(String, nullable=True)   # beginner | intermediate | advanced
 
 
 class UserResponse(Base):

@@ -1,0 +1,13 @@
+﻿topic,concept_name
+Digital_Basics,Binary Representation
+Digital_Basics,Truth Tables
+Boolean_Algebra,Logic Gates
+Boolean_Algebra,Boolean Expressions
+Logic_Simplification,Boolean Laws
+Combinational_Logic,Combinational Circuits
+Combinational_Logic,Multiplexers & Decoders
+Sequential_Logic,Flip-Flops & Latches
+Registers_and_Counters,Counters
+FSM,Finite State Machines
+Memory_Systems,Memory Types
+Timing_and_Performance,Timing Constraints

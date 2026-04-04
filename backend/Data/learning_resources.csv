@@ -1,0 +1,556 @@
+﻿title,description,topic,subtopic,resource_type,difficulty,vark_style,duration_minutes,is_short,source,external_url,tags
+Introduction to Boolean Algebra (Part 1),,Boolean_Algebra,Introduction to Boolean Algebra,video,beginner,auditory,18,FALSE,YouTube,https://youtu.be/WW-NPtIzHwk,"boolean,introduction"
+Boolean Algebra in 13 Minutes,,Boolean_Algebra,Introduction to Boolean Algebra,video,beginner,auditory,13,FALSE,YouTube,https://youtu.be/cTjFy18SjRc,"boolean,overview"
+"Logic Gates, Truth Tables, Boolean Algebra AND, OR, NOT, NAND & NOR",,Boolean_Algebra,Basic Boolean Operations,video,beginner,auditory,54,FALSE,YouTube,https://youtu.be/JQBRzsPhw2w,"logic-gates,AND,OR,NAND,NOR"
+The Laws of Boolean Algebra Explained,,Boolean_Algebra,Boolean Algebra Laws,video,beginner,auditory,19,FALSE,YouTube,https://youtu.be/RMe69AdlFdI,boolean-laws
+Laws of Boolean algebra in digital electronics,,Boolean_Algebra,Boolean Algebra Laws,video,beginner,auditory,19,FALSE,YouTube,https://youtu.be/W8GYLc0-eho,boolean-laws
+De Morgan's Law in Boolean Algebra Explained (with Solved Examples),,Boolean_Algebra,De Morgan’s Theorems,video,intermediate,auditory,16,FALSE,YouTube,https://youtu.be/W7YTfLaPWRY,"demorgan,boolean-laws"
+De Morgan's First Theorem,,Boolean_Algebra,De Morgan’s Theorems,video,intermediate,auditory,11,FALSE,YouTube,https://youtu.be/1erf7n7qFNY,demorgan
+Logic Gate Combinations,,Boolean_Algebra,Logic Gates,video,beginner,auditory,12,FALSE,YouTube,https://youtu.be/BnB2m1nXZ84,logic-gates
+Logic Gates : XOR and XNOR gates Explained,,Boolean_Algebra,Logic Gates,video,beginner,auditory,18,FALSE,YouTube,https://youtu.be/Uf0KKh2zRuA,"XOR,XNOR"
+"Logic Gates | Boolean Algebra | Types of Logic Gates | AND, OR, NOT, NOR, NAND",,Boolean_Algebra,Logic Gates,video,beginner,auditory,22,FALSE,YouTube,https://youtu.be/EW_2MhFu7tE,"logic-gates,AND,OR,NAND,NOR"
+NAND gate as Universal Gate,,Boolean_Algebra,Universal Gates,video,beginner,auditory,14,FALSE,YouTube,https://youtu.be/cNFgilYDxuA,"NAND,universal-gates"
+NOR Gate as Universal Gate,,Boolean_Algebra,Universal Gates,video,beginner,auditory,14,FALSE,YouTube,https://youtu.be/Z6Nds10n7rs,"NOR,universal-gates"
+Implementing Boolean Expressions Using NAND Gates,,Boolean_Algebra,Universal Gates,video,intermediate,auditory,12,FALSE,YouTube,https://youtu.be/ycPH_DRIfHQ,"NAND,implementation"
+Implementing Boolean Expressions Using NOR Gates,,Boolean_Algebra,Universal Gates,video,intermediate,auditory,11,FALSE,YouTube,https://youtu.be/GZ8V3M6PXkg,"NOR,implementation"
+Simplification of Boolean expression,,Boolean_Algebra,Boolean Expression Simplification,video,intermediate,auditory,13,FALSE,YouTube,https://youtu.be/pFxDHrUut6w,"simplification,boolean"
+Simplification Of Boolean Expressions,,Boolean_Algebra,Boolean Expression Simplification,video,intermediate,auditory,18,FALSE,YouTube,https://youtu.be/j7Qkrm1YJ0c,"simplification,boolean"
+SOP and POS Form Examples,,Boolean_Algebra,Canonical Forms,video,intermediate,auditory,13,FALSE,YouTube,https://youtu.be/K2cpJex0o_A,"SOP,POS"
+Boolean Function Representation: SOP and POS Form | Minterms and Maxterms Explained,,Boolean_Algebra,Canonical Forms,video,intermediate,auditory,22,FALSE,YouTube,https://youtu.be/YmKmS9bpMqM,"SOP,POS,minterms,maxterms"
+Determining Boolean Output of a Logic Circuit,,Boolean_Algebra,Practical Applications,video,beginner,auditory,11,FALSE,YouTube,https://youtu.be/b_TwjcwanNg,"logic-circuit,application"
+Boolean Algebra Basics and Example Problem,,Boolean_Algebra,Introduction to Boolean Algebra,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/jDnni-zm2g8,"boolean,basics"
+Basic Boolean Algebraic Operations | OR - AND - NOT operations,,Boolean_Algebra,Basic Boolean Operations,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/X3R1QHYyvSE,"AND,OR,NOT"
+OR Logical Operator Truth Table,,Boolean_Algebra,Basic Boolean Operations,video,beginner,auditory,1,TRUE,YouTube,https://youtube.com/shorts/mtg8O9p-U_0,"OR,truth-table"
+AND Logical Operator Truth Table,,Boolean_Algebra,Basic Boolean Operations,video,beginner,auditory,1,TRUE,YouTube,https://youtube.com/shorts/WAO2J4b_1Bs,"AND,truth-table"
+NOT Logical Operator Truth Table,,Boolean_Algebra,Basic Boolean Operations,video,beginner,auditory,1,TRUE,YouTube,https://youtube.com/shorts/UMzzd7zIP3Q,"NOT,truth-table"
+BOOLEAN LAW- Identity Law,,Boolean_Algebra,Boolean Algebra Laws,video,beginner,auditory,1,TRUE,YouTube,https://youtu.be/Fx6I8ZxhKV0,identity-law
+BOOLEAN LAW- NULL Law,,Boolean_Algebra,Boolean Algebra Laws,video,beginner,auditory,1,TRUE,YouTube,https://youtu.be/EZYOWYV2vaQ,null-law
+Domination Laws,,Boolean_Algebra,Boolean Algebra Laws,video,beginner,auditory,4,TRUE,YouTube,https://youtu.be/-dcemjSkOwo,domination-law
+Idempotent law Boolean algebra,,Boolean_Algebra,Boolean Algebra Laws,video,beginner,auditory,1,TRUE,YouTube,https://youtube.com/shorts/TwZDOFc4Rvk,idempotent-law
+What are Idempotent Law of Sets ?,,Boolean_Algebra,Boolean Algebra Laws,video,beginner,auditory,3,TRUE,YouTube,https://youtu.be/JPHKgFMsj3o,idempotent-law
+What is the Complement of a Set?,,Boolean_Algebra,Boolean Algebra Laws,video,beginner,auditory,7,TRUE,YouTube,https://youtu.be/0Hgj3nwW89I,complement
+Commutative Law in Boolean Algebra,,Boolean_Algebra,Boolean Algebra Laws,video,beginner,auditory,2,TRUE,YouTube,https://youtu.be/j8kcz7gdQ_U,commutative-law
+What is Associative law of Sets ?,,Boolean_Algebra,Boolean Algebra Laws,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/RtjTiugc1W8,associative-law
+What is Distributive law of Sets ?,,Boolean_Algebra,Boolean Algebra Laws,video,beginner,auditory,4,TRUE,YouTube,https://youtu.be/rNcJAs8CR0k,distributive-law
+DeMorgan's Theorem Example,,Boolean_Algebra,De Morgan’s Theorems,video,intermediate,auditory,5,TRUE,YouTube,https://youtu.be/BK1NtsSCN2Q,demorgan
+DeMorgan’s Theorem-2 (Proof),,Boolean_Algebra,De Morgan’s Theorems,video,intermediate,auditory,1,TRUE,YouTube,https://youtube.com/shorts/9w7MMMCnMro,demorgan
+De Morgan's Laws (probability context),,Boolean_Algebra,De Morgan’s Theorems,video,intermediate,auditory,8,TRUE,YouTube,https://youtu.be/LBGbwQDhceg,demorgan
+What are DeMorgan's Laws?,,Boolean_Algebra,De Morgan’s Theorems,video,intermediate,auditory,3,TRUE,YouTube,https://youtu.be/-LW2lGHv0GE,demorgan
+What are Logic Gates?,,Boolean_Algebra,Logic Gates,video,beginner,auditory,3,TRUE,YouTube,https://youtu.be/WII9HWnf3V4,logic-gates
+Every Logic Gate Explained,,Boolean_Algebra,Logic Gates,video,beginner,auditory,3,TRUE,YouTube,https://youtu.be/Ci3gWzNrOrc,logic-gates
+Logic Gate - XOR,,Boolean_Algebra,Logic Gates,video,beginner,auditory,1,TRUE,YouTube,https://youtube.com/shorts/-2GVoKkdCi4,XOR
+Universal NAND Gate Example,,Boolean_Algebra,Universal Gates,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/ZuVAxQIjmss,"NAND,universal-gates"
+Universal Logic Gates - NAND gate,,Boolean_Algebra,Universal Gates,video,beginner,auditory,7,TRUE,YouTube,https://youtu.be/r6lUftSfCsQ,"NAND,universal-gates"
+Universal Logic Gates - NOR gate,,Boolean_Algebra,Universal Gates,video,beginner,auditory,7,TRUE,YouTube,https://youtu.be/LRVX7E8_pAc,"NOR,universal-gates"
+Boolean Expression Implementation using NOR Gate only,,Boolean_Algebra,Universal Gates,video,intermediate,auditory,9,TRUE,YouTube,https://youtu.be/m6ZIpxBicuM,"NOR,implementation"
+Boolean Expression Implementation using NAND gate only,,Boolean_Algebra,Universal Gates,video,intermediate,auditory,7,TRUE,YouTube,https://youtu.be/BsdE3G9bq1c,"NAND,implementation"
+Example Problems Boolean Expression Simplification,,Boolean_Algebra,Boolean Expression Simplification,video,intermediate,auditory,10,TRUE,YouTube,https://youtu.be/0as464WmfCo,simplification
+How to Simplify Boolean Expression,,Boolean_Algebra,Boolean Expression Simplification,video,intermediate,auditory,4,TRUE,YouTube,https://youtu.be/dMn64eMv_Do,simplification
+Simplification of Boolean Expression using Boolean Algebra Rules,,Boolean_Algebra,Boolean Expression Simplification,video,intermediate,auditory,9,TRUE,YouTube,https://youtu.be/Bz3lbDvXcH4,simplification
+Logic Circuit Analysis using Truth Tables,,Boolean_Algebra,Truth Tables,video,beginner,auditory,6,TRUE,YouTube,https://youtu.be/pAbHICrph4c,truth-table
+Prove Absorption Law using Truth Table,,Boolean_Algebra,Truth Tables,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/8z_X516S-tI,absorption-law
+Solved Boolean expression using Truth Table,,Boolean_Algebra,Truth Tables,video,beginner,auditory,8,TRUE,YouTube,https://youtu.be/MxI4zv1VOXU,truth-table
+Sum Of Products - SOP,,Boolean_Algebra,Canonical Forms,video,intermediate,auditory,9,TRUE,YouTube,https://youtu.be/sP5u58Ao85U,SOP
+Product Of Sums - POS,,Boolean_Algebra,Canonical Forms,video,intermediate,auditory,6,TRUE,YouTube,https://youtu.be/hSgeyLSmlSg,POS
+"Minterms, Maxterms, and Canonical Boolean Expressions",,Boolean_Algebra,Canonical Forms,video,intermediate,auditory,4,TRUE,YouTube,https://youtu.be/d-amzrRVhfE,"minterms,maxterms"
+Implementing a logic circuit from a Boolean expression,,Boolean_Algebra,Practical Applications,video,beginner,auditory,8,TRUE,YouTube,https://youtu.be/0zSHzQJ6vgo,logic-circuit
+Implementing a logic circuit from a Boolean expression,,Boolean_Algebra,Practical Applications,video,beginner,auditory,8,TRUE,YouTube,https://youtu.be/x5XuF2gmzCw,logic-circuit
+Drawing a logic circuit from a given boolean expression,,Boolean_Algebra,Practical Applications,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/vvyk0mcxwHk,logic-circuit
+From Boolean Expressions to Circuits,,Boolean_Algebra,Practical Applications,video,beginner,auditory,10,TRUE,YouTube,https://youtu.be/cblZ7Rdaxog,logic-circuit
+What is Combinational Circuit (Solved Examples),,Combinational_Logic,Introduction to Combinational Logic,video,beginner,auditory,7,FALSE,YouTube,https://youtu.be/U684HLSI-BM,"combinational,introduction"
+Determining Boolean Output of a Logic Circuit,,Combinational_Logic,Analysis of Combinational Circuits,video,beginner,auditory,11,FALSE,YouTube,https://youtu.be/b_TwjcwanNg,"logic-circuit,analysis"
+CONSTRUCTING A TRUTH TABLE,,Combinational_Logic,Analysis of Combinational Circuits,video,beginner,auditory,15,FALSE,YouTube,https://youtu.be/QM9elOHJQbU,truth-table
+Propagation Delays gate-level circuits,,Combinational_Logic,Analysis of Combinational Circuits,video,intermediate,auditory,11,FALSE,YouTube,https://youtu.be/U9hKBAu5bOU,propagation-delay
+Designing Steps for a Combinational Circuit,,Combinational_Logic,Design of Combinational Circuits,video,beginner,auditory,11,FALSE,YouTube,https://youtu.be/Pjw8t-bGSBo,design-steps
+Combinational Circuits Design Procedure,,Combinational_Logic,Design of Combinational Circuits,video,intermediate,auditory,31,FALSE,YouTube,https://youtu.be/bEcWpX4IRwQ,design-procedure
+Full Adder,,Combinational_Logic,Arithmetic Circuits,video,beginner,auditory,14,FALSE,YouTube,https://youtu.be/RK3P9L2ZXk4,full-adder
+Half Adder and Full Adder Explained,,Combinational_Logic,Arithmetic Circuits,video,beginner,auditory,14,FALSE,YouTube,https://youtu.be/5XbRIVWFRIw,"half-adder,full-adder"
+Half Subtractor and Full Subtractor Explained,,Combinational_Logic,Arithmetic Circuits,video,beginner,auditory,14,FALSE,YouTube,https://youtu.be/lqN8xLTtdaA,"half-subtractor,full-subtractor"
+4-bit Adder and Subtractor Circuit Explained,,Combinational_Logic,Arithmetic Circuits,video,intermediate,auditory,21,FALSE,YouTube,https://youtu.be/J7gPUP0aRug,adder-subtractor
+Introduction to Multiplexers | MUX Basic,,Combinational_Logic,Data Processing Circuits,video,beginner,auditory,12,FALSE,YouTube,https://youtu.be/FKvnmxte98A,"multiplexer,MUX"
+Multiplexers and DeMultiplexers,,Combinational_Logic,Data Processing Circuits,video,beginner,auditory,15,FALSE,YouTube,https://youtu.be/HIeQhZ9Gq5s,"MUX,DEMUX"
+Encoder in Digital Electronics,,Combinational_Logic,Data Processing Circuits,video,beginner,auditory,14,FALSE,YouTube,https://youtu.be/NWiPVMDh7GE,encoder
+Decoder Explained | What is Decoder? Applications of Decoder,,Combinational_Logic,Data Processing Circuits,video,beginner,auditory,22,FALSE,YouTube,https://youtu.be/a3wh7xV5PBU,decoder
+How To Convert Gray Code to Binary and Binary to Gray Code,,Combinational_Logic,Code Conversion Circuits,video,beginner,auditory,11,FALSE,YouTube,https://youtu.be/cbmh1DPPQyI,"gray-code,binary"
+BCD to Decimal Decoder,,Combinational_Logic,Code Conversion Circuits,video,beginner,auditory,15,FALSE,YouTube,https://youtu.be/Odl8wGo0TCU,"BCD,decoder"
+What is Magnitude Comparator (Digital Comparator),,Combinational_Logic,Comparison Circuits,video,intermediate,auditory,21,FALSE,YouTube,https://youtu.be/wgje9eH3TT0,"comparator,magnitude"
+Equality Comparator Circuits,,Combinational_Logic,Comparison Circuits,video,intermediate,auditory,25,FALSE,YouTube,https://youtu.be/_l9fPHyWIt8,"comparator,equality"
+Parity Generator and Parity Checker Explained,,Combinational_Logic,Error Detection Circuits,video,beginner,auditory,14,FALSE,YouTube,https://youtu.be/c8qAti1zBVQ,"parity,error-detection"
+Arithmetic Logic Shift Unit,,Combinational_Logic,Arithmetic Logic Unit (ALU),video,intermediate,auditory,13,FALSE,YouTube,https://youtu.be/h8PAobl4xUk,"ALU,shift-unit"
+"Number Systems Introduction - Decimal, Binary, Octal & Hexadecimal",,Digital_Basics,Number Systems,video,beginner,auditory,11,FALSE,YouTube,https://youtu.be/FFDMzbrEXaE,"number-systems,binary,decimal,hexadecimal"
+How To Convert Binary To Decimal,,Digital_Basics,Number System Conversions,video,beginner,auditory,13,FALSE,YouTube,https://youtu.be/VLflTjd3lWA,"binary,decimal,conversion"
+How To Convert Decimal to Binary,,Digital_Basics,Number System Conversions,video,beginner,auditory,13,FALSE,YouTube,https://youtu.be/rsxT4FfRBaM,"decimal,binary,conversion"
+How To Convert Decimal to Hexadecimal,,Digital_Basics,Number System Conversions,video,beginner,auditory,22,FALSE,YouTube,https://youtu.be/QJW6qnfhC70,"decimal,hexadecimal,conversion"
+How To Convert Hexadecimal to Decimal,,Digital_Basics,Number System Conversions,video,beginner,auditory,13,FALSE,YouTube,https://youtu.be/pg-HEGBpCQk,"hexadecimal,decimal,conversion"
+How To Convert Hexadecimal to Binary,,Digital_Basics,Number System Conversions,video,beginner,auditory,12,FALSE,YouTube,https://youtu.be/D_YC6DSPpQE,"hexadecimal,binary,conversion"
+Octal to Hexadecimal Conversion,,Digital_Basics,Number System Conversions,video,beginner,auditory,12,FALSE,YouTube,https://youtu.be/KXRyIH90shg,"octal,hexadecimal,conversion"
+Hexadecimal to Octal Conversion,,Digital_Basics,Number System Conversions,video,beginner,auditory,12,FALSE,YouTube,https://youtu.be/ML_AkW97Axk,"hexadecimal,octal,conversion"
+"Binary,Decimal,Octal,Hexadecimal Conversion",,Digital_Basics,Number System Conversions,video,beginner,auditory,26,FALSE,YouTube,https://youtu.be/kAnBaQoJkpo,"number-systems,conversion"
+Signed and Unsigned binary number representation,,Digital_Basics,Signed Number Representation,video,intermediate,auditory,18,FALSE,YouTube,https://youtu.be/7dhxySvTCbY,"signed,unsigned,representation"
+1's complement and 2's complement | Signed Binary Numbers Explained,,Digital_Basics,Signed Number Representation,video,intermediate,auditory,17,FALSE,YouTube,https://youtu.be/MuUnffIpX7Y,"ones-complement,twos-complement"
+Representations of Floating Point Numbers,,Digital_Basics,Signed Number Representation,video,intermediate,auditory,14,FALSE,YouTube,https://youtu.be/yvdtwKF87Ts,"floating-point,representation"
+How To Add and Subtract Binary Numbers,,Digital_Basics,Binary Arithmetic,video,beginner,auditory,14,FALSE,YouTube,https://youtu.be/C5EkxfNEMjE,"binary,addition,subtraction"
+Binary Addition and Subtraction Explained (with Examples),,Digital_Basics,Binary Arithmetic,video,beginner,auditory,16,FALSE,YouTube,https://youtu.be/AE-27BSbkJ4,"binary,arithmetic"
+Binary Subtraction using 2's Complement,,Digital_Basics,Binary Arithmetic,video,intermediate,auditory,13,FALSE,YouTube,https://youtu.be/L_m7jBvtzpQ,"twos-complement,subtraction"
+BCD Codes (Binary Coded Decimal Codes) Explained,,Digital_Basics,Digital Codes,video,beginner,auditory,14,FALSE,YouTube,https://youtu.be/8sEUY-PBfaM,"BCD,codes"
+Gray Code Explained | Gray code to Binary and Binary to Gray code Conversion,,Digital_Basics,Digital Codes,video,beginner,auditory,13,FALSE,YouTube,https://youtu.be/MsMkiTcc_w0,"gray-code,binary"
+"ASCII code Explained: Basics, Table, Conversion, and Examples",,Digital_Basics,Digital Codes,video,beginner,auditory,14,FALSE,YouTube,https://youtu.be/gNA4GeIjJmM,"ASCII,codes"
+Binary Fractions or Fixed Point Representation,,Digital_Basics,Binary Fractions and Fixed-Point Representation,video,intermediate,auditory,18,FALSE,YouTube,https://youtu.be/PHkvMkbsHrY,"fixed-point,binary-fractions"
+"Bitwise Operators (Left Shift, Signed and Unsigned Right Shift)",,Digital_Basics,Binary Fractions and Fixed-Point Representation,video,intermediate,auditory,16,FALSE,YouTube,https://youtu.be/G390WvlxTfQ,"bitwise,shift"
+Logical & Arithmetic Shifting Of Binary Numbers,,Digital_Basics,Binary Fractions and Fixed-Point Representation,video,intermediate,auditory,13,FALSE,YouTube,https://youtu.be/-rj1wzswa3E,"shifting,binary"
+Propagation Delay Lecture,,Digital_Basics,Introduction to Digital Logic,video,beginner,auditory,14,FALSE,YouTube,https://youtu.be/IX4aK7Buv_Y,"propagation-delay,digital-logic"
+How to Design an Even Parity and Odd Parity Generator and Detector Circuit in Digital Logic Design?,,Digital_Basics,Error Detection Basics,video,beginner,auditory,14,FALSE,YouTube,https://youtu.be/1ZNyA_P82Qs,"parity,error-detection"
+Parity Generator and Parity Checker Explained,,Digital_Basics,Error Detection Basics,video,beginner,auditory,14,FALSE,YouTube,https://youtu.be/c8qAti1zBVQ,"parity,checker"
+Combinational Circuit Design Examples,,Digital_Basics,Basic Digital System Concepts,video,beginner,auditory,14,FALSE,YouTube,https://youtu.be/4luaoQGaEZQ,"combinational,circuits"
+Combinational Circuit Examples,,Digital_Basics,Basic Digital System Concepts,video,beginner,auditory,14,FALSE,YouTube,https://youtu.be/cZoX8CIyld4,"combinational,examples"
+Introduction to Sequential Circuits,,Digital_Basics,Basic Digital System Concepts,video,beginner,auditory,15,FALSE,YouTube,https://youtu.be/fLN1YOmuAr8,"sequential,circuits"
+Introduction to Number Systems,,Digital_Basics,Number Systems,video,beginner,auditory,9,TRUE,YouTube,https://youtu.be/crSGS1uBSNQ,"number-systems,intro"
+The binary number system,,Digital_Basics,Number Systems,video,beginner,auditory,6,TRUE,YouTube,https://youtu.be/sXxwr66Y79Y,binary
+Octal Number System,,Digital_Basics,Number Systems,video,beginner,auditory,8,TRUE,YouTube,https://youtu.be/MGu-P4OOnh0,octal
+"Read and Write in Hexadecimal, The beginner Way!",,Digital_Basics,Number Systems,video,beginner,auditory,7,TRUE,YouTube,https://youtu.be/bt4zavZCrLg,hexadecimal
+Decimal system refresher,,Digital_Basics,Number Systems,video,beginner,auditory,2,TRUE,YouTube,https://youtu.be/G4doTGQPRPw,decimal
+Convert decimal to binary beginner!,,Digital_Basics,Number System Conversions,video,beginner,auditory,2,TRUE,YouTube,https://youtu.be/C6l7F6C4bIA,"decimal,binary,conversion"
+How to Convert Binary to Decimal,,Digital_Basics,Number System Conversions,video,beginner,auditory,3,TRUE,YouTube,https://youtu.be/a2FpnU9Mm3E,"binary,decimal,conversion"
+"Binary to Octal, how to convert?",,Digital_Basics,Number System Conversions,video,beginner,auditory,3,TRUE,YouTube,https://youtu.be/WbTrMMTtmBM,"binary,octal"
+Converting Binary to Hexadecimal,,Digital_Basics,Number System Conversions,video,beginner,auditory,4,TRUE,YouTube,https://youtu.be/G5Rpxhtmo3I,"binary,hexadecimal"
+Octal to Decimal Conversion,,Digital_Basics,Number System Conversions,video,beginner,auditory,7,TRUE,YouTube,https://youtu.be/YCM2JReWS10,"octal,decimal"
+Hexadecimal to binary conversion,,Digital_Basics,Number System Conversions,video,beginner,auditory,1,TRUE,YouTube,https://youtube.com/shorts/pjPFKA_i9gQ,"hexadecimal,binary"
+Decimal to Octal Conversion,,Digital_Basics,Number System Conversions,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/1J89-aWI-5Y,"decimal,octal"
+Decimal to Hexadecimal conversion,,Digital_Basics,Number System Conversions,video,beginner,auditory,6,TRUE,YouTube,https://youtu.be/uVpQ9pPskNI,"decimal,hexadecimal"
+Binary to Octal conversion,,Digital_Basics,Number System Conversions,video,beginner,auditory,6,TRUE,YouTube,https://youtu.be/JxmarqiqUdM,"binary,octal"
+Octal to Binary Conversion,,Digital_Basics,Number System Conversions,video,beginner,auditory,6,TRUE,YouTube,https://youtu.be/WkScocdUtbE,"octal,binary"
+Octal to Hexadecimal (Quick and beginner),,Digital_Basics,Number System Conversions,video,beginner,auditory,4,TRUE,YouTube,https://youtu.be/pAP8yOB-FEQ,"octal,hexadecimal"
+Hexadecimal to Decimal Conversion,,Digital_Basics,Number System Conversions,video,beginner,auditory,2,TRUE,YouTube,https://youtube.com/shorts/DXQEc3ZAk6U,"hexadecimal,decimal"
+Hexadecimal to Octal conversion,,Digital_Basics,Number System Conversions,video,beginner,auditory,1,TRUE,YouTube,https://youtube.com/shorts/bYnTS5hccpM,"hexadecimal,octal"
+Data Representation using Signed Magnitude,,Digital_Basics,Signed Number Representation,video,beginner,auditory,6,TRUE,YouTube,https://youtu.be/1k71RxUtgUY,signed-magnitude
+"One's Complement, Two's Complement, and Signed Magnitude",,Digital_Basics,Signed Number Representation,video,beginner,auditory,4,TRUE,YouTube,https://youtu.be/Z3mswCN2FJs,"ones-complement,twos-complement"
+1's and 2's Complement,,Digital_Basics,Signed Number Representation,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/S_fPMrrIA30,twos-complement
+Signed vs Unsigned Numbers,,Digital_Basics,Signed Number Representation,video,beginner,auditory,3,TRUE,YouTube,https://youtu.be/lP4xtbFgmhQ,"signed,unsigned"
+Week 9 - Part 9: Excess-N Example,,Digital_Basics,Signed Number Representation,video,beginner,auditory,3,TRUE,YouTube,https://youtu.be/f4FS_7ERQg4,excess-n
+How to Detect Overflow in Binary,,Digital_Basics,Signed Number Representation,video,beginner,auditory,1,TRUE,YouTube,https://youtube.com/shorts/WelwF06HGZ8,overflow
+Overflow carry - Signed and Unsigned numbers,,Digital_Basics,Signed Number Representation,video,beginner,auditory,4,TRUE,YouTube,https://youtu.be/X5_BKc2ZWgk,overflow
+Binary addition,,Digital_Basics,Binary Arithmetic,video,beginner,auditory,6,TRUE,YouTube,https://youtu.be/Jeb_J7xZf9A,"binary,addition"
+How To Do Binary Addition,,Digital_Basics,Binary Arithmetic,video,beginner,auditory,4,TRUE,YouTube,https://youtu.be/ypqYoFbPfTk,"binary,addition"
+Binary Subtraction Example,,Digital_Basics,Binary Arithmetic,video,beginner,auditory,1,TRUE,YouTube,https://youtu.be/9F21qE-Yl2Y,"binary,subtraction"
+Binary Subtraction Made beginner,,Digital_Basics,Binary Arithmetic,video,beginner,auditory,4,TRUE,YouTube,https://youtu.be/Pr-j2fmcpxc,"binary,subtraction"
+Unsigned binary addition example,,Digital_Basics,Binary Arithmetic,video,beginner,auditory,2,TRUE,YouTube,https://youtu.be/lpJZytMmtkw,"unsigned,addition"
+Subtraction using two’s complement,,Digital_Basics,Binary Arithmetic,video,beginner,auditory,1,TRUE,YouTube,https://youtube.com/shorts/3YlZv_1qI-g,twos-complement
+Overflow in Signed and Unsigned Numbers,,Digital_Basics,Binary Arithmetic,video,beginner,auditory,10,TRUE,YouTube,https://youtu.be/7towQUO9aZI,overflow
+Binary Coded Decimal (BCD) In 1 Minute,,Digital_Basics,Digital Codes,video,beginner,auditory,1,TRUE,YouTube,https://youtu.be/NzxqNqmKL3k,BCD
+Decimal to BCD,,Digital_Basics,Digital Codes,video,beginner,auditory,6,TRUE,YouTube,https://youtu.be/AM0tr8Kyvzg,"decimal,BCD"
+BCD to Decimal Conversion,,Digital_Basics,Digital Codes,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/-cnTpRPoO9w,"BCD,decimal"
+BCD to Hexadecimal conversion,,Digital_Basics,Digital Codes,video,beginner,auditory,1,TRUE,YouTube,https://youtube.com/shorts/CFIJHtTA7xQ,"BCD,hexadecimal"
+Hexadecimal to BCD,,Digital_Basics,Digital Codes,video,beginner,auditory,2,TRUE,YouTube,https://youtu.be/IdrzIxrcK4g,"hexadecimal,BCD"
+Binary to BCD conversion,,Digital_Basics,Digital Codes,video,beginner,auditory,1,TRUE,YouTube,https://youtube.com/shorts/sCmbDW3Lunw,"binary,BCD"
+BCD TO BINARY CONVERSION,,Digital_Basics,Digital Codes,video,beginner,auditory,7,TRUE,YouTube,https://youtu.be/WCjoreAfNS0,"BCD,binary"
+BCD to octal conversion,,Digital_Basics,Digital Codes,video,beginner,auditory,2,TRUE,YouTube,https://youtube.com/shorts/syjtV5dYLtU,"BCD,octal"
+Octal to BCD code conversion,,Digital_Basics,Digital Codes,video,beginner,auditory,2,TRUE,YouTube,https://youtu.be/KtG_ROdEA_o,"octal,BCD"
+ASCII Code and Binary,,Digital_Basics,Digital Codes,video,beginner,auditory,8,TRUE,YouTube,https://youtu.be/H4l42nbYmrU,ASCII
+What Is Gray Code?,,Digital_Basics,Digital Codes,video,beginner,auditory,2,TRUE,YouTube,https://youtu.be/58HqmMYhfNw,gray-code
+BCD to Gray Code Conversion,,Digital_Basics,Digital Codes,video,beginner,auditory,10,TRUE,YouTube,https://youtu.be/LBHNYduPqqE,"BCD,gray-code"
+8 digit alphanumeric code,,Digital_Basics,Digital Codes,video,beginner,auditory,2,TRUE,YouTube,https://youtu.be/kfvHZI-cpik,alphanumeric
+Parity Explained,,Digital_Basics,Digital Codes,video,beginner,auditory,9,TRUE,YouTube,https://youtu.be/Bwih7_AT1oI,parity
+Convert Binary Fraction to Decimal,,Digital_Basics,Binary Fractions and Fixed-Point Representation,video,beginner,auditory,3,TRUE,YouTube,https://youtu.be/OgJPVgnGUiw,binary-fraction
+Decimal Fractions to Hex,,Digital_Basics,Binary Fractions and Fixed-Point Representation,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/RlqSXT4mPYU,"decimal,hex"
+Fixed Point Binary Fractions,,Digital_Basics,Binary Fractions and Fixed-Point Representation,video,beginner,auditory,7,TRUE,YouTube,https://youtu.be/QFlbvSeBkwY,fixed-point
+Convert Decimals into Fractions,,Digital_Basics,Binary Fractions and Fixed-Point Representation,video,beginner,auditory,1,TRUE,YouTube,https://youtube.com/shorts/4kwtuGIIexI,fractions
+Arithmetic vs Logical Shift,,Digital_Basics,Binary Fractions and Fixed-Point Representation,video,beginner,auditory,3,TRUE,YouTube,https://youtube.com/shorts/GjmiiLzDzHI,shift
+Left shift and Right shift operators,,Digital_Basics,Binary Fractions and Fixed-Point Representation,video,beginner,auditory,7,TRUE,YouTube,https://youtu.be/h43F2erAfbk,"bitwise,shift"
+Rounding to Significant Figures,,Digital_Basics,Binary Fractions and Fixed-Point Representation,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/-X0amVzMKFo,rounding
+Rounding to Significant Figures (Short),,Digital_Basics,Binary Fractions and Fixed-Point Representation,video,beginner,auditory,1,TRUE,YouTube,https://youtube.com/shorts/r070e7BCw9U,rounding
+Truncate a Number,,Digital_Basics,Binary Fractions and Fixed-Point Representation,video,beginner,auditory,2,TRUE,YouTube,https://youtu.be/54xS9JTvZgo,truncate
+Difference between Analog and Digital Signals,,Digital_Basics,Introduction to Digital Logic,video,beginner,auditory,4,TRUE,YouTube,https://youtu.be/WxJKXGugfh8,"analog,digital"
+What is a logic level?,,Digital_Basics,Introduction to Digital Logic,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/j_47oRn3oB4,logic-level
+Noise Margin Explained,,Digital_Basics,Introduction to Digital Logic,video,beginner,auditory,9,TRUE,YouTube,https://youtu.be/BWo7PlCZAPc,noise-margin
+TTL vs CMOS,,Digital_Basics,Introduction to Digital Logic,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/nY2BY2Yr5tU,"TTL,CMOS"
+CMOS vs TTL Logic Families,,Digital_Basics,Introduction to Digital Logic,video,beginner,auditory,2,TRUE,YouTube,https://youtu.be/1TpLYx1iZD4,logic-families
+Timing diagram with propagation delay,,Digital_Basics,Introduction to Digital Logic,video,beginner,auditory,7,TRUE,YouTube,https://youtu.be/HJTjOFZxdnM,timing-diagram
+Basic Timing Diagrams,,Digital_Basics,Introduction to Digital Logic,video,beginner,auditory,4,TRUE,YouTube,https://youtu.be/Bewo3XzwhWk,timing-diagram
+Error Detecting Code Parity,,Digital_Basics,Error Detection Basics,video,beginner,auditory,9,TRUE,YouTube,https://youtu.be/Bwih7_AT1oI,parity
+Error Detection,,Digital_Basics,Error Detection Basics,video,beginner,auditory,8,TRUE,YouTube,https://youtu.be/EMrY-8m8D1E,error-detection
+Combinational vs Sequential Circuits,,Digital_Basics,Basic Digital System Concepts,video,beginner,auditory,8,TRUE,YouTube,https://youtu.be/A_paczwVnXc,"combinational,sequential"
+Algorithms - Input & Output,,Digital_Basics,Basic Digital System Concepts,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/szSz8b49RbE,"algorithms,io"
+Finite State Machine,,FSM,Introduction to Finite State Machines,video,beginner,auditory,11,FALSE,YouTube,https://youtu.be/Qa6csfkK7_I,"FSM,introduction"
+"Finite State Machines - State Table, State Diagram and Sequence of Inputs",,FSM,Basic Concepts of FSM,video,beginner,auditory,11,FALSE,YouTube,https://youtu.be/rZdBAJsV_go,"state-table,state-diagram"
+Finite State Machine Explained | Mealy Machine and Moore Machine,,FSM,Types of Finite State Machines,video,beginner,auditory,15,FALSE,YouTube,https://youtu.be/kb-Ww8HaHuE,"mealy,moore"
+"Introduction to State Table, State Diagram & State Equation",,FSM,State Diagrams & State Tables,video,beginner,auditory,11,FALSE,YouTube,https://youtu.be/NNOSWnTHakY,"state-diagram,state-table"
+How to Design a Finite State Machine ? Step By Step Guide with Examples,,FSM,FSM Design Procedure,video,intermediate,auditory,27,FALSE,YouTube,https://youtu.be/PbjntQf3sGc,"FSM,design"
+FSM Implementation,,FSM,FSM Implementation,video,intermediate,auditory,11,FALSE,YouTube,https://youtu.be/0r2RaExDsVM,"FSM,implementation"
+State Reduction and State Assignment in the State Diagram,,FSM,State Reduction,video,intermediate,auditory,11,FALSE,YouTube,https://youtu.be/qq7moL5ueNQ,state-reduction
+Sequence Detector Example,,FSM,Practical FSM Examples,video,beginner,auditory,11,FALSE,YouTube,https://youtu.be/w9miTMZuzRo,sequence-detector
+Finite State Machines Introduction,,FSM,Introduction to Finite State Machines,video,beginner,auditory,8,TRUE,YouTube,https://youtu.be/zkyoP5P0Jq8,"FSM,introduction"
+Construction of Mealy Machine,,FSM,Types of Finite State Machines,video,beginner,auditory,9,TRUE,YouTube,https://youtu.be/LioitkXDfmA,mealy
+Construction of Moore Machine,,FSM,Types of Finite State Machines,video,beginner,auditory,9,TRUE,YouTube,https://youtu.be/MFnRF07SoFo,moore
+Difference between Mealy Machine and Moore Machine,,FSM,Types of Finite State Machines,video,beginner,auditory,3,TRUE,YouTube,https://youtu.be/YiQxeuB56i0,"mealy,moore,comparison"
+State Diagram - Introduction,,FSM,State Diagrams & State Tables,video,beginner,auditory,7,TRUE,YouTube,https://youtu.be/iWl8B3LSEs0,state-diagram
+Digital Logic - State Tables and State Diagrams,,FSM,State Diagrams & State Tables,video,beginner,auditory,10,TRUE,YouTube,https://youtu.be/2TGfiaCrL2s,"state-table,state-diagram"
+FSM Design Process Overview,,FSM,FSM Design Procedure,video,beginner,auditory,6,TRUE,YouTube,https://youtu.be/fE0Q1koLUP4,"FSM,design"
+Implementation of Finite State Machine,,FSM,FSM Implementation,video,intermediate,auditory,8,TRUE,YouTube,https://youtu.be/lAUJDfwqgIY,"FSM,implementation"
+State Reduction and Assignment,,FSM,State Reduction,video,intermediate,auditory,7,TRUE,YouTube,https://youtu.be/IXORIs1dHs0,state-reduction
+"Propagation Delay, Setup, and Hold times",,FSM,Timing Considerations,video,intermediate,auditory,5,TRUE,YouTube,https://youtu.be/g8lRqQ-IfYw,"timing,setup,hold"
+Control Unit Design: FSM-Based Control for Digital Systems Explained!,,FSM,Practical FSM Examples,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/RFTIhPBjpK8,"FSM,control-unit"
+Introduction to Combinational Circuits,,Combinational_Logic,Introduction to Combinational Logic,video,beginner,auditory,3,TRUE,YouTube,https://youtu.be/_yHo2qq82P0,"combinational,introduction"
+Comparison between Combinational and Sequential Circuits,,Combinational_Logic,Introduction to Combinational Logic,video,beginner,auditory,6,TRUE,YouTube,https://youtu.be/SzV4l0_1MCQ,"combinational,sequential"
+Drawing a logic circuit from a given boolean expression,,Combinational_Logic,Analysis of Combinational Circuits,video,beginner,auditory,4,TRUE,YouTube,https://youtu.be/vvyk0mcxwHk,logic-circuit
+Deriving Boolean Expressions from Digital Circuits,,Combinational_Logic,Analysis of Combinational Circuits,video,beginner,auditory,9,TRUE,YouTube,https://youtu.be/FXESmDZ78tA,boolean-expression
+Constructing Truth Tables for Combinational Logic Circuits,,Combinational_Logic,Analysis of Combinational Circuits,video,beginner,auditory,9,TRUE,YouTube,https://youtu.be/C4MdUQJIhSE,truth-table
+Propagation Delay,,Combinational_Logic,Analysis of Combinational Circuits,video,beginner,auditory,6,TRUE,YouTube,https://youtu.be/RTc6vhpIVDY,propagation-delay
+Combinational Circuit Design GATE Problem Example,,Combinational_Logic,Design of Combinational Circuits,video,intermediate,auditory,10,TRUE,YouTube,https://youtu.be/8-QzdRZ9bjs,design
+Half Adder,,Combinational_Logic,Arithmetic Circuits,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/aLUY-s7LSns,half-adder
+Full Adder using Half Adder,,Combinational_Logic,Arithmetic Circuits,video,beginner,auditory,7,TRUE,YouTube,https://youtu.be/Z_DYRgtAXfw,full-adder
+Half Adder and Full Adder Explained,,Combinational_Logic,Arithmetic Circuits,video,beginner,auditory,4,TRUE,YouTube,https://youtu.be/LheGDXfUrwc,adder
+Binary Subtraction Example,,Combinational_Logic,Arithmetic Circuits,video,beginner,auditory,1,TRUE,YouTube,https://youtu.be/9F21qE-Yl2Y,binary-subtraction
+4 bit Adder Subtractor,,Combinational_Logic,Arithmetic Circuits,video,beginner,auditory,8,TRUE,YouTube,https://youtu.be/8w1yDlDCA6Q,adder-subtractor
+Multiplexer Explained,,Combinational_Logic,Data Processing Circuits,video,beginner,auditory,10,TRUE,YouTube,https://youtu.be/KChbcXoZO4U,multiplexer
+2 to 1 Multiplexer,,Combinational_Logic,Data Processing Circuits,video,beginner,auditory,7,TRUE,YouTube,https://youtu.be/oR1Gec5dX9g,multiplexer
+4 to 1 Multiplexer,,Combinational_Logic,Data Processing Circuits,video,beginner,auditory,10,TRUE,YouTube,https://youtu.be/cUyyYcH8so4,multiplexer
+8 to 1 Multiplexer Design,,Combinational_Logic,Data Processing Circuits,video,beginner,auditory,9,TRUE,YouTube,https://youtu.be/5DZnH4Ql-b4,multiplexer
+Introduction to Demultiplexer,,Combinational_Logic,Data Processing Circuits,video,beginner,auditory,10,TRUE,YouTube,https://youtu.be/t3Ed13z9uz8,demultiplexer
+1:4 Demultiplexer,,Combinational_Logic,Data Processing Circuits,video,beginner,auditory,6,TRUE,YouTube,https://youtu.be/4kgPMT9k3bg,demultiplexer
+Introduction to Encoders and Decoders,,Combinational_Logic,Data Processing Circuits,video,beginner,auditory,7,TRUE,YouTube,https://youtu.be/feBvhLFQEDk,"encoder,decoder"
+Encoders and Decoders Made beginner,,Combinational_Logic,Data Processing Circuits,video,beginner,auditory,6,TRUE,YouTube,https://youtu.be/KJh4ytDeuL8,"encoder,decoder"
+Digital Logic - Decoders,,Combinational_Logic,Data Processing Circuits,video,beginner,auditory,9,TRUE,YouTube,https://youtu.be/1prCy3kdy1U,decoder
+Binary to Gray Code Conversion,,Combinational_Logic,Code Conversion Circuits,video,beginner,auditory,7,TRUE,YouTube,https://youtu.be/cF-Q5j7RUEw,gray-code
+Gray Code to Binary Conversion,,Combinational_Logic,Code Conversion Circuits,video,beginner,auditory,6,TRUE,YouTube,https://youtu.be/-qMm9hhvp9Y,gray-code
+Design BCD to Decimal Decoder,,Combinational_Logic,Code Conversion Circuits,video,beginner,auditory,9,TRUE,YouTube,https://youtu.be/09-CapTfpFI,BCD
+Magnitude Comparators,,Combinational_Logic,Comparison Circuits,video,beginner,auditory,10,TRUE,YouTube,https://youtu.be/eyQCRBMu7nk,comparator
+Parity Explained,,Combinational_Logic,Error Detection Circuits,video,beginner,auditory,9,TRUE,YouTube,https://youtu.be/Bwih7_AT1oI,parity
+Parity Checkers and Generators,,Combinational_Logic,Error Detection Circuits,video,beginner,auditory,10,TRUE,YouTube,https://youtu.be/dfo4FtoSWYQ,parity
+Arithmetic Logic Unit,,Combinational_Logic,Arithmetic Logic Unit (ALU),video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/UsK5KV1FPmA,ALU
+Implementation of all logic gates with NAND gate,,Combinational_Logic,Combinational Logic Using Universal Gates,video,beginner,auditory,9,TRUE,YouTube,https://youtu.be/4-kCfYGZDtE,NAND
+Implementation of all gates using NOR gate,,Combinational_Logic,Combinational Logic Using Universal Gates,video,beginner,auditory,7,TRUE,YouTube,https://youtu.be/rfaKzj5go-0,NOR
+The best way to start learning Verilog,,HDL_Verilog,Introduction to Verilog,video,beginner,auditory,15,FALSE,YouTube,https://youtu.be/2IReMT_zjK8,"verilog,introduction"
+Verilog HDL (18EC56) | Typical HDL Design flow,,HDL_Verilog,Verilog Design Flow,video,beginner,auditory,15,FALSE,YouTube,https://youtu.be/5EF_F7bDbQI,design-flow
+Behavioral Modeling,,HDL_Verilog,Verilog Modeling Styles,video,beginner,auditory,23,FALSE,YouTube,https://youtu.be/21luFDi1kS8,behavioral-modeling
+Dataflow Modeling,,HDL_Verilog,Verilog Modeling Styles,video,beginner,auditory,11,FALSE,YouTube,https://youtu.be/LBXU50tS54o,dataflow-modeling
+How to write verilog code using structural modeling,,HDL_Verilog,Verilog Modeling Styles,video,beginner,auditory,20,FALSE,YouTube,https://youtu.be/Zk2mCKowUt4,structural-modeling
+Modules and Instantiation in Verilog,,HDL_Verilog,Verilog Modules,video,beginner,auditory,12,FALSE,YouTube,https://youtu.be/L9onrOQOWcw,"modules,instantiation"
+Modules and instances- Verilog HDL,,HDL_Verilog,Verilog Modules,video,beginner,auditory,17,FALSE,YouTube,https://youtu.be/A3kTUtycs9E,modules
+What's the need of Always block ?,,HDL_Verilog,Procedural Blocks,video,intermediate,auditory,18,FALSE,YouTube,https://youtu.be/eG9Gr0gYcQA,always-block
+INITIAL block in verilog,,HDL_Verilog,Procedural Blocks,video,intermediate,auditory,26,FALSE,YouTube,https://youtu.be/Mzb4LQcWzqg,initial-block
+Blocking and Nonblocking Assignment,,HDL_Verilog,Procedural Blocks,video,intermediate,auditory,21,FALSE,YouTube,https://youtu.be/MsOTLTTE8sQ,"blocking,nonblocking"
+How to Design Finite State Machines in Verilog,,HDL_Verilog,Finite State Machines in Verilog,video,intermediate,auditory,25,FALSE,YouTube,https://youtu.be/Z8d3Y96BDOo,"fsm,verilog"
+VERILOG TEST BENCH,,HDL_Verilog,Testbenches,video,intermediate,auditory,29,FALSE,YouTube,https://youtu.be/KiXMBH1TSkY,testbench
+An Introduction to Verilog,,HDL_Verilog,Introduction to Verilog,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/q1QwC3YlHG0,"verilog,introduction"
+Modelling: behavioral models,,HDL_Verilog,Verilog Modeling Styles,video,beginner,auditory,4,TRUE,YouTube,https://youtu.be/_s4FGaZTl8E,behavioral
+What is Dataflow?,,HDL_Verilog,Verilog Modeling Styles,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/KalJ0VuEM7s,dataflow
+Circuit Diagram to Structural Verilog,,HDL_Verilog,Verilog Modeling Styles,video,beginner,auditory,6,TRUE,YouTube,https://youtu.be/IgDWttPdXZg,structural
+Modules and Ports in Verilog,,HDL_Verilog,Verilog Modules,video,beginner,auditory,4,TRUE,YouTube,https://youtu.be/3fcJnkLFG3Q,"modules,ports"
+The Always Block,,HDL_Verilog,Procedural Blocks,video,beginner,auditory,3,TRUE,YouTube,https://youtu.be/Y2RSq1mGP_M,always-block
+initial and always procedural blocks,,HDL_Verilog,Procedural Blocks,video,beginner,auditory,5,TRUE,YouTube,https://youtu.be/jAcjQCRwEuc,"initial,always"
+Verilog Blocking and Non Blocking statements | Blocking Vs Non Blocking,,HDL_Verilog,Procedural Blocks,video,intermediate,auditory,10,TRUE,YouTube,https://youtu.be/CJ0YSYSCXbw,"blocking,nonblocking"
+Sensitivity List in Verilog,,HDL_Verilog,Combinational Logic Modeling,video,beginner,auditory,1,TRUE,YouTube,https://youtu.be/Y-V87WocBwA,sensitivity-list
+Sequential Logic In Verilog,,HDL_Verilog,Sequential Logic Modeling,video,beginner,auditory,10,TRUE,YouTube,https://youtu.be/aDOeynqSJls,sequential-logic
+How to Write an FSM in SystemVerilog,,HDL_Verilog,Finite State Machines in Verilog,video,intermediate,auditory,6,TRUE,YouTube,https://youtu.be/ENH-8zZLbK8,"fsm,systemverilog"
+Testbenches For Sequential Verilog,,HDL_Verilog,Testbenches,video,beginner,auditory,3,TRUE,YouTube,https://youtu.be/f9QP_mS1DAI,testbench
+Testbenches,,HDL_Verilog,Testbenches,video,beginner,auditory,10,TRUE,YouTube,https://youtu.be/UGWZilMG8yY,testbench
+Simulation and waveform of the RTL with TB code in Questasim.,,HDL_Verilog,Testbenches,video,intermediate,auditory,4,TRUE,YouTube,https://youtu.be/Ub6QI_sQmog,"simulation,waveform"
+Timescale in Verilog,,HDL_Verilog,Timing and Simulation Concepts,video,intermediate,auditory,8,TRUE,YouTube,https://youtu.be/vahGNod7VTM,timescale
+Karnaugh Maps with 4 Variables,,Logic Simplification,Karnaugh Maps (K-Maps),video,beginner,visual,5,FALSE,YouTube,https://youtu.be/YJSqf_Z024w,"kmap,4-variable,logic"
+Karnaugh Maps – Simplify Boolean Expressions,,Logic Simplification,Karnaugh Maps (K-Maps),video,beginner,visual,7,FALSE,YouTube,https://youtu.be/UfZKvPQku8w,"kmap,simplification"
+"Karnaugh Maps, 2 Variables",,Logic Simplification,Karnaugh Maps (K-Maps),video,beginner,visual,2,FALSE,YouTube,https://youtu.be/QK8uPfZESh4,"kmap,2-variable"
+"Karnaugh Map, 3 Variables",,Logic Simplification,Karnaugh Maps (K-Maps),video,beginner,visual,3,FALSE,YouTube,https://youtu.be/7jI0Hv9h2t8,"kmap,3-variable"
+Don't Care in Karnaugh Map,,Logic Simplification,Don’t Care Conditions,video,intermediate,visual,10,FALSE,YouTube,https://youtu.be/_F9nAb6m4U4,"dont-care,kmap"
+Karnaugh Maps POS Minimization,,Logic Simplification,POS Simplification Using K-Maps,video,intermediate,visual,7,FALSE,YouTube,https://youtu.be/d8OxGyaqQPM,"pos,kmap"
+Karnaugh Maps – Introduction,,Logic Simplification,Karnaugh Maps (K-Maps),video,beginner,visual,14,TRUE,YouTube,https://youtu.be/3vkMgTmieZI,"kmap,introduction"
+Don't Care Conditions in Karnaugh Map,,Logic Simplification,Don’t Care Conditions,video,intermediate,visual,12,TRUE,YouTube,https://youtu.be/ZayoUTi2tsA,"dont-care,kmap"
+Karnaugh Map for POS Expressions,,Logic Simplification,POS Simplification Using K-Maps,video,intermediate,visual,11,TRUE,YouTube,https://youtu.be/bFAQXelb3VQ,"pos,kmap"
+Introduction to Memory,,Memory Systems,Introduction to Memory Systems,video,beginner,visual,8,FALSE,YouTube,https://youtu.be/PujjqfUhtNo,"memory,introduction"
+How computer memory works,,Memory Systems,Introduction to Memory Systems,video,beginner,visual,5,FALSE,YouTube,https://youtu.be/p3q5zWCw8J4,"memory,overview"
+Volatile vs Non-Volatile Memory,,Memory Systems,Memory Classification,video,beginner,visual,5,FALSE,YouTube,https://youtu.be/1DgJmnJ8D2Y,"volatile,non-volatile"
+What Is Volatile Memory?,,Memory Systems,Memory Classification,video,beginner,visual,2,FALSE,YouTube,https://youtu.be/VTsN1KJP3pM,volatile
+What is ROM,,Memory Systems,Memory Classification,video,beginner,visual,5,FALSE,YouTube,https://youtu.be/7_4GWN_d1-A,rom
+RAM Explained,,Memory Systems,Memory Classification,video,beginner,visual,9,FALSE,YouTube,https://youtu.be/a--rNdqtwCI,ram
+Programmable ROM,,Memory Systems,Read-Only Memory (ROM),video,intermediate,visual,9,FALSE,YouTube,https://youtu.be/gjxXHu1oJqI,prom
+EPROM,,Memory Systems,Read-Only Memory (ROM),video,intermediate,visual,5,FALSE,YouTube,https://youtu.be/_vJJsdIJzP8,eprom
+PROM vs EPROM vs EEPROM,,Memory Systems,Read-Only Memory (ROM),video,intermediate,visual,2,FALSE,YouTube,https://youtu.be/Hk8jX0ePbmk,"rom,comparison"
+EEPROM,,Memory Systems,Read-Only Memory (ROM),video,intermediate,visual,4,FALSE,YouTube,https://youtu.be/JbzlCGoVmlI,eeprom
+How Flash Memory Works,,Memory Systems,Read-Only Memory (ROM),video,intermediate,visual,9,FALSE,YouTube,https://youtu.be/r2KaVfSH884,flash
+What Is Flash Memory,,Memory Systems,Read-Only Memory (ROM),video,beginner,visual,6,FALSE,YouTube,https://youtu.be/ELl3abwYQ90,flash
+What is SRAM,,Memory Systems,Random Access Memory (RAM),video,beginner,visual,5,FALSE,YouTube,https://youtu.be/kU2SsUUsftA,sram
+What is DRAM,,Memory Systems,Random Access Memory (RAM),video,beginner,visual,7,FALSE,YouTube,https://youtu.be/Lozf9sceW_o,dram
+SRAM vs DRAM,,Memory Systems,Random Access Memory (RAM),video,intermediate,visual,4,FALSE,YouTube,https://youtu.be/ammQYLcyebA,"sram,dram"
+Memory Access Lines,,Memory Systems,Memory Organization,video,intermediate,visual,3,FALSE,YouTube,https://youtu.be/NVrfCSrSmP8,address-lines
+Memory Size Calculations,,Memory Systems,Memory Organization,video,intermediate,visual,3,FALSE,YouTube,https://youtu.be/NBWMs_T0zw8,memory-size
+Memory Read Write Operations,,Memory Systems,Memory Operations,video,intermediate,visual,9,FALSE,YouTube,https://youtu.be/nEuQNv1k12I,"read,write"
+Address Decoding Explained,,Memory Systems,Memory Interfacing,video,intermediate,visual,3,FALSE,YouTube,https://youtu.be/NULbZq-DU6g,address-decoding
+Direct Memory Mapping,,Memory Systems,Memory Interfacing,video,intermediate,visual,9,FALSE,YouTube,https://youtu.be/V_QS1HzJ8Bc,memory-mapping
+Chip Select Logic,,Memory Systems,Memory Interfacing,video,intermediate,visual,8,FALSE,YouTube,https://youtu.be/h_PJF94ujPM,chip-select
+Chip Select Memory,,Memory Systems,Memory Interfacing,video,intermediate,visual,8,FALSE,YouTube,https://youtu.be/ohK8ixzL0yg,chip-select
+Introduction to Cache Memory,,Memory Systems,Cache Memory Basics,video,beginner,visual,7,FALSE,YouTube,https://youtu.be/Ez_kyBS-y5w,cache
+CPU Cache Explained,,Memory Systems,Cache Memory Basics,video,beginner,visual,5,FALSE,YouTube,https://youtu.be/yi0FhRqDJfo,cache
+Cache Levels,,Memory Systems,Cache Memory Basics,video,beginner,visual,2,FALSE,YouTube,https://youtu.be/IA8au8Qr3lo,cache
+Average Memory Access Time,,Memory Systems,Performance Characteristics,video,intermediate,visual,6,FALSE,YouTube,https://youtu.be/xEyyoiS_HjU,amat
+Memory Bandwidth,,Memory Systems,Performance Characteristics,video,intermediate,visual,4,FALSE,YouTube,https://youtu.be/_--euO5UOUk,bandwidth
+Memory Layout in Embedded Systems,,Memory Systems,Applications of Memory Systems,video,intermediate,visual,9,FALSE,YouTube,https://youtu.be/UdkuoHSp_0s,"embedded,memory"
+Memory Controller Chip,,Memory Systems,Applications of Memory Systems,video,intermediate,visual,3,FALSE,YouTube,https://youtu.be/OXLY7mrHIaI,memory-controller
+Introduction to the Memory Hierarchy,,Memory Systems,Introduction to Memory Systems,video,beginner,visual,16,TRUE,YouTube,https://youtu.be/JogSnkvENr0,memory-hierarchy
+ROM Explained,,Memory Systems,Memory Classification,video,beginner,visual,14,TRUE,YouTube,https://youtu.be/1GREaNW21XM,rom
+ROM as PLD,,Memory Systems,Read-Only Memory (ROM),video,intermediate,visual,16,TRUE,YouTube,https://youtu.be/zpYSia8vQNs,"rom,pld"
+SRAM vs DRAM,,Memory Systems,Random Access Memory (RAM),video,intermediate,visual,14,TRUE,YouTube,https://youtu.be/r787m_IaR1I,"sram,dram"
+Memory Arrays,,Memory Systems,Memory Organization,video,intermediate,visual,11,TRUE,YouTube,https://youtu.be/n5iHcodA6tc,memory-array
+Memory Write Timing Diagram,,Memory Systems,Memory Operations,video,intermediate,visual,15,TRUE,YouTube,https://youtu.be/HZoCXhEk9Og,timing
+Address Decoding,,Memory Systems,Memory Interfacing,video,intermediate,visual,16,TRUE,YouTube,https://youtu.be/nOMyv79cqKQ,address-decoding
+Introduction to Cache Memory,,Memory Systems,Cache Memory Basics,video,beginner,visual,31,TRUE,YouTube,https://youtu.be/Bz49xnKBH_0,cache
+Avg Memory Access Time with Multilevel Cache,,Memory Systems,Performance Characteristics,video,intermediate,visual,14,TRUE,YouTube,https://youtu.be/BsNyGekumgc,amat
+CPU Memory System Overview,,Memory Systems,Applications of Memory Systems,video,intermediate,visual,28,TRUE,YouTube,https://youtu.be/4knBXkN1GEU,"cpu,memory"
+Microcontroller Memory,,Memory Systems,Applications of Memory Systems,video,intermediate,visual,34,TRUE,YouTube,https://youtu.be/hyIEUCIVhQQ,"microcontroller,memory"
+Introduction to Sequential Circuits,,Sequential Logic,Introduction to Sequential Logic,video,beginner,visual,8,FALSE,YouTube,https://youtu.be/AaN72s5WfOM,"sequential,intro"
+Difference between Latch and Flip Flop,,Sequential Logic,Introduction to Sequential Logic,video,beginner,visual,6,FALSE,YouTube,https://youtu.be/m1QBxTeVaNs,"latch,flipflop"
+The Gated SR Latch,,Sequential Logic,Latches,video,beginner,visual,9,FALSE,YouTube,https://youtu.be/MyFInHHTiw4,sr-latch
+D Latch Explained,,Sequential Logic,Latches,video,beginner,visual,8,FALSE,YouTube,https://youtu.be/vsZQLw6C4-w,d-latch
+Edge and Level Triggered,,Sequential Logic,Latches,video,beginner,visual,3,FALSE,YouTube,https://youtu.be/hKwctpJB7Nw,"edge,level"
+Introduction to SR Flip Flop,,Sequential Logic,Flip-Flops,video,beginner,visual,8,FALSE,YouTube,https://youtu.be/HZg7fNu-l24,sr-flipflop
+Introduction to JK Flip Flop,,Sequential Logic,Flip-Flops,video,beginner,visual,8,FALSE,YouTube,https://youtu.be/j6krFp511HA,jk-flipflop
+Introduction to D Flip Flop,,Sequential Logic,Flip-Flops,video,beginner,visual,5,FALSE,YouTube,https://youtu.be/dnfXXpW7tIw,d-flipflop
+Introduction to T Flip Flop,,Sequential Logic,Flip-Flops,video,beginner,visual,3,FALSE,YouTube,https://youtu.be/wcfnEla_Y78,t-flipflop
+Triggering Methods in Flip Flops,,Sequential Logic,Triggering Methods,video,intermediate,visual,5,FALSE,YouTube,https://youtu.be/Pi_MHyMoenA,triggering
+Level vs Edge Trigger Flip Flop,,Sequential Logic,Triggering Methods,video,intermediate,visual,8,FALSE,YouTube,https://youtu.be/SK0bSphgBgI,"edge,level"
+Clock Triggering Techniques,,Sequential Logic,Triggering Methods,video,intermediate,visual,5,FALSE,YouTube,https://youtu.be/1xVPxWDhhNQ,clock
+SR Flip Flop Tables,,Sequential Logic,Analysis of Sequential Circuits,video,intermediate,visual,9,FALSE,YouTube,https://youtu.be/uiKKRPZbuXA,"sr,truth-table"
+JK Flip Flop Tables,,Sequential Logic,Analysis of Sequential Circuits,video,intermediate,visual,10,FALSE,YouTube,https://youtu.be/lnQD2_M9uDI,"jk,truth-table"
+Summary of all Flip-Flops,,Sequential Logic,Design of Sequential Circuits,video,intermediate,visual,10,FALSE,YouTube,https://youtu.be/QWMpq6NLwF4,"flipflop,summary"
+Semiconductor Memories,,Sequential Logic,Memory Elements,video,beginner,visual,11,TRUE,YouTube,https://youtu.be/oBMj77ONeH8,memory
+Latches and Flip-Flops,,Sequential Logic,Memory Elements,video,beginner,visual,12,TRUE,YouTube,https://youtu.be/-aQH0ybMd3U,"latch,flipflop"
+SR Latch Circuit,,Sequential Logic,Latches,video,beginner,visual,20,TRUE,YouTube,https://youtu.be/L5V1IxFhq0k,sr-latch
+Building a D Latch,,Sequential Logic,Latches,video,beginner,visual,12,TRUE,YouTube,https://youtu.be/CDCqnsd7x7w,d-latch
+SR Flip Flop Circuit,,Sequential Logic,Flip-Flops,video,intermediate,visual,14,TRUE,YouTube,https://youtu.be/QKLWSs3z0C4,sr-flipflop
+JK Flip Flop Introduction,,Sequential Logic,Flip-Flops,video,intermediate,visual,33,TRUE,YouTube,https://youtu.be/Soj8BfhEdy4,jk-flipflop
+D Flip Flop Explained,,Sequential Logic,Flip-Flops,video,intermediate,visual,12,TRUE,YouTube,https://youtu.be/EILb-DrYr8A,d-flipflop
+T Flip Flop Explained,,Sequential Logic,Flip-Flops,video,intermediate,visual,12,TRUE,YouTube,https://youtu.be/hw2rWOlg9x4,t-flipflop
+Positive and Negative Edge Detector,,Sequential Logic,Triggering Methods,video,intermediate,visual,15,TRUE,YouTube,https://youtu.be/6OBhE0AAT5U,edge-detector
+Design Procedure for Clocked Sequential Circuits,,Sequential Logic,Design of Sequential Circuits,video,intermediate,visual,19,TRUE,YouTube,https://youtu.be/NbON135lf60,design
+Propagation Delays,,Timing and Performance,Propagation Delay,video,beginner,visual,11,FALSE,YouTube,https://youtu.be/U9hKBAu5bOU,"propagation,delay"
+Setup Time and Hold Time Explained,,Timing and Performance,Timing Parameters,video,intermediate,visual,18,FALSE,YouTube,https://youtu.be/3t8ndX2hqHA,"setup,hold"
+Clock Skew and Clock Jitter,,Timing and Performance,Clock and Clocking,video,intermediate,visual,14,FALSE,YouTube,https://youtu.be/zdf0Z1YCUMA,"clock,skew,jitter"
+Synchronous Counter,,Timing and Performance,Synchronous Timing Analysis,video,beginner,visual,12,FALSE,YouTube,https://youtu.be/Pvty_1r-tI8,"synchronous,counter"
+Timing Hazards & Glitches,,Timing and Performance,Asynchronous Timing Concepts,video,intermediate,visual,16,FALSE,YouTube,https://youtu.be/WIS9MZ0NqFY,"hazards,glitches"
+Performance Improvements with Pipelines,,Timing and Performance,Pipelining Basics,video,intermediate,visual,21,FALSE,YouTube,https://youtu.be/1iLx3P8xnGI,"pipeline,performance"
+Karnaugh Map Optimization,,Timing and Performance,Timing Optimization Techniques,video,intermediate,visual,26,FALSE,YouTube,https://youtu.be/FPrcIhqNPVo,"kmap,optimization"
+Optimization Techniques Introduction,,Timing and Performance,Timing Optimization Techniques,video,intermediate,visual,26,FALSE,YouTube,https://youtu.be/tYyFAaTNKjk,optimization
+Timing Constraints in Sequential Circuits,,Timing and Performance,Practical Considerations,video,advanced,visual,25,FALSE,YouTube,https://youtu.be/ypl0NIZ-2LQ,"timing,constraints"
+Propagation Delay of Logic Gates,,Timing and Performance,Propagation Delay,video,beginner,visual,4,TRUE,YouTube,https://youtu.be/6odYNk9CndI,"propagation,delay"
+Critical Path Method,,Timing and Performance,Propagation Delay,video,beginner,visual,5,TRUE,YouTube,https://youtu.be/rxGcV0tuxRU,"critical,path"
+Setup Time and Hold Time of Flip-Flop,,Timing and Performance,Timing Parameters,video,beginner,visual,7,TRUE,YouTube,https://youtu.be/WTTna9WbQI4,"setup,hold"
+Clock Skew and Jitter,,Timing and Performance,Clock and Clocking,video,intermediate,visual,10,TRUE,YouTube,https://youtu.be/AZxaSeGpH4s,"clock,skew,jitter"
+Duty Cycle Explained,,Timing and Performance,Clock and Clocking,video,beginner,visual,4,TRUE,YouTube,https://youtu.be/LX4U_FKIl9g,"duty,cycle"
+Glitches and Hazards,,Timing and Performance,Asynchronous Timing Concepts,video,intermediate,visual,4,TRUE,YouTube,https://youtu.be/0AXHdpnFqGk,"hazards,glitches"
+Metastability and Resolution Time,,Timing and Performance,Asynchronous Timing Concepts,video,advanced,visual,7,TRUE,YouTube,https://youtu.be/kz9NWmc2N6w,metastability
+Throughput vs Latency,,Timing and Performance,Performance Metrics,video,beginner,visual,3,TRUE,YouTube,https://youtu.be/ryzF1vO7N4w,"throughput,latency"
+Performance Measures on CPU,,Timing and Performance,Performance Metrics,video,beginner,visual,8,TRUE,YouTube,https://youtu.be/uHqbE3JiDPY,"performance,cpu"
+Pipelining in a Processor,,Timing and Performance,Pipelining Basics,video,beginner,visual,4,TRUE,YouTube,https://youtu.be/eVRdfl4zxfI,pipeline
+Retiming Basic Concept,,Timing and Performance,Timing Optimization Techniques,video,intermediate,visual,5,TRUE,YouTube,https://youtu.be/IKp9A3uclDk,retiming
+Timing Optimization,,Timing and Performance,Timing Optimization Techniques,video,intermediate,visual,9,TRUE,YouTube,https://youtu.be/XhQqD9cKDkI,"timing,optimization"
+Introduction to Counters,,Registers and Counters,Introduction to Registers and Counters,video,beginner,visual,12,FALSE,YouTube,https://youtu.be/iaIu5SYmWVM,"counter,intro"
+Registers and Counters,,Registers and Counters,Introduction to Registers and Counters,video,beginner,visual,19,FALSE,YouTube,https://youtu.be/ikrNRrIRyMk,"registers,counters"
+Shift Register : SISO Explained,,Registers and Counters,Shift Registers,video,beginner,visual,15,FALSE,YouTube,https://youtu.be/r4bfEqZNSyo,"shift,siso"
+Shift Register SISO Mode,,Registers and Counters,Shift Registers,video,beginner,visual,11,FALSE,YouTube,https://youtu.be/unorn9n-UpE,"shift,siso"
+Shift Register SIPO & PIPO,,Registers and Counters,Shift Registers,video,beginner,visual,12,FALSE,YouTube,https://youtu.be/HGFGQ3D3iJ8,"shift,sipo,pipo"
+Serial In Parallel Out Shift Register,,Registers and Counters,Shift Registers,video,beginner,visual,11,FALSE,YouTube,https://youtu.be/ot3epJJnM1A,"shift,sipo"
+Parallel In Serial Out Shift Register,,Registers and Counters,Shift Registers,video,beginner,visual,16,FALSE,YouTube,https://youtu.be/hS0PByHO8s4,"shift,piso"
+Shift Registers and Types,,Registers and Counters,Register Operations,video,intermediate,visual,27,FALSE,YouTube,https://youtu.be/XxPh0RyiFP8,"shift,operations"
+Asynchronous Counters,,Registers and Counters,Counters,video,beginner,visual,19,FALSE,YouTube,https://youtu.be/fyagSrWSWbc,"async,counter"
+Synchronous Counters Explained,,Registers and Counters,Counters,video,intermediate,visual,26,FALSE,YouTube,https://youtu.be/dIianWwz-Fw,"sync,counter"
+Ripple Up Counter,,Registers and Counters,Types of Counters,video,beginner,visual,14,FALSE,YouTube,https://youtu.be/eiIV28LSQnM,"ripple,up"
+Ripple Down Counter,,Registers and Counters,Types of Counters,video,beginner,visual,13,FALSE,YouTube,https://youtu.be/uLGmK6NQInE,"ripple,down"
+MOD-N Counter,,Registers and Counters,Types of Counters,video,intermediate,visual,11,FALSE,YouTube,https://youtu.be/oSnjqMpzvj4,mod-n
+3 Bit Asynchronous Up Counter,,Registers and Counters,Types of Counters,video,intermediate,visual,12,FALSE,YouTube,https://youtu.be/s1DSZEaCX_g,"3bit,async"
+Counter Design Using JK Flip Flop,,Registers and Counters,Counter Design,video,intermediate,visual,15,FALSE,YouTube,https://youtu.be/ap0RMkqHWHQ,"jk,counter"
+Designing Synchronous Counters Using JK FF,,Registers and Counters,Counter Design,video,intermediate,visual,24,FALSE,YouTube,https://youtu.be/Zbmj-AHBxeA,"jk,sync"
+Synchronous Counter Design,,Registers and Counters,Counter Design,video,intermediate,visual,13,FALSE,YouTube,https://youtu.be/w2qP_Vt51yk,"sync,design"
+Setup and Hold Time of Flip Flop,,Registers and Counters,Counter Design,video,intermediate,visual,18,FALSE,YouTube,https://youtu.be/3t8ndX2hqHA,"setup,hold"
+Applications of Shift Register,,Registers and Counters,Applications of Registers and Counters,video,beginner,visual,23,FALSE,YouTube,https://youtu.be/xwafUfsqHGA,"applications,shift"
+Combinational Logic,,Combinational Logic,Introduction to Combinational Logic,slides,intermediate,reading,,FALSE,M. Morris Mano & Michael D. Ciletti,https://drive.uqu.edu.sa/_/aagutub/files/Teaching_ComputerEngineering/1403271_Switching_Theory/Lecture_Slides/Ch4.pdf,"combinational,introduction,boolean,overview"
+Logical Gates and Combinatorial Circuits,,Combinational Logic,Analysis of Combinational Circuits,slides,intermediate,reading,,FALSE,Temple University,https://cis.temple.edu/~latecki/Courses/CIS166-Fall05/Lectures/ch10.3.ppt,"logic-circuit,analysis,truth-table,logic-gates"
+Combinational Circuit Design,,Combinational Logic,Design of Combinational Circuits,slides,intermediate,reading,,FALSE,KFUPM,https://faculty.kfupm.edu.sa/coe/mudawar/coe202/lectures/08-CombinationalCircuitDesign.pdf,"design-steps,design-procedure,logic-circuit"
+Binary to Grey Code Conversion,,Combinational Logic,Code Conversion Circuits,slides,beginner,reading,,FALSE,SlideShare,https://www.slideshare.net/slideshow/binary-to-grey-code-conversion/56082824,"gray-code,binary"
+Decimal to BCD Conversion,,Combinational Logic,Code Conversion Circuits,slides,beginner,reading,,FALSE,SlideShare,https://www.slideshare.net/slideshow/bcd-to-decimal-digital-electronics/78995039,"BCD,decoder"
+Magnitude Comparator,,Combinational Logic,Comparison Circuits,slides,intermediate,reading,,FALSE,SlideShare,https://www.slideshare.net/slideshow/magnitude-comparator-139190935/139190935,"logic-circuit,comparison"
+Basic Comparator,,Combinational Logic,Comparison Circuits,slides,intermediate,reading,,FALSE,SCRIBD,https://www.scribd.com/presentation/818257854/Lec-22-Basic-Comparators,"logic-circuit,comparison"
+Parity Generator and Parity Checker,,Combinational Logic,Error Detection Circuits,slides,beginner,reading,,FALSE,SlideShare,https://www.slideshare.net/slideshow/parity-generator-and-parity-checker/68199863,"parity,error-detection"
+Arithmetic Logic Unit,,Combinational Logic,Arithmetic Logic Unit (ALU),slides,intermediate,reading,,FALSE,University of Pittsburgh,https://sites.pitt.edu/~juy9/142/slides/L4-ALU.pdf,"ALU,arithmetic,logic-circuit"
+Implementation using NAND and NOR Gates,,Combinational Logic,Universal Gates,slides,intermediate,reading,,FALSE,Banha University,https://feng.stafpu.bu.edu.eg/Electrical%20Engineering/2460/crs-12138/Files/Implementation%20with%20NAND%20and%20NOR.pdf,"NAND,universal-gates,NOR,implementation"
+Introduction to Boolean Algebra,,Boolean Algebra,Introduction to Boolean Algebra,slides,beginner,visual,,FALSE,CBSE,https://www.ssgopalganj.in/online/Online%20Class%20-%20PPT/Class%2011/Comp%20Sc/Chapter%203%20Boolean%20Algebra.pptx,"boolean,introduction,basics"
+Boolean Algebra and Logic Gates,,Boolean Algebra,Basic Boolean Operations,slides,beginner,visual,,FALSE,KFUPM,https://faculty.kfupm.edu.sa/coe/mudawar/ee200/lectures/03-BooleanAlgebra&LogicGates.pptx,"AND,OR,NOT,logic-gates"
+Laws and Theorems of Boolean Logic,,Boolean Algebra,Boolean Algebra Laws,slides,intermediate,visual,,FALSE,Harvard University,https://cscie93.dce.harvard.edu/fall2024/slides/Laws%20and%20Theorems%20of%20Boolean%20Logic.pdf,"boolean-laws,identity-law,null-law,commutative-law"
+DeMorgan’s Theorems,,Boolean Algebra,De Morgan’s Theorems,slides,intermediate,visual,,FALSE,Project Lead The Way,https://resources.finalsite.net/files/v1720712853/wallkillcsdk12nyus/hw6czk0pgyex3jteg1ll/lesson_4_2--demorgan_theorem1.ppt,"demorgan,boolean-laws"
+Logic Gates,,Boolean Algebra,Logic Gates,slides,beginner,visual,,FALSE,Boston University,https://www.bu.edu/lernet/artemis/years/2011/slides/logicgates.pdf,"logic-gates,AND,OR,NAND,NOR,XOR,XNOR"
+Universal Gate – NOR,,Boolean Algebra,Universal Gates,slides,intermediate,visual,,FALSE,Project Lead The Way,https://resources.finalsite.net/files/v1720712870/wallkillcsdk12nyus/b1tzsfuojjar0clcrsr6/universalnor1.ppt,"NOR,universal-gates"
+Universal Gate – NAND,,Boolean Algebra,Universal Gates,slides,intermediate,visual,,FALSE,Project Lead The Way,https://resources.finalsite.net/files/v1720712869/wallkillcsdk12nyus/v41gsbzmnzdhghwfukou/universalnand1.ppt,"NAND,universal-gates"
+"Simplification using Boolean Algebra, K Maps",,Boolean Algebra,Boolean Expression Simplification,slides,advanced,visual,,FALSE,UC San Diego,https://cseweb.ucsd.edu/classes/wi15/cse140-ab/slides/lec4_annotated.pdf,"simplification,boolean,k-map"
+Boolean Expression Simplification,,Boolean Algebra,Boolean Expression Simplification,slides,advanced,visual,,FALSE,UC Irvine,https://www.cecs.uci.edu/~gajski/eecs31/slides/Digital_Design_-_Boolean_Simplification_Gu87raJu.pdf,"simplification,boolean"
+Boolean Algebra - Truth Tables,,Boolean Algebra,Truth Tables,slides,beginner,visual,,FALSE,Kalamazoo College,https://www.cs.kzoo.edu/cs105/resources/BooleanLogic/BooleanLogic.pptx,"truth-table,boolean"
+Canonical Forms,,Boolean Algebra,Canonical Forms,slides,intermediate,visual,,FALSE,University of Wisconsin - Madison,https://ece352.ece.wisc.edu/Lec6/lec06_canonical_forms.ppt,"SOP,POS,minterms,maxterms"
+Boolean Expression for a Logic Circuit,,Boolean Algebra,Practical Applications,slides,intermediate,visual,,FALSE,Al Mustaqbal University,https://uomus.edu.iq/img/lectures21/MUCLecture_2024_12842322.pdf,"logic-circuit,application"
+Finite State Machine,,FSM,Introduction to Finite State Machines,slides,intermediate,visual,,FALSE,TU Graz / KC Posch,https://www.isec.tugraz.at/wp-content/uploads/2019/09/con_03.pdf,"fsm,introduction,overview"
+Finite State Machines,,FSM,Basic Concepts of FSM,slides,intermediate,visual,,FALSE,Cornell University,https://www.cs.cornell.edu/courses/cs3410/2018fa/schedule/slides/07-fsm.pdf,"fsm,states,transitions"
+Finite State Machines,,FSM,Types of Finite State Machines,slides,intermediate,visual,,FALSE,Cornell University,https://www.cs.cornell.edu/courses/cs3410/2018sp/schedule/slides/05-fsm-pre.pptx,"mealy,moore,fsm-types"
+State Machines,,FSM,State Diagrams,slides,intermediate,visual,,FALSE,University of Glasgow,https://www.dcs.gla.ac.uk/~wpc/assembler/State%20Machines.ppt,"state-diagram,fsm"
+State Machine Design,,FSM,State Tables,slides,intermediate,visual,,FALSE,University of Southern California,https://ee.usc.edu/~redekopp/ee101/slides/EE101Lecture20.pdf,"state-table,fsm"
+Flip flops and Finite State Machines,,FSM,FSM Implementation,slides,advanced,visual,,FALSE,UC San Diego,https://cseweb.ucsd.edu/classes/wi15/cse140-ab/slides/lec13_before.pdf,"fsm,implementation,flip-flop"
+FSM State Minimization Techniques,,FSM,State Reduction,slides,advanced,visual,,FALSE,UC San Diego,https://piazza.com/class_profile/get_resource/mcegjdn631n495/mcekww391kn58u,"state-reduction,minimization"
+SMs and Synchronization,,FSM,Timing Considerations,slides,advanced,visual,,FALSE,MIT OCW,https://ocw.mit.edu/courses/6-111-introductory-digital-systems-laboratory-spring-2006/42a54faab45fe61591730e7846643cc9_l6_fsm.pdf,"fsm,timing,synchronization"
+Finite State Machines,,FSM,Practical FSM Examples,slides,intermediate,visual,,FALSE,University of Washington,https://courses.cs.washington.edu/courses/cse370/10sp/pdfs/lectures/14-FSMsIPrint.pdf,"fsm,examples,logic-circuit"
+"Sequential Circuits, FSM",,FSM,Practical FSM Examples,slides,intermediate,visual,,FALSE,University of Utah,https://users.cs.utah.edu/~rajeev/cs3810/slides/3810-15-13.pdf,"fsm,examples,sequential-circuit"
+Memory Systems,,Memory Systems,Introduction to Memory Systems,slides,beginner,visual,,FALSE,University of Nottingham,https://people.cs.nott.ac.uk/pszqiu/Teaching/CSA/20022003CoursePages/Slides/G51CSA-2002-2003-L5.ppt,"memory,introduction,overview"
+Memory Classification,,Memory Systems,Memory Classification,slides,beginner,visual,,FALSE,K.C.S Kasi Nadar College,https://www.slideshare.net/slideshow/memory-classification/235548013,"memory,classification,types"
+Read Only Memory (ROM),,Memory Systems,Read-Only Memory (ROM),slides,intermediate,visual,,FALSE,George Mason University,https://people-ece.vse.gmu.edu/coursewebpages/ECE/ECE545/F20/viewgraphs/ECE545_lecture_2B_digital_logic_review_6.pdf,"ROM,non-volatile,memory"
+Introduction to RAM,,Memory Systems,Random Access Memory (RAM),slides,intermediate,visual,,FALSE,Al Albayt University,https://web2.aabu.edu.jo/tool/course_file/lec_notes/901320_Main%20Memory.ppt,"RAM,volatile,memory"
+MEMORY ORGANIZATION,,Memory Systems,Memory Organization,slides,intermediate,visual,,FALSE,Jordan University,https://www.just.edu.jo/~tawalbeh/cpe252/slides/Ch12.ppt,"memory-organization,addressing"
+Memory Interfacing,,Memory Systems,Memory Interfacing,slides,advanced,visual,,FALSE,SlideShare,https://www.slideshare.net/slideshow/memoryinterfacingppt/252521909,"memory-interfacing,address-decoding"
+Cache Memory,,Memory Systems,Cache Memory Basics,slides,intermediate,visual,,FALSE,Carleton University,https://people.scs.carleton.ca/~sivarama/org_book/org_book_web/slides/chap_1_versions/ch17_1.pdf,"cache-memory,L1,L2,L3"
+Microprocessors and memory concepts,,Memory Systems,Applications of Memory Systems,slides,beginner,visual,,FALSE,SlideShare,https://www.slideshare.net/slideshow/microprocessors-and-memory-concepts/168125405#5,"memory,applications,embedded"
+Introduction to Registers,,Registers & Counters,Introduction to Registers and Counters,video,beginner,visual,7,TRUE,YouTube,https://youtu.be/-paFaxtTCkI,"registers,introduction,basics"
+Introduction to Counters | Types of Counters | Application of Counters,,Registers & Counters,Introduction to Registers and Counters,video,beginner,visual,9,TRUE,YouTube,https://youtu.be/AKe2T5BkI1U,"counters,introduction,types,applications"
+Serial In Parallel Out Shift Registers,,Registers & Counters,Registers,video,beginner,visual,8,TRUE,YouTube,https://youtu.be/Gg85u1q7pso,"shift-register,SIPO"
+"Shift Registers | SISO, SIPO, PISO, PIPO",,Registers & Counters,Shift Registers,video,beginner,visual,9,TRUE,YouTube,https://youtu.be/NjMX4hohyRI,"shift-register,SISO,SIPO,PISO,PIPO"
+Serial In Parallel Out Shift Register (SIPO),,Registers & Counters,Shift Registers,video,beginner,visual,10,TRUE,YouTube,https://youtu.be/EMWITTEq1L8,"shift-register,SIPO"
+Shift Register (PISO Mode),,Registers & Counters,Shift Registers,video,beginner,visual,7,TRUE,YouTube,https://youtu.be/7LmBcGiiYwk,"shift-register,PISO"
+Parallel In Parallel Out (PIPO) Shift Register,,Registers & Counters,Shift Registers,video,beginner,visual,6,TRUE,YouTube,https://youtu.be/XctmHVOdl58,"shift-register,PIPO"
+Parallel Load Registers,,Registers & Counters,Register Operations,video,beginner,visual,9,TRUE,YouTube,https://youtu.be/q3KYk1iQcEA,"register,parallel-load"
+Basic concept of Register | Load and Clear Operation,,Registers & Counters,Register Operations,video,beginner,visual,10,TRUE,YouTube,https://youtu.be/_5dwz69U-n0,"register,load,clear"
+Types of Counters | Ripple vs Synchronous,,Registers & Counters,Counters,video,beginner,visual,7,TRUE,YouTube,https://youtu.be/yqg1sqhZG3M,"counters,ripple,synchronous"
+4 Bit Asynchronous Up Counter,,Registers & Counters,Types of Counters,video,beginner,visual,10,TRUE,YouTube,https://youtu.be/eEeBh8jfDjg,"counter,asynchronous,up"
+3 bit & 4 bit Asynchronous Down Counter,,Registers & Counters,Types of Counters,video,beginner,visual,10,TRUE,YouTube,https://youtu.be/noUcCs2zNaI,"counter,asynchronous,down"
+3 Bit & 4 Bit UP/DOWN Ripple Counter,,Registers & Counters,Types of Counters,video,beginner,visual,10,TRUE,YouTube,https://youtu.be/5Um3NDvsYjQ,"counter,up-down,ripple"
+State Diagram of a Counter,,Registers & Counters,Counter Design,video,beginner,visual,7,TRUE,YouTube,https://youtu.be/mq0rLKpkjAQ,"counter,state-diagram,design"
+"s
+ 
+",,Timing and Performance,Introduction to Timing and Performance,slides,intermediate,reading,,FALSE,Safari Research Group,https://safari.ethz.ch/digitaltechnik/spring2018/lib/exe/fetch.php?media=digitaldesign-s18-lecture8-timing-and-verification-v2.1.pdf,"timing,verification,overview"
+Propagation & Transmission delay,,Timing and Performance,Propagation Delay,slides,intermediate,reading,,FALSE,Al-Mustansiryah University,https://uomustansiriyah.edu.iq/media/lectures/5/5_2018_12_03!02_10_19_PM.pdf,"propagation-delay,transmission-delay"
+Timing Constraints & Timing Analysis,,Timing and Performance,Timing Parameters,slides,advanced,reading,,FALSE,Imperial College London,http://www.ee.ic.ac.uk/pcheung/teaching/EE2_CAS/Lectures/Lecture%2012%20-%20Timing%20Constraints%20(notes).pdf,"setup-time,hold-time,timing-constraints"
+Clock Distribution,,Timing and Performance,Clock and Clocking,slides,intermediate,reading,,FALSE,Fujitsu Labs of America,https://people.eecs.berkeley.edu/~alanmi/courses/2005_290A/lectures/clocks.ppt,"clock-distribution,clock-skew"
+Timing Analysis,,Timing and Performance,Clock and Clocking,slides,advanced,reading,,FALSE,George Mason University,https://people-ece.vse.gmu.edu/coursewebpages/ECE/ECE545/F18/viewgraphs/ECE545_lecture12_Timing_Analysis.pdf,"timing-analysis,clocking"
+Fundamentals of Synchronization & Timing,,Timing and Performance,Synchronous Timing Analysis,slides,advanced,reading,,FALSE,WSTS - Kishan Shenoi,https://wsts.atis.org/wp-content/uploads/2022/05/01-Kishan-Shenoi.Fundamentals-of-Timing-and-Synchronization.pdf,"synchronous-timing,clock-domain"
+Bridging the gap between asynchronous design and designers,,Timing and Performance,Asynchronous Timing Concepts,slides,advanced,reading,,FALSE,UPC University,https://www.cs.upc.edu/~jordicf/gavina/BIB/files/vlsi04_tut1.ppt,"asynchronous-timing,metastability"
+Performance trends and equations,,Timing and Performance,Performance Metrics,slides,intermediate,reading,,FALSE,University of Utah,https://users.cs.utah.edu/~rajeev/cs3810/slides/3810-17-02.ppt,"performance,latency,throughput"
+Basic Pipelining & Performance,,Timing and Performance,Pipelining Basics,slides,intermediate,reading,,FALSE,UC Berkeley,http://cse.unl.edu/~jiang/cse430/Lecture%20Notes/Main_PPT_Slides/Back-up-slides/Basic_Pipelining.ppt,"pipelining,performance-optimization"
+A Brief Intro to Verilog,,HDL Verilog,Introduction to Verilog,slides,beginner,reading,,FALSE,UC San Diego,https://cseweb.ucsd.edu/classes/fa08/cse141L/slides/vlog-part1.pdf,"verilog,introduction,overview"
+CAD Flow and Verilog,,HDL Verilog,Verilog Design Flow,slides,intermediate,reading,,FALSE,University of British Columbia,https://courses.ece.ubc.ca/elec402/handouts/s8_1up.pdf,"verilog,design-flow,cad-flow"
+Verilog HDL Basics,,HDL Verilog,Verilog Modeling Styles,slides,intermediate,reading,,FALSE,University of Crete,https://www.csd.uoc.gr/~hy225/veriwell/verilog_basics.ppt,"verilog,behavioral,dataflow,structural"
+"Variables, Operators and Data Types",,HDL Verilog,Data Types and Operators,slides,intermediate,reading,,FALSE,University at Buffalo,https://cse.buffalo.edu/~rsridhar/cse691/verilog_691.ppt,"verilog,data-types,operators"
+VERILOG,,HDL Verilog,Combinational Logic Modeling,slides,intermediate,reading,,FALSE,Umea University,https://hpac.cs.umu.se/teaching/sem-hpsc-14/presentations/Verilog%20slides.pdf,"verilog,combinational,always-block"
+Sequential Logic Design,,HDL Verilog,Sequential Logic Modeling,slides,advanced,reading,,FALSE,Safari Research Group,https://safari.ethz.ch/architecture/fall2019/lib/exe/fetch.php?media=onur-digitaldesign-2018-lecture7-sequential-logic-afterlecture.pdf,"verilog,sequential,flip-flops"
+Verilog Tutorial,,HDL Verilog,Finite State Machines in Verilog,slides,intermediate,reading,,FALSE,Rose Hulman Institute of Technology,https://www.rose-hulman.edu/class/cs/archive/other-old/most_of_OLD_from_CSSE232-Fall-2011/0506a/www/Resources/Xilinx/VerilogTutorial.ppt,"verilog,fsm,mealy,moore"
+Test Benches,,HDL Verilog,Testbenches,slides,intermediate,reading,,FALSE,Milwaukee School of Engineering,https://faculty-web.msoe.edu/johnsontimoj/CE1911/files1911/testbenches.pdf,"verilog,testbench,simulation"
+"Verilog Events, Timing, and Testbenches",,HDL Verilog,Timing and Simulation Concepts,slides,advanced,reading,,FALSE,Stony Brook University,https://eclipse.umbc.edu/robucci/cmpe415/attachments/Lecture05_Events_Timing_Testbeches.pdf,"verilog,timing,events,simulation"
+SystemVerilog Review & Tips,,HDL Verilog,Verilog Best Practices,slides,advanced,reading,,FALSE,Courses,https://courses.cs.washington.edu/courses/cse371/24sp/lectures/01/EECSE371-Sp24-01-Verilog.pdf,"systemverilog,best-practices,coding-style"
+Introduction to Sequential Logic,,Sequential Logic,Introduction to Sequential Logic,slides,beginner,visual,"
+",FALSE,King Fahd University,https://faculty.kfupm.edu.sa/coe/mudawar/coe202/lectures/12-IntroductionSequentialCircuits.pdf,"sequential,introduction,overview"
+Sequential Networks: Latches and flip flops,,Sequential Logic,Memory Elements,slides,intermediate,visual,"
+",FALSE,University of California San Diego,https://cseweb.ucsd.edu/classes/su15/cse140-a/slides/lec6_before.pdf,"memory-elements,latches,flip-flops"
+Latches and Clocking,,Sequential Logic,Latches,slides,intermediate,visual,"
+",FALSE,University of British Columbia,https://courses.ece.ubc.ca/elec402/handouts/s7_1up.pdf,"latches,clocking,level-triggered"
+D Flip-Flops,,Sequential Logic,Flip-Flops,slides,intermediate,visual,"
+",FALSE,Iowa State University,https://www.ece.iastate.edu/~alexs/classes/2015_Fall_281/slides/25_D_Flip-Flops.ppt,"flip-flop,D-flip-flop,edge-triggered"
+FLIP FLOP TRIGGERING,,Sequential Logic,Triggering Methods,slides,intermediate,visual,"
+",FALSE,SlideShare,https://www.slideshare.net/slideshow/flip-flop-triggeringpptx/261537535,"triggering,edge-trigger,level-trigger"
+Analysis of Clocked Sequential Circuits,,Sequential Logic,Analysis of Sequential Circuits,slides,advanced,visual,"
+",FALSE,King Fahd University,https://faculty.kfupm.edu.sa/coe/mudawar/ee200/lectures/12-SequentialCircuitAnalysis.pdf,"sequential,analysis,clocked-circuits"
+Sequential Circuit Design,,Sequential Logic,Design of Sequential Circuits,slides,advanced,visual,"
+",FALSE,King Fahd University,https://faculty.kfupm.edu.sa/coe/mudawar/coe202/lectures/14-SequentialCircuitDesign.pdf,"sequential,design,design-procedure"
+Applications of Sequential Logic,,Sequential Logic,Applications of Sequential Logic,slides,beginner,visual,"
+",FALSE,Tennessee State University,https://www.tnstate.edu/faculty/fyao/comp3500/Chapter5_4web.ppt,"sequential,applications,logic-circuit"
+"Review on Number Systems - Decimal, Binary and Hexadecimal",,Digital Basics,Number Systems,slides,beginner,reading,,FALSE,Florida State University,https://web1.eng.famu.fsu.edu/~mingyu/EEL4746-F06/Slides/ch3a-binary-numbers.ppt,"number-systems,decimal,binary,hexadecimal,overview"
+Presentation On Number System,,Digital Basics,Number Systems,slides,beginner,reading,,FALSE,SCRIBD,https://www.scribd.com/presentation/465131812/Presentation-on-number-system,"number-systems,introduction,overview"
+Number System Conversions,,Digital Basics,Number System Conversions,slides,intermediate,reading,,FALSE,SCRIBD,https://www.scribd.com/document/785627880/Number-System-Conversions-Slide,"number-system,conversion,binary,decimal,hexadecimal"
+Signed Binary Numbers,,Digital Basics,Signed Number Representation,slides,intermediate,reading,,FALSE,SlideShare,https://www.slideshare.net/slideshow/signed-binary-numbers/250046765#2,"signed-numbers,ones-complement,twos-complement"
+Binary Arithmetic,,Digital Basics,Binary Arithmetic,slides,intermediate,reading,,FALSE,SlideShare,https://www.slideshare.net/slideshow/binary-arithmetic-250383613/250383613,"binary-arithmetic,addition,subtraction,overflow"
+ASCII and BCD Arithmetic,,Digital Basics,Digital Codes,slides,intermediate,reading,,FALSE,Carleton University,https://people.scs.carleton.ca/~sivarama/asm_book/asm2ed_slides/slides/al2ed_chapter11.ppt,"ascii,bcd,digital-codes"
+"Shift, Mult, Div – Fixed & Floating Point",,Digital Basics,Binary Fractions and Fixed-Point Representation,slides,advanced,reading,,FALSE,Harvey Mudd College,https://pages.hmc.edu/harris/class/e85/old/fall19/lect9.pptx,"fixed-point,floating-point,binary-fractions,rounding"
+Introduction to Digital Logic Design,,Digital Basics,Introduction to Digital Logic,slides,beginner,reading,,FALSE,Northwestern University,https://www.eecs.northwestern.edu/~haizhou/303/Lec01.ppt,"digital-logic,introduction,logic-gates"
+Error Detection and Correction: Parity Check Code,,Digital Basics,Error Detection Basics,slides,intermediate,reading,,FALSE,University of Texas at Austin,https://www.cs.utexas.edu/~plaxton/c/337/05f/slides/ErrorCorrection-3.pdf,"error-detection,parity,odd-even"
+Digital Systems and Binary Numbers,,Digital Basics,Basic Digital System Concepts,slides,beginner,reading,,FALSE,King Fahd University of Petroleum and Minerals,https://faculty.kfupm.edu.sa/coe/atabakh/assets/courses/coe202/module1.pdf,"digital-systems,binary-numbers,basics"
+Logic Simplification,,Logic Simplification,Introduction to Logic Simplification,slides,beginner,reading,,FALSE,SlideServe,https://www.slideserve.com/alia/logic-simplification-powerpoint-ppt-presentation#google_vignette,"logic-simplification,introduction,overview"
+Simplification Using Boolean Algebra,,Logic Simplification,Algebraic Simplification Techniques,slides,intermediate,reading,,FALSE,My Private Tutor,https://www.myprivatetutor.ae/prime/documents/ppt/2143/ppt-on-simplification-using-boolean-algebra,"boolean-algebra,simplification,algebraic"
+Canonical Forms,,Logic Simplification,Canonical Forms Review,slides,intermediate,reading,,FALSE,University of Wisconsin,https://ece352.ece.wisc.edu/Lec6/lec06_canonical_forms.ppt,"canonical-forms,SOP,POS,minterms,maxterms"
+The Karnaugh Map,,Logic Simplification,Karnaugh Maps (K-Maps),slides,intermediate,reading,,FALSE,King Fahd University,https://faculty.kfupm.edu.sa/coe/mudawar/coe202/lectures/04-KarnaughMap.pdf,"kmap,karnaugh-map,boolean-simplification"
+Simplifying Logic Circuits with Karnaugh Maps,,Logic Simplification,Karnaugh Maps (K-Maps),slides,advanced,reading,,FALSE,Erik Jonsson School of Engineering and Computer Science,https://personal.utdallas.edu/~dodge/EE2310/lec5.pdf,"kmap,logic-circuit,simplification"
+Don't care conditions,,Logic Simplification,Don’t Care Conditions,slides,intermediate,reading,,FALSE,SlideShare,https://www.slideshare.net/slideshow/dont-care-conditions/60032812,"dont-care,kmap,optimization"
+SOP POS Kmap,,Logic Simplification,POS Simplification Using K-Maps,slides,advanced,reading,,FALSE,SCRIBD,https://www.scribd.com/presentation/432470660/SOP-POS-KMAP-ppt,"SOP,POS,kmap,boolean-simplification"
+Registers and Counters,,Registers and Counters,Introduction to Registers and Counters,slides,beginner,reading,,FALSE,Pearson Education,https://faculty.kfupm.edu.sa/coe/aimane/coe202/lectures/Unit10-Registers%20and%20Counters.pptx,"registers,counters,introduction,overview"
+Registers and Counters,,Registers and Counters,Introduction to Registers and Counters,slides,beginner,reading,,FALSE,Concordia University,https://users.encs.concordia.ca/~msoleyma/COEN212/COEN212_2020/Lecture%20Slides/Lecture%2011.pdf,"registers,counters,introduction,overview"
+Registers,,Registers and Counters,Registers,slides,intermediate,reading,,FALSE,Milwaukee School of Engineering,https://faculty-web.msoe.edu/johnsontimoj/EE3921/files3921/registers.pdf,"registers,load,clear,storage"
+The Shift Registers,,Registers and Counters,Shift Registers,slides,intermediate,reading,,FALSE,WordPress,https://krishnamoorthymca99.wordpress.com/wp-content/uploads/2018/09/final-unit-4-dlf-ct2.pdf,"shift-register,SISO,SIPO,PISO,PIPO"
+Counters,,Registers and Counters,Counters,slides,intermediate,reading,,FALSE,Rajeev Pandey,https://rajeev2007.github.io/STLD/Notes/lect27-Counters.pdf,"counters,ripple,synchronous"
+Types of Counters,,Registers and Counters,Types of Counters,slides,advanced,reading,,FALSE,Dronacharya,https://ggn.dronacharya.info/csedept/Downloads/QuestionBank/Odd/III%20sem/Section-C/digital-electronics_5.pdf,"counter,up,down,up-down,mod-n"
+AN INTRODUCTION TO BOOLEAN ALGEBRAS,,Boolean Algebra,Introduction to Boolean Algebra,paper,beginner,reading,,FALSE,Amy Scadvancedijn,https://files01.core.ac.uk/download/pdf/55337078.pdf,"boolean,introduction,overview"
+Laws and Rules of Boolean Algebra,,Boolean Algebra,Boolean Algebra Laws,paper,intermediate,reading,,FALSE,Jens-Peter Kaps,https://people-ece.vse.gmu.edu/~jkaps/courses/ece331-s07/resources/boolean.pdf,"boolean-laws,identity-law,commutative-law,associative-law"
+DeMorgan’s Theorems,,Boolean Algebra,De Morgan’s Theorems,paper,intermediate,reading,,FALSE,Juan Luis Gastaldi,https://shs.hal.science/halshs-03995323/file/%5BGastaldi%5D%202023%20-%20De%20Morgan%27s%20De%20Morgan%27s%20Laws.pdf,"demorgan,boolean-laws,complement"
+Logic systems,,Boolean Algebra,Logic Gates,paper,beginner,reading,,FALSE,WJEC CBAC Ltd,https://resource.download.wjec.co.uk/vtc/2016-17/16-17_1-9/gce-electronics-book-chapter-1.pdf,"logic-gates,AND,OR,NOT,NAND,NOR"
+Survey of Logical Gates Family,,Boolean Algebra,Universal Gates,paper,intermediate,reading,,FALSE,Jiger Prakashchandra Acharya,https://www.irjet.net/archives/V3/i12/IRJET-V3I12264.pdf,"NAND,universal-gates,NOR"
+BOOLEAN ALGEBRA AND LOGIC SIMPLIFICATION,,Boolean Algebra,Boolean Expression Simplification,paper,advanced,reading,,FALSE,Alghad Application - GTI,https://www.gti.bh/Library/assets/part2-s9luuiwx.pdf,"simplification,boolean,kmap"
+Canonical Forms,,Boolean Algebra,Canonical Forms,paper,advanced,reading,,FALSE,Joel G. Broida and S. Gill Williamson,https://cseweb.ucsd.edu/~gill/CILASite/Resources/12Chap8.pdf,"SOP,POS,minterms,maxterms"
+Combinational Logic Circuits,,Combinational Logic,Introduction to Combinational Logic,paper,beginner,reading,,FALSE,College of Information Technology,https://www.uobabylon.edu.iq/eprints/publication_3_16156_1456.pdf,"combinational,introduction,logic-circuits"
+Evolutionary Design of Combinational Logic Circuits,,Combinational Logic,Design of Combinational Circuits,paper,advanced,reading,,FALSE,Cecília Reis et al.,https://scispace.com/pdf/evolutionary-design-of-combinational-logic-circuits-vs53jwh0qu.pdf,"combinational,design,evolutionary"
+Arithmetic Circuits,,Combinational Logic,Arithmetic Circuits,paper,intermediate,reading,,FALSE,Madhujya Gogoi,https://www.dhemajicollege.in/class/pdf/1752391473_920976582.pdf,"arithmetic,adder,subtractor"
+Data-Processing Circuits,,Combinational Logic,Data Processing Circuits,paper,intermediate,reading,,FALSE,NA,https://d13mk4zmvuctmz.cloudfront.net/assets/main/study-material/notes/electrical-engineering_engineering_logic-design_data-processing-circuits_notes.pdf,"data-processing,combinational"
+Design and Analysis of Comparator Using Different Logic Style of Full Adder,,Combinational Logic,Comparison Circuits,paper,advanced,reading,,FALSE,IJERA,https://www.ijera.com/papers/Vol4_issue4/Version%201/BL044389393.pdf,"comparator,comparison,adder"
+A Power-Efficient Error Detection and Correction Circuit Design,,Combinational Logic,Error Detection Circuits,paper,advanced,reading,,FALSE,IIETA,https://iieta.org/download/file/fid/100693,"error-detection,parity"
+Arithmetic Logic UNIT (ALU) design using reconfigurable CMOS logic,,Combinational Logic,Arithmetic Logic Unit (ALU),paper,advanced,reading,,FALSE,LSU,https://repository.lsu.edu/cgi/viewcontent.cgi?article=3890&context=gradschool_theses,"ALU,arithmetic,logic"
+NUMBER SYSTEMS,,Digital Basics,Number Systems,paper,beginner,reading,,FALSE,NCERT,https://ncert.nic.in/pdf/publication/exemplarproblem/classIX/mathematics/ieep201.pdf,"number-systems,binary,decimal,hex"
+Number System Conversions,,Digital Basics,Number System Conversions,paper,beginner,reading,"
+",FALSE,IPSG Gwalior,https://www.ipsgwalior.org/download/number%20system.pdf,"number-conversion,binary,decimal,hex"
+NUMBER SYSTEM & BINARY CODES,,Digital Basics,Binary Arithmetic,paper,intermediate,reading,"
+",FALSE,New College,https://newcollege.ac.in/CMS/Eknowledge/73af25af-c58f-49b2-9621-a1e07d01ac7bNumber%20System.pdf,"binary-arithmetic,codes"
+"Representation of signed and unsigned numbers, BCD code",,Digital Basics,Digital Codes,paper,intermediate,reading,"
+",FALSE,University of Goa,http://dishtavostaging.unigoa.ac.in/resource?type=quad&module_id=14881&filename=14881_Notes.pdf,"signed,unsigned,bcd,digital-codes"
+Binary Fractions and Fixed-Point Representation,,Digital Basics,Binary Fractions and Fixed-Point Representation,paper,advanced,reading,"
+",FALSE,Erick L. Oberstar,http://darcy.rsgc.on.ca/ACES/ICE4M/FixedPoint/FixedPointRepresentationFractionalMath.pdf,"fixed-point,binary-fractions"
+Introduction To Digital Logic,,Digital Basics,Introduction to Digital Logic,paper,beginner,reading,"
+",FALSE,James Feher,https://textbookequity.org/Textbooks/TBQ_Feher_DigitalLogicbw.pdf,"digital-logic,basics,logic-gates"
+Introduction to Verilog HDL,,HDL Verilog,Introduction to Verilog,paper,beginner,reading,,FALSE,Jorge Ramírez,https://athena.ecs.csus.edu/~arad/csc142/intro_verilog_hdl.pdf,"verilog,introduction,basics"
+Overview of Digital design with Verilog HDL,,HDL Verilog,Verilog Design Flow,paper,beginner,reading,"
+",FALSE,JSSC ACS,https://www.jsscacs.edu.in/sites/default/files/Department%20Files/Prog%20in%20C%20and%20Verilog%20HDL_compressed.pdf,"verilog,design-flow,cad-flow"
+The Simulation Semantics of Synthesisable Verilog,,HDL Verilog,Procedural Blocks,paper,advanced,reading,"
+",FALSE,Andreas Lööw,https://arxiv.org/pdf/2502.19348,"verilog,procedural-blocks,simulation"
+Combinational Logic Design with VERILOG,,HDL Verilog,Combinational Logic Modeling,paper,intermediate,reading,"
+",FALSE,Md Khademul Rashedin,https://www.researchgate.net/publication/374724080_Combinational_Logic_Design_with_VERILOG,"verilog,combinational,logic"
+Verilog Analysis on Mealy and Moore FSM,,HDL Verilog,Finite State Machines in Verilog,paper,intermediate,reading,"
+",FALSE,Alexios Kotsis,https://www.researchgate.net/publication/394611826_Verilog_Analysis_on_Mealy_and_Moore_Finite_State_Machine_and_advancedware_Design,"verilog,fsm,mealy,moore"
+Writing a Testbench in Verilog,,HDL Verilog,Testbenches,paper,beginner,reading,"
+",FALSE,USC Viterbi,https://viterbi-web.usc.edu/www-classes/engr/ee-s/254/ee201l_lab_manual/Testbenches/handout_files/ee201_testbench.pdf,"verilog,testbench,simulation"
+Early algebra: Simplifying equations,,Logic Simplification,Algebraic Simplification Techniques,paper,intermediate,reading,,FALSE,Luis Radford,https://www.researchgate.net/publication/360749116_Early_algebra_Simplifying_equations,"algebraic-simplification,equations,logic"
+The Karnaugh Map,,Logic Simplification,Karnaugh Maps (K-Maps),paper,beginner,reading,"
+",FALSE,East Tennessee State University,https://faculty.etsu.edu/tarnoff/ntes2150/Ch7_v02.pdf,"kmap,logic-simplification"
+Two-Variable Karnaugh Maps,,Logic Simplification,Two-Variable Karnaugh Maps,paper,beginner,reading,"
+",FALSE,University of Mustansiriyah,https://uomustansiriyah.edu.iq/media/lectures/6/6_2024_04_17!01_55_29_PM.pdf,"kmap,2-variable"
+Systematic Approximate Logic Optimization Using Don’t Care Conditions,,Logic Simplification,Don’t Care Conditions,paper,advanced,reading,"
+",FALSE,Salamat et al.,https://acsweb.ucsd.edu/~sasalama/papers/Approximation_17.pdf,"dont-care,logic-optimization"
+Simplification of logical functions with application to circuits,,Logic Simplification,Implementation of Simplified Logic,paper,advanced,reading,"
+",FALSE,Jun-e Feng et al.,https://www.researchgate.net/publication/361931869_Simplification_of_logical_functions_with_application_to_circuits,"logic-functions,circuit-simplification"
+Finite-State Machines,,FSM,Introduction to Finite State Machines,paper,beginner,reading,,FALSE,Chalmers University of Technology,https://www.cse.chalmers.se/~coquand/AUTOMATA/book.pdf,"fsm,introduction,automata"
+FINITE STATE MACHINE DESIGN & OPTIMIZATION,,FSM,FSM Design Procedure,paper,intermediate,reading,"
+",FALSE,Imperial College London,http://www.ee.ic.ac.uk/pcheung/teaching/ee3_dsd/4-fsm.pdf,"fsm,design,optimization"
+On the Implementation of Finite State Machines,,FSM,FSM Implementation,paper,advanced,reading,"
+",FALSE,Jilles van Gurp & Jan Bosch,https://www.researchgate.net/publication/243768772_ON_THE_IMPLEMENTATION_OF_FINITE_STATE_MACHINES,"fsm,implementation,architecture"
+Memory Systems,,Memory Systems,Introduction to Memory Systems,paper,intermediate,reading,,FALSE,"Yoongu Kim , Onur Mutlu",https://people.inf.ethz.ch/omutlu/pub/memory-systems-introduction_computing-handbook14.pdf,"memory-systems,introduction,overview"
+The Difference Between RAM and ROM,,Memory Systems,Memory Classification,paper,beginner,reading,"
+",FALSE,Maulana Al Ghifari et al.,https://www.researchgate.net/publication/387257688_The_Difference_Between_Random_Access_Memory_And_Read_Only_Memory_In_Computer_With_Issue_Of_Solid_State_Drive,"memory-classification,ram,rom"
+ROM,,Memory Systems,Read-Only Memory (ROM),paper,beginner,reading,"
+",FALSE,NA,https://dspmuranchi.ac.in/pdf/Blog/sec%201-%20103.pdf,"rom,non-volatile"
+Overview of RAM,,Memory Systems,Random Access Memory (RAM),paper,beginner,reading,"
+",FALSE,Peter Haugen et al.,https://www.rose-hulman.edu/Class/ee/yoder/ece332/Papers/RAM%20Technologies.pdf,"ram,volatile"
+Memory Organization,,Memory Systems,Memory Organization,paper,intermediate,reading,"
+",FALSE,Basim J. & L.Sundos Alazawi,https://uomustansiriyah.edu.iq/media/lectures/6/6_2021_05_27!04_33_16_PM.pdf,"memory-organization,addressing"
+Active Memory Operations,,Memory Systems,Memory Operations,paper,advanced,reading,"
+",FALSE,"Zhen Fang , Lixin Zhang",https://users.cs.utah.edu/~map/papers/ics07.pdf,"memory-operations,active-memory"
+Cache Memory Performance,,Memory Systems,Cache Memory Basics,paper,advanced,reading,"
+",FALSE,N. Ramasubramanian et al.,https://arxiv.org/pdf/1111.3056,"cache-memory,performance"
+Applications of Computation-In-Memory,,Memory Systems,Applications of Memory Systems,paper,advanced,reading,"
+",FALSE,"Hamdioui S., Du Nguyen H.A.",https://cris.unibo.it/bitstream/11585/729725/5/Applications%20of%20Computation-In-Memory.pdf,"memory-applications,memristive"
+Shift Registers,,Registers and Counters,Shift Registers,paper,intermediate,reading,,FALSE,WJEC,https://resource.download.wjec.co.uk/vtc/2013-14/Electronics/GCE%20Electronics/4.5.3%20Shift%20Registers.pdf,"shift-registers,registers,data-storage"
+Counters,,Registers and Counters,Counters,paper,beginner,reading,,FALSE,Yagya Dev Badvancedwaj,https://www.researchgate.net/publication/322390887_COUNTERS,"counters,registers,clocked-circuits"
+Sequential Logic Systems,,Sequential Logic,Introduction to Sequential Logic,paper,beginner,reading,,FALSE,WJEC,https://resource.download.wjec.co.uk/vtc/2016-17/16-17_1-9/gce-electronics-book-chapter-3.pdf,"sequential-logic,introduction,overview"
+Latches and Flip-Flops,,Sequential Logic,Latches,paper,intermediate,reading,,FALSE,University of California Riverside,https://www.cs.ucr.edu/~ehwang/courses/cs120b/flipflops.pdf,"latches,flip-flops,memory-elements"
+Low Power Dual Edge Triggered Static D Flip-Flop,,Sequential Logic,Flip-Flops,paper,advanced,reading,,FALSE,Anurag et al.,https://arxiv.org/pdf/1307.3075,"flip-flop,d-flip-flop,low-power"
+Triggering Circuit Design,,Sequential Logic,Triggering Methods,paper,intermediate,reading,,FALSE,IRJET,https://www.irjet.net/archives/V2/i9/IRJET-V2I9202.pdf,"triggering,edge-trigger,clocking"
+Timing Characteristics of Task Activations,,Sequential Logic,Timing Characteristics,paper,advanced,reading,,FALSE,Frank Bodmann et al.,https://www.researchgate.net/publication/224703095_Analyzing_the_Timing_Characteristics_of_Task_Activations,"timing,performance,activation"
+Sequential Circuit Application in Multifunctional Clock,,Sequential Logic,Analysis of Sequential Circuits,paper,advanced,reading,,FALSE,Yixuan Zhou,https://www.researchgate.net/publication/388044872_The_Application_Analysis_of_Sequential_Circuit_in_the_Design_of_Multifunctional_Clock,"sequential-analysis,applications,clock-design"
+Introduction to Timing and Synchronisation,,Timing and Performance,Introduction to Timing and Performance,paper,beginner,reading,,FALSE,Chronos,https://chronos.uk/wordpress/wp-content/uploads/chronos_intro_timing_and_synchronisation.pdf,"timing,overview,synchronisation"
+Delay Propagation and Multiplier,,Timing and Performance,Propagation Delay,paper,intermediate,reading,"
+",FALSE,Akira Kondo,https://ageconsearch.umn.edu/record/207266/files/2010_138_Delay_Propagation_Multiplier.pdf,"propagation-delay,delay-analysis"
+Parametric Timing Analysis,,Timing and Performance,Timing Parameters,paper,advanced,reading,"
+",FALSE,ResearchGate,https://www.researchgate.net/publication/228775307_Parametric_Timing_Analysis,"timing-parameters,analysis"
+Pipeline Architecture,,Timing and Performance,Pipelining Basics,paper,advanced,reading,"
+",FALSE,UC Davis,https://www.ece.ucdavis.edu/~vojin/CLASSES/EEC272/S2005/Papers/Ramamoorthy_mar77.pdf,"pipelining,performance-optimization"

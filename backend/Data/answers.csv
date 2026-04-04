@@ -1,0 +1,121 @@
+﻿question_code,answer_text,is_correct,misconception_code
+Q1,2,TRUE,
+Q1,1,FALSE,binary_misunderstanding
+Q1,8,FALSE,bit_byte_confusion
+Q1,Infinite,FALSE,abstraction_error
+Q2,0 and 1,TRUE,
+Q2,1 and 2,FALSE,decimal_confusion
+Q2,ON and OFF,FALSE,informal_representation
+Q2,TRUE only,FALSE,logic_confusion
+Q3,4,TRUE,
+Q3,2,FALSE,linear_thinking
+Q3,3,FALSE,guessing
+Q3,8,FALSE,input_output_confusion
+Q4,2^n,TRUE,
+Q4,n^2,FALSE,wrong_formula
+Q4,n+1,FALSE,linear_growth_error
+Q4,2n,FALSE,arithmetic_confusion
+Q5,AND,TRUE,
+Q5,OR,FALSE,and_or_confusion
+Q5,NOT,FALSE,gate_role_confusion
+Q5,XOR,FALSE,exclusive_logic_confusion
+Q6,NOT,TRUE,
+Q6,AND,FALSE,gate_role_confusion
+Q6,OR,FALSE,gate_role_confusion
+Q6,XOR,FALSE,logic_misunderstanding
+Q7,A · B,TRUE,
+Q7,A + B,FALSE,or_confusion
+Q7,A ⊕ B,FALSE,xor_confusion
+Q7,A’,FALSE,not_confusion
+Q8,A + B,TRUE,
+Q8,A · B,FALSE,and_confusion
+Q8,A’B,FALSE,inversion_misuse
+Q8,AB’,FALSE,syntax_confusion
+Q9,De Morgan’s Law,TRUE,
+Q9,Distributive Law,FALSE,wrong_law
+Q9,Identity Law,FALSE,wrong_category
+Q9,Absorption Law,FALSE,law_misuse
+Q10,A,TRUE,
+Q10,1,FALSE,dominance_confusion
+Q10,0,FALSE,null_confusion
+Q10,A’,FALSE,inversion_confusion
+Q11,Identity Law,TRUE,
+Q11,Null Law,FALSE,reversed_logic
+Q11,Complement Law,FALSE,wrong_category
+Q11,De Morgan’s Law,FALSE,law_misuse
+Q12,0,TRUE,
+Q12,A,FALSE,identity_confusion
+Q12,1,FALSE,dominance_confusion
+Q12,A’,FALSE,inversion_confusion
+Q13,Current inputs only,TRUE,
+Q13,Previous outputs,FALSE,memory_confusion
+Q13,Clock,FALSE,sequential_confusion
+Q13,State,FALSE,fsm_confusion
+Q14,Multiplexer,TRUE,
+Q14,Flip-flop,FALSE,sequential_element
+Q14,Counter,FALSE,sequential_element
+Q14,Register,FALSE,memory_confusion
+Q15,Select one input,TRUE,
+Q15,Store data,FALSE,memory_confusion
+Q15,Count pulses,FALSE,counter_confusion
+Q15,Decode address,FALSE,decoder_confusion
+Q16,Binary input to one-hot output,TRUE,
+Q16,One-hot to binary,FALSE,encoder_confusion
+Q16,Analog to digital,FALSE,adc_confusion
+Q16,Data to memory,FALSE,storage_confusion
+Q17,Inputs and previous state,TRUE,
+Q17,Inputs only,FALSE,combinational_confusion
+Q17,Clock only,FALSE,partial_understanding
+Q17,Power supply,FALSE,irrelevant
+Q18,Flip-flop,TRUE,
+Q18,AND gate,FALSE,no_memory
+Q18,Decoder,FALSE,logic_confusion
+Q18,Multiplexer,FALSE,selection_confusion
+Q19,Edge-triggered,TRUE,
+Q19,Level-triggered,FALSE,latch_confusion
+Q19,Clockless,FALSE,logic_error
+Q19,Combinational,FALSE,category_error
+Q20,Level-sensitive,TRUE,
+Q20,Clockless,FALSE,oversimplification
+Q20,Faster,FALSE,vague_reasoning
+Q20,Analog,FALSE,wrong_domain
+Q21,Flip-flops,TRUE,
+Q21,Gates,FALSE,logic_confusion
+Q21,Counters,FALSE,function_confusion
+Q21,Decoders,FALSE,structure_confusion
+Q22,Count clock pulses,TRUE,
+Q22,Store data,FALSE,register_confusion
+Q22,Select input,FALSE,mux_confusion
+Q22,Decode address,FALSE,decoder_confusion
+Q23,8,TRUE,
+Q23,3,FALSE,bit_count_confusion
+Q23,16,FALSE,power_of_two_error
+Q23,Infinite,FALSE,abstraction_error
+Q24,System condition,TRUE,
+Q24,Input,FALSE,confusion
+Q24,Output,FALSE,misunderstanding
+Q24,Clock,FALSE,control_confusion
+Q25,Inputs,TRUE,
+Q25,Memory,FALSE,vague
+Q25,Power,FALSE,irrelevant
+Q25,Registers only,FALSE,partial_truth
+Q26,Mealy machine,TRUE,
+Q26,Moore machine,FALSE,output_confusion
+Q26,Counter,FALSE,fsm_misuse
+Q26,Decoder,FALSE,wrong_abstraction
+Q27,RAM,TRUE,
+Q27,ROM,FALSE,non_volatile
+Q27,Flash,FALSE,non_volatile
+Q27,EEPROM,FALSE,non_volatile
+Q28,Store permanent data,TRUE,
+Q28,Temporary storage,FALSE,ram_confusion
+Q28,Registers,FALSE,size_confusion
+Q28,Cache,FALSE,hierarchy_confusion
+Q29,Incorrect data capture,TRUE,
+Q29,Faster execution,FALSE,misunderstanding
+Q29,Lower power,FALSE,unrelated
+Q29,No effect,FALSE,timing_ignorance
+Q30,Data stability after clock edge,TRUE,
+Q30,Before clock edge,FALSE,setup_confusion
+Q30,Power holding,FALSE,unrelated
+Q30,Reset duration,FALSE,control_confusion
