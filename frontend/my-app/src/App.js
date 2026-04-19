@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import LearningMaterials from "./pages/LearningMaterials";
-import { trackResource } from "./services/api";
 /* Pages */
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
@@ -52,7 +51,6 @@ export default function App() {
     setUser({ email });
     setAuthState("verify");
   };
-  
 
   // LOGOUT
   const handleLogout = () => {
@@ -70,7 +68,6 @@ export default function App() {
     setUser(updatedUser);
     localStorage.setItem(SESSION_KEY, JSON.stringify(updatedUser));
 
-    // 👇 NEW PART
     setVarkResult(result);
     setCurrentPage("varkResult");
   };
@@ -112,7 +109,7 @@ export default function App() {
       return (
         <VerifyEmail
           email={user?.email}
-          onVerified={(verifiedUser) => handleSignIn(verifiedUser)} // ✅ DIRECT TO DASHBOARD
+          onVerified={(verifiedUser) => handleSignIn(verifiedUser)}
           onBack={() => setAuthState("signup")}
         />
       );
@@ -122,7 +119,6 @@ export default function App() {
       return <ForgotPassword onBack={() => setAuthState("signin")} />;
     }
 
-    // SIGN IN
     return (
       <SignIn
         onSignIn={handleSignIn}
@@ -166,12 +162,11 @@ export default function App() {
       <LearningMaterials
         user={user}
         onBack={() => setCurrentPage("dashboard")}
-        onOpenResource={async (r) => {
-          try {
-            await trackResource(user.id, r.id);
-          } catch (err) {
-            console.error("Failed to track resource:", err);
-          }
+        onOpenResource={(r) => {
+          // NOTE: no auto-tracking here anymore.
+          // Interaction signal comes from rate/like inside ResourceViewer —
+          // merely peeking at a resource should NOT remove it from the
+          // recommendation list or reshuffle the ordering.
           setSelectedResource(r);
           setCurrentPage("resourceViewer");
         }}

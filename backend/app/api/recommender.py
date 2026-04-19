@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import desc, case
 from uuid import UUID
 from pydantic import BaseModel
 from typing import Optional
@@ -15,12 +14,13 @@ from app.dependencies import get_db
 from app.models.user import User
 from app.models.learning_resource import LearningResource
 from app.models.user_learning_resource import UserLearningResource
+from app.recommender.hybrid import get_hybrid_recommendations
+from app.recommender.collaborative import get_collaborative_scores
+from app.recommender.utils import normalize_style, normalize_level
 
 router = APIRouter()
 
-# =========================
-# Request Schema
-# =========================
+
 class FeedbackRequest(BaseModel):
     user_id: UUID
     resource_id: int
@@ -29,30 +29,8 @@ class FeedbackRequest(BaseModel):
     comment: Optional[str] = None
 
 
-# =========================
-# Helpers
-# =========================
-def normalize_style(style: str | None) -> str | None:
-    if not style:
-        return None
-    s = style.strip().lower()
-
-    if s in ["aural", "audio"]:
-        return "auditory"
-
-    if s in ["read/write", "read", "write"]:
-        return "reading"
-
-    return s
-
-
-def normalize_level(level: str | None) -> str | None:
-    if not level:
-        return None
-    return level.strip().lower()
-
-
-def serialize_resource(r: LearningResource):
+def serialize_resource_with_scores(item: dict, cf_strategy: str | None) -> dict:
+    r: LearningResource = item["resource"]
     return {
         "id": r.id,
         "title": r.title,
@@ -67,81 +45,76 @@ def serialize_resource(r: LearningResource):
         "source": r.source,
         "external_url": r.external_url,
         "tags": r.tags,
+        "method": item.get("method"),
+        "hybrid_score": item.get("hybrid_score"),
+        "cb_score": item.get("cb_score"),
+        "cf_score": item.get("cf_score"),
+        "cf_strategy": cf_strategy,
     }
 
 
-# =========================
-# RECOMMENDATIONS (FIXED 🔥)
-# =========================
 @router.get("/recommendations/{user_id}")
 def get_recommendations(
     user_id: UUID,
     limit: int = 20,
     db: Session = Depends(get_db),
 ):
+    """
+    Personalised recommendations for a user.
+
+    Stable ordering rule (first key wins):
+      1. Higher hybrid_score first.
+      2. Tie-break: lower resource id first — gives a predictable, repeatable
+         order for items with identical scores, preventing cards from
+         reshuffling between page visits.
+    """
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
     style = normalize_style(user.learning_style)
     level = normalize_level(user.level)
-
     if not style or not level:
         raise HTTPException(
             status_code=400,
             detail="User must complete VARK quiz and assessment first"
         )
 
-    # =========================
-    # Get used resources
-    # =========================
-    used_resource_ids = (
-        db.query(UserLearningResource.learning_resource_id)
-        .filter(UserLearningResource.user_id == user.id)
-        .all()
+    cf_probe = get_collaborative_scores(
+        db=db,
+        current_user=user,
+        excluded_ids=[],
+        disliked_ids=[],
+        limit=1,
     )
-    used_resource_ids = [x[0] for x in used_resource_ids]
+    cf_strategy = cf_probe[0]["cf_strategy"] if cf_probe else None
 
-    # =========================
-    # BASE QUERY (IMPORTANT FIX)
-    # =========================
-    q = db.query(LearningResource).filter(
-        LearningResource.difficulty.ilike(level)
-    )
+    # Fetch 3x the requested count so the tie-break has breathing room
+    scored = get_hybrid_recommendations(db=db, user=user, limit=limit * 3)
 
-    # exclude already used
-    if used_resource_ids:
-        q = q.filter(~LearningResource.id.in_(used_resource_ids))
+    # Stable sort: primary by hybrid_score DESC, tie-break by resource id ASC.
+    # Python's sort is stable, so applying the tie-break first then the main
+    # key yields a proper compound ordering.
+    scored.sort(key=lambda item: item["resource"].id)
+    scored.sort(key=lambda item: item.get("hybrid_score", 0.0), reverse=True)
 
-    # =========================
-    # SMART ORDERING (KEY FIX 🔥)
-    # =========================
-    style_priority = case(
-        (LearningResource.vark_style.ilike(style), 1),
-        else_=0
-    )
+    scored = scored[:limit]
 
-    items = q.order_by(
-        desc(style_priority),                         # match style FIRST
-        desc(LearningResource.is_short),              # short content preferred
-        LearningResource.duration_minutes.asc().nullslast(),
-        LearningResource.id.asc()
-    ).limit(limit).all()
+    items = [serialize_resource_with_scores(item, cf_strategy) for item in scored]
 
     return {
         "user": {
             "id": str(user.id),
             "learning_style": user.learning_style,
             "level": user.level,
+            "cluster_id": user.cluster_id,
         },
         "count": len(items),
-        "items": [serialize_resource(x) for x in items],
+        "cf_strategy": cf_strategy,
+        "items": items,
     }
 
 
-# =========================
-# TRACK USER INTERACTION
-# =========================
 @router.post("/track/{user_id}/{resource_id}")
 def track_resource_interaction(
     user_id: UUID,
@@ -175,9 +148,6 @@ def track_resource_interaction(
     return {"message": "Tracked successfully"}
 
 
-# =========================
-# FEEDBACK (WITH VALIDATION 🔥)
-# =========================
 @router.post("/feedback")
 def submit_feedback(body: FeedbackRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == body.user_id).first()
@@ -188,7 +158,6 @@ def submit_feedback(body: FeedbackRequest, db: Session = Depends(get_db)):
     if not resource:
         raise HTTPException(status_code=404, detail="Resource not found")
 
-    # ⭐ VALIDATION
     if body.rating is not None and not (1 <= body.rating <= 5):
         raise HTTPException(status_code=400, detail="Rating must be between 1 and 5")
 
@@ -218,9 +187,6 @@ def submit_feedback(body: FeedbackRequest, db: Session = Depends(get_db)):
     return {"message": "Feedback saved"}
 
 
-# =========================
-# GET FEEDBACK
-# =========================
 @router.get("/feedback/{user_id}/{resource_id}")
 def get_feedback(user_id: UUID, resource_id: int, db: Session = Depends(get_db)):
     feedback = db.query(UserResourceFeedback).filter(

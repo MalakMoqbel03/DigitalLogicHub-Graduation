@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import case
 from typing import List
 
 from app.models.learning_resource import LearningResource
@@ -28,7 +29,6 @@ def _resource_matches_misconception(resource: LearningResource, tags: List[str])
     if not tags:
         return False
 
-    # Build a single lowercase string from all resource metadata fields
     haystack = " ".join(filter(None, [
         resource.topic or "",
         resource.subtopic or "",
@@ -53,14 +53,28 @@ def get_content_based_scores(
     Scoring breakdown (max possible = 1.0):
       0.40  base  — resource difficulty matches user level
       0.25  bonus — VARK style matches user's learning style
-      0.15  bonus — resource addresses an active user misconception  ← NEW
+      0.15  bonus — resource addresses an active user misconception
       0.10  bonus — resource is marked is_short
       0.10  bonus — duration <= 15 minutes
 
     Resources the user disliked are excluded entirely.
+
+    Candidate selection — IMPORTANT:
+      We prioritise VARK-matching resources when building the pool. Without
+      this, the pool can fill up with non-matching items (e.g. 60 auditory
+      videos) before any matching items appear, leaving the scorer nothing
+      to find. The SQL `CASE` expression assigns priority 0 to matches and
+      1 to non-matches so ORDER BY surfaces matches first; the tie-break is
+      id for deterministic, stable ordering across requests.
     """
-    # ── Fetch candidate pool ────────────────────────────────────────────────
     all_excluded = list(set(excluded_ids + disliked_ids))
+
+    # Priority: 0 if VARK matches (comes first), 1 otherwise.
+    # ilike() is case-insensitive so "Visual" / "visual" / "VISUAL" all match.
+    vark_priority = case(
+        (LearningResource.vark_style.ilike(style), 0),
+        else_=1,
+    )
 
     q = db.query(LearningResource).filter(
         LearningResource.difficulty.ilike(level)
@@ -68,33 +82,34 @@ def get_content_based_scores(
     if all_excluded:
         q = q.filter(~LearningResource.id.in_(all_excluded))
 
-    resources = q.limit(limit).all()
+    # Order: matching style first, then id for stable tie-break.
+    resources = (
+        q.order_by(vark_priority.asc(), LearningResource.id.asc())
+         .limit(limit)
+         .all()
+    )
 
-    # ── Get misconception tags for this user ─────────────────────────────────
     misconception_tags = _get_active_misconception_tags(db, user_id)
 
-    # ── Score each resource ──────────────────────────────────────────────────
     scored = []
     for r in resources:
         score = 0.40  # base: correct difficulty level
 
-        # VARK style match
         if r.vark_style and r.vark_style.lower() == style.lower():
             score += 0.25
 
-        # Misconception boost — resource targets a known weak area
         if _resource_matches_misconception(r, misconception_tags):
             score += 0.15
 
-        # Short content bonus
         if r.is_short:
             score += 0.10
 
-        # Duration bonus
         if r.duration_minutes and r.duration_minutes <= 15:
             score += 0.10
 
         scored.append({"resource": r, "score": round(score, 3)})
 
+    # Stable compound sort: score DESC, then id ASC (tie-break).
+    scored.sort(key=lambda x: x["resource"].id)
     scored.sort(key=lambda x: x["score"], reverse=True)
     return scored

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Boolean
+from sqlalchemy import Column, String, Boolean, Integer
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
 from app.database import Base
@@ -14,5 +14,7 @@ class User(Base):
     is_verified = Column(Boolean, default=True)
     verification_code = Column(String, nullable=True)
 
-    learning_style = Column(String, nullable=True)  # visual/auditory/reading/kinesthetic
-    level = Column(String, nullable=True)          # beginner/intermediate/advanced
+    learning_style = Column(String, nullable=True)
+    level = Column(String, nullable=True)
+
+    cluster_id = Column(Integer, nullable=True)
