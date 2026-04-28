@@ -13,6 +13,14 @@ from app.models.vark import VarkQuestion, VarkOption, UserVarkResponse
 from app.models.assessment import AssessmentSession, UserResponse
 from app.services.email_service import send_verification_email
 from app.core.jwt import create_access_token
+from datetime import datetime, timedelta
+
+CODE_EXPIRY_MINUTES = 15
+
+def is_code_expired(sent_at) -> bool:
+    if not sent_at:
+        return True
+    return datetime.utcnow() - sent_at > timedelta(minutes=CODE_EXPIRY_MINUTES)
 
 router = APIRouter()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -132,7 +140,10 @@ def register(body: RegisterRequest, db: Session = Depends(get_db)):
         email=body.email.lower(),
         password_hash=hash_password(body.password),
         verification_code=code,
+        verification_code_sent_at=datetime.utcnow(),
         is_verified=False,
+          
+
     )
     db.add(new_user)
     db.commit()
@@ -147,12 +158,18 @@ def verify_email(body: VerifyRequest, db: Session = Depends(get_db)):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
+    # In /verify route
     if not user.is_verified:
+        if is_code_expired(user.verification_code_sent_at):
+            raise HTTPException(status_code=400, detail="Verification code has expired, request a new one")
         if user.verification_code != body.code:
             raise HTTPException(status_code=400, detail="Invalid verification code")
         user.is_verified = True
         user.verification_code = None
+        user.verification_code_sent_at = None  # ← clean up
         db.commit()
+
+        
 
     # Issue token immediately on verification — user goes straight to dashboard
     token = create_access_token(str(user.id))
@@ -189,6 +206,7 @@ def forgot_password(body: ForgotRequest, db: Session = Depends(get_db)):
 
     code = generate_verification_code()
     user.verification_code = code
+    user.verification_code_sent_at = datetime.utcnow()
     db.commit()
 
     send_verification_email(user.email, code)
@@ -198,8 +216,15 @@ def forgot_password(body: ForgotRequest, db: Session = Depends(get_db)):
 @router.post("/reset/verify")
 def verify_reset_code(body: ResetVerifyRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == body.email.lower()).first()
-    if not user or user.verification_code != body.code:
+    if not user:
         raise HTTPException(status_code=400, detail="Invalid code")
+
+    if is_code_expired(user.verification_code_sent_at):
+        raise HTTPException(status_code=400, detail="Reset code has expired, request a new one")
+
+    if user.verification_code != body.code:
+        raise HTTPException(status_code=400, detail="Invalid code")
+
     return {"message": "Code verified"}
 
 
@@ -208,11 +233,16 @@ def reset_password(body: ResetPasswordRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == body.email.lower()).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
+
+    if is_code_expired(user.verification_code_sent_at):
+        raise HTTPException(status_code=400, detail="Reset code has expired, request a new one")
+
     if user.verification_code != body.code:
         raise HTTPException(status_code=400, detail="Invalid code")
 
     user.password_hash = hash_password(body.new_password)
     user.verification_code = None
+    user.verification_code_sent_at = None
     db.commit()
     return {"message": "Password reset successful"}
 
