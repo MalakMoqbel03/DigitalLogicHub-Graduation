@@ -10,6 +10,24 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>Digital Learning System</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Tell Tailwind to switch dark styles based on a `dark` class on <html>
+      tailwind.config = {
+        darkMode: 'class',
+      };
+    </script>
+    <script>
+      // Apply saved theme BEFORE React mounts — prevents a flash of wrong theme on refresh
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme');
+          if (saved === 'dark') {
+            document.documentElement.classList.add('dark');
+          }
+          // No saved preference → stay light (our chosen default)
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

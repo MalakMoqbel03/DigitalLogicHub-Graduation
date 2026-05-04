@@ -1,5 +1,24 @@
+"""
+collaborative.py
+────────────────
+User-based collaborative filtering.
+
+Neighbour-finding strategy (new):
+  1. PRIMARY: find users in the same K-Means cluster as the current user.
+     This uses the ML-learned similarity (23-dim feature space: VARK style,
+     level, topic interests, avg rating, activity) computed by cluster_users.py.
+  2. FALLBACK: if the current user has no cluster_id yet (e.g. brand-new user
+     registered AFTER the last clustering run), fall back to the older rule:
+     same VARK style AND same level. This keeps recommendations working while
+     the cluster gets refreshed on the next cron / manual run.
+
+Everything else (Jaccard similarity between interaction sets, top-K neighbours,
+score aggregation + normalisation) is unchanged — only the neighbour-selection
+step benefits from clustering.
+"""
+
 from sqlalchemy.orm import Session
-from typing import List, Dict
+from typing import List, Dict, Tuple
 from uuid import UUID
 
 from app.models.user import User
@@ -14,7 +33,6 @@ def _get_user_liked_resource_ids(db: Session, user_id: UUID) -> List[int]:
     'Positive' means: rating >= 4  OR  liked == True  OR  viewed (tracked).
     We use a union so even users with no explicit ratings still contribute.
     """
-    # Explicitly liked / highly rated
     explicit = (
         db.query(UserResourceFeedback.learning_resource_id)
         .filter(
@@ -31,7 +49,6 @@ def _get_user_liked_resource_ids(db: Session, user_id: UUID) -> List[int]:
         )
         .all()
     )
-    # Simply viewed
     viewed = (
         db.query(UserLearningResource.learning_resource_id)
         .filter(UserLearningResource.user_id == user_id)
@@ -53,6 +70,43 @@ def _jaccard_similarity(set_a: set, set_b: set) -> float:
     return intersection / union if union else 0.0
 
 
+# ── NEW: cluster-aware neighbour lookup ───────────────────────────────────────
+
+def _find_candidate_neighbours(db: Session, current_user: User) -> Tuple[List[User], str]:
+    """
+    Return (neighbours, strategy_used).
+
+    strategy_used is "cluster" if we could use K-Means, "style_level" otherwise.
+    Useful for logging / debugging / thesis reports that want to compare the two.
+    """
+    # PRIMARY: cluster-based match
+    if current_user.cluster_id is not None:
+        neighbours = (
+            db.query(User)
+            .filter(
+                User.id != current_user.id,
+                User.cluster_id == current_user.cluster_id,
+            )
+            .all()
+        )
+        if neighbours:
+            return neighbours, "cluster"
+
+    # FALLBACK: original style + level match (works even if cluster is stale)
+    neighbours = (
+        db.query(User)
+        .filter(
+            User.id != current_user.id,
+            User.level == current_user.level,
+            User.learning_style == current_user.learning_style,
+        )
+        .all()
+    )
+    return neighbours, "style_level"
+
+
+# ── Main entry point ──────────────────────────────────────────────────────────
+
 def get_collaborative_scores(
     db: Session,
     current_user: User,
@@ -66,14 +120,15 @@ def get_collaborative_scores(
     User-based collaborative filtering.
 
     Steps:
-      1. Find all other users who share the same VARK style and level (neighbourhood).
-      2. Compute Jaccard similarity between the current user's interactions and each neighbour's.
+      1. Find candidate neighbours (same K-Means cluster, or style+level fallback).
+      2. Compute Jaccard similarity between the current user's interactions
+         and each neighbour's.
       3. Keep the top-K most similar neighbours.
       4. Collect resources those neighbours liked that the current user hasn't seen yet.
-      5. Score each candidate resource by the sum of neighbour similarities that liked it,
-         normalised to a 0-1 range so it blends cleanly with the CB score.
+      5. Score each candidate resource by the sum of neighbour similarities that
+         liked it, normalised to a 0-1 range so it blends cleanly with the CB score.
 
-    Falls back to an empty list (triggering content-only mode) when:
+    Returns empty list (triggering content-only mode) when:
       - The user hasn't interacted with anything yet (cold start).
       - No similar neighbours are found above min_similarity.
     """
@@ -85,16 +140,8 @@ def get_collaborative_scores(
     if not current_user_resource_ids:
         return []
 
-    # Find candidate neighbours: same level AND learning style
-    neighbour_users = (
-        db.query(User)
-        .filter(
-            User.id != current_user.id,
-            User.level == current_user.level,
-            User.learning_style == current_user.learning_style,
-        )
-        .all()
-    )
+    # ── NEW: use cluster-based neighbour lookup ──────────────────────────────
+    neighbour_users, strategy = _find_candidate_neighbours(db, current_user)
 
     if not neighbour_users:
         return []
@@ -150,7 +197,12 @@ def get_collaborative_scores(
     for r in resources:
         raw = resource_scores.get(r.id, 0.0)
         normalised = round(raw / max_score, 3)
-        scored.append({"resource": r, "score": normalised})
+        scored.append({
+            "resource": r,
+            "score": normalised,
+            # Expose which strategy was used — handy for debugging and thesis reporting
+            "cf_strategy": strategy,
+        })
 
     scored.sort(key=lambda x: x["score"], reverse=True)
     return scored
