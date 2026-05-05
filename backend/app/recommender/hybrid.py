@@ -49,14 +49,11 @@ def _context_multiplier(user: User) -> float:
     Context-aware adjustment.
     Returns a multiplier applied to short resources when the user
     hasn't been active recently.
-
-    Currently always 1.0 — uncomment the block below once
-    User.last_active_at column is added to the users table.
     """
-    # if user.last_active_at:
-    #     days_inactive = (datetime.now(timezone.utc) - user.last_active_at).days
-    #     if days_inactive >= 3:
-    #         return 1.2   # gently favour short re-engagement resources
+    if user.last_active_at:
+        days_inactive = (datetime.now(timezone.utc) - user.last_active_at).days
+        if days_inactive >= 3:
+            return 1.2   # gently favour short re-engagement resources
     return 1.0
 
 

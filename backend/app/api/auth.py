@@ -7,13 +7,13 @@ from typing import List
 from uuid import UUID
 import random
 
-from app.dependencies import get_db
+from app.dependencies import get_db, get_current_user_id
 from app.models.user import User
 from app.models.vark import VarkQuestion, VarkOption, UserVarkResponse
 from app.models.assessment import AssessmentSession, UserResponse
 from app.services.email_service import send_verification_email
 from app.core.jwt import create_access_token
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 CODE_EXPIRY_MINUTES = 15
 
@@ -68,6 +68,10 @@ class ResetPasswordRequest(BaseModel):
 class VarkSubmitRequest(BaseModel):
     user_id: UUID
     option_ids: List[int]
+
+# Task 11: schema for resend endpoint
+class ResendRequest(BaseModel):
+    email: EmailStr
 
 
 # ── Shared helper: build full user payload ────────────────────────────────────
@@ -152,6 +156,34 @@ def register(body: RegisterRequest, db: Session = Depends(get_db)):
     return {"message": "Verification code sent"}
 
 
+# Task 11: resend verification code
+@router.post("/resend")
+def resend_verification(body: ResendRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == body.email.lower()).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="No account found with that email")
+
+    if user.is_verified:
+        raise HTTPException(status_code=400, detail="This account is already verified")
+
+    # Rate-limit: don't resend if a code was sent within the last 60 seconds
+    if user.verification_code_sent_at:
+        seconds_since = (datetime.utcnow() - user.verification_code_sent_at).total_seconds()
+        if seconds_since < 60:
+            raise HTTPException(
+                status_code=429,
+                detail=f"Please wait {int(60 - seconds_since)} seconds before requesting a new code",
+            )
+
+    code = generate_verification_code()
+    user.verification_code = code
+    user.verification_code_sent_at = datetime.utcnow()
+    db.commit()
+
+    send_verification_email(user.email, code)
+    return {"message": "Verification code resent"}
+
+
 @router.post("/verify")
 def verify_email(body: VerifyRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == body.email.lower()).first()
@@ -190,6 +222,10 @@ def login(body: LoginRequest, db: Session = Depends(get_db)):
 
     if not user.is_verified:
         raise HTTPException(status_code=401, detail="Please verify your email before logging in")
+
+    # Task 10: track last login time for context multiplier
+    user.last_active_at = datetime.now(tz=timezone.utc)
+    db.commit()
 
     token = create_access_token(str(user.id))
     return {
@@ -264,7 +300,7 @@ def get_vark_questions(db: Session = Depends(get_db)):
 
 
 @router.post("/vark/submit")
-def submit_vark(body: VarkSubmitRequest, db: Session = Depends(get_db)):
+def submit_vark(body: VarkSubmitRequest, db: Session = Depends(get_db), current_user_id: str = Depends(get_current_user_id)):
     user = db.query(User).filter(User.id == body.user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -272,13 +308,17 @@ def submit_vark(body: VarkSubmitRequest, db: Session = Depends(get_db)):
     # Clear previous responses
     db.query(UserVarkResponse).filter(UserVarkResponse.user_id == user.id).delete()
 
-    scores = {"visual": 0, "auditory": 0, "reading": 0}
+    scores = {"visual": 0, "auditory": 0, "reading": 0, "kinesthetic": 0}
 
     for opt_id in body.option_ids:
         opt = db.query(VarkOption).filter(VarkOption.id == opt_id).first()
-        if not opt or opt.vark_type == "kinesthetic":   # ← add this
+        # Bug #3 fix: was `if not opt or opt.vark_type == "kinesthetic": continue`
+        # which silently dropped all kinesthetic answers, misclassifying those users.
+        if not opt:
             continue
-        scores[opt.vark_type] += 1
+        if opt.vark_type in scores:
+            scores[opt.vark_type] += 1
+        db.add(UserVarkResponse(user_id=user.id, vark_option_id=opt.id))
 
     dominant = max(scores, key=scores.get)
     user.learning_style = dominant

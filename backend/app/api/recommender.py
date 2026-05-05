@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from uuid import UUID
 from pydantic import BaseModel
 from typing import Optional
+from datetime import datetime, timezone
 
 try:
     from app.models.user_resource_feedback import UserResourceFeedback
@@ -10,7 +11,7 @@ except Exception as e:
     print("Failed importing UserResourceFeedback:", e)
     raise
 
-from app.dependencies import get_db
+from app.dependencies import get_db, get_current_user_id
 from app.models.user import User
 from app.models.learning_resource import LearningResource
 from app.models.user_learning_resource import UserLearningResource
@@ -58,6 +59,7 @@ def get_recommendations(
     user_id: UUID,
     limit: int = 20,
     db: Session = Depends(get_db),
+    current_user_id: str = Depends(get_current_user_id),   # Bug #6 fix
 ):
     """
     Personalised recommendations for a user.
@@ -143,6 +145,10 @@ def track_resource_interaction(
     )
 
     db.add(row)
+
+    # Task 10: update last_active_at on every resource interaction
+    user.last_active_at = datetime.now(tz=timezone.utc)
+
     db.commit()
 
     return {"message": "Tracked successfully"}
@@ -205,4 +211,120 @@ def get_feedback(user_id: UUID, resource_id: int, db: Session = Depends(get_db))
         "rating": feedback.rating,
         "liked": feedback.liked,
         "comment": feedback.comment or ""
+    }
+
+
+# ── Bug #5 fix: cluster recommendations (N+1 → single aggregated query) ───────
+
+@router.get("/user-cluster/{user_id}")
+def get_user_cluster(
+    user_id: UUID,
+    db: Session = Depends(get_db),
+    current_user_id: str = Depends(get_current_user_id),   # Bug #6 fix
+):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {
+        "cluster_id": user.cluster_id,
+        "learning_style": user.learning_style,
+        "level": user.level,
+    }
+
+
+@router.get("/cluster-recommendations/{user_id}")
+def cluster_recommendations(
+    user_id: UUID,
+    limit: int = 10,
+    db: Session = Depends(get_db),
+    current_user_id: str = Depends(get_current_user_id),   # Bug #6 fix
+):
+    """
+    'Popular with learners like you' — collaborative signal from peers
+    who share the same learning style and level.
+
+    Bug #5 fix: the original code called get_user_cluster() inside a loop
+    over ALL users, causing O(n²) DB queries (one per user).
+
+    Fixed approach — 3 queries total regardless of user count:
+      1. Load current user (already done via auth).
+      2. One query to find all peer user-IDs (same style + level).
+      3. One aggregated GROUP BY query to count interactions for those peers.
+    """
+    from sqlalchemy import func as sqlfunc
+    from app.models.user_learning_resource import UserLearningResource
+    from app.models.learning_resource import LearningResource
+
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    style = user.learning_style
+    level = user.level
+
+    if not style or not level:
+        raise HTTPException(
+            status_code=400,
+            detail="Complete the VARK quiz and assessment first"
+        )
+
+    # Step 1 — find all peer IDs in one query (no loop!)
+    peer_ids = [
+        row[0]
+        for row in db.query(User.id)
+        .filter(
+            User.learning_style == style,
+            User.level == level,
+            User.id != user_id,
+        )
+        .all()
+    ]
+
+    if not peer_ids:
+        return {"items": [], "source": "no_peers_yet", "cluster": {"learning_style": style, "level": level}}
+
+    # Step 2 — aggregate interactions across ALL peers in one GROUP BY query
+    popular = (
+        db.query(
+            UserLearningResource.resource_id,
+            sqlfunc.count(UserLearningResource.id).label("cnt"),
+        )
+        .filter(UserLearningResource.user_id.in_(peer_ids))
+        .group_by(UserLearningResource.resource_id)
+        .order_by(sqlfunc.count(UserLearningResource.id).desc())
+        .limit(limit)
+        .all()
+    )
+
+    if not popular:
+        return {"items": [], "source": "no_peer_interactions_yet", "cluster": {"learning_style": style, "level": level}}
+
+    resource_ids = [row[0] for row in popular]
+    resources_by_id = {
+        r.id: r
+        for r in db.query(LearningResource).filter(LearningResource.id.in_(resource_ids)).all()
+    }
+
+    items = [
+        {
+            "id": r_id,
+            "title": resources_by_id[r_id].title if r_id in resources_by_id else None,
+            "topic": resources_by_id[r_id].topic if r_id in resources_by_id else None,
+            "subtopic": resources_by_id[r_id].subtopic if r_id in resources_by_id else None,
+            "resource_type": resources_by_id[r_id].resource_type if r_id in resources_by_id else None,
+            "difficulty": resources_by_id[r_id].difficulty if r_id in resources_by_id else None,
+            "vark_style": resources_by_id[r_id].vark_style if r_id in resources_by_id else None,
+            "duration_minutes": resources_by_id[r_id].duration_minutes if r_id in resources_by_id else None,
+            "description": resources_by_id[r_id].description if r_id in resources_by_id else None,
+            "external_url": resources_by_id[r_id].external_url if r_id in resources_by_id else None,
+            "is_short": resources_by_id[r_id].is_short if r_id in resources_by_id else None,
+        }
+        for r_id in resource_ids
+        if r_id in resources_by_id
+    ]
+
+    return {
+        "cluster": {"learning_style": style, "level": level},
+        "items": items,
+        "source": "cluster_collaborative",
     }

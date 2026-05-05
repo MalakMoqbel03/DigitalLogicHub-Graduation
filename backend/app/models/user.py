@@ -22,3 +22,6 @@ class User(Base):
     cluster_id = Column(Integer, nullable=True)
 
     verification_code_sent_at = Column(DateTime, nullable=True)
+
+    # Task 10: context multiplier support
+    last_active_at = Column(DateTime(timezone=True), nullable=True)
