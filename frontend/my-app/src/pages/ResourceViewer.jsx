@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import api from "../services/api";
 import { Home, ThumbsUp, ThumbsDown, Star } from "lucide-react";
 import ThemeToggle from "../components/ThemeToggle";
