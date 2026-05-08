@@ -25,3 +25,8 @@ class User(Base):
 
     # Task 10: context multiplier support
     last_active_at = Column(DateTime(timezone=True), nullable=True)
+
+    # Extended profile for clustering
+    university_name = Column(String(255), nullable=True)
+    major = Column(String(255), nullable=True)
+    study_year = Column(String(50), nullable=True)

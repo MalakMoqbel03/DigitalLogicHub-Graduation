@@ -122,6 +122,7 @@ def track_resource_interaction(
     user_id: UUID,
     resource_id: int,
     db: Session = Depends(get_db),
+    current_user_id: str = Depends(get_current_user_id),   # BUG FIX #2
 ):
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
@@ -327,4 +328,271 @@ def cluster_recommendations(
         "cluster": {"learning_style": style, "level": level},
         "items": items,
         "source": "cluster_collaborative",
+    }
+
+# ── Topic-grouped progressive recommendations ─────────────────────────────────
+
+@router.get("/topics/{user_id}")
+def get_topic_recommendations(
+    user_id: UUID,
+    page: int = 1,
+    per_topic: int = 3,
+    db: Session = Depends(get_db),
+    current_user_id: str = Depends(get_current_user_id),
+):
+    """
+    Returns learning resources grouped by topic, sorted by relevance score.
+    Progressive loading: each call returns `per_topic` resources per topic.
+    Already-viewed resources are excluded so the user always sees fresh content.
+    Feedback (liked/disliked) influences ordering via the hybrid score.
+
+    Query params:
+      page       – page number starting at 1 (each page adds per_topic more resources per topic)
+      per_topic  – how many resources to expose per topic per page (default 3)
+    """
+    from collections import defaultdict
+
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    style = normalize_style(user.learning_style)
+    level = normalize_level(user.level)
+    if not style or not level:
+        raise HTTPException(
+            status_code=400,
+            detail="User must complete VARK quiz and assessment first"
+        )
+
+    # Fetch a large pool and sort by score
+    scored = get_hybrid_recommendations(db=db, user=user, limit=200)
+    scored.sort(key=lambda item: item["resource"].id)
+    scored.sort(key=lambda item: item.get("hybrid_score", 0.0), reverse=True)
+
+    # Group by topic
+    topics: dict = defaultdict(list)
+    for item in scored:
+        r = item["resource"]
+        topics[r.topic].append(item)
+
+    # Progressive slice: expose page * per_topic items per topic
+    limit_per_topic = page * per_topic
+    offset = (page - 1) * per_topic
+
+    result_topics = []
+    for topic, items in sorted(topics.items()):
+        full_slice = items[:limit_per_topic]
+        page_slice = full_slice[offset:limit_per_topic]
+
+        serialized = [serialize_resource_with_scores(item, None) for item in page_slice]
+        if serialized:
+            result_topics.append({
+                "topic": topic,
+                "pretty_topic": topic.replace("_", " ").title() if topic else "",
+                "total_available": len(items),
+                "has_more": len(items) > limit_per_topic,
+                "resources": serialized,
+            })
+
+    return {
+        "user": {
+            "id": str(user.id),
+            "learning_style": user.learning_style,
+            "level": user.level,
+        },
+        "page": page,
+        "per_topic": per_topic,
+        "topic_count": len(result_topics),
+        "topics": result_topics,
+    }
+
+# ── Bookmarks ─────────────────────────────────────────────────────────────────
+
+class BookmarkRequest(BaseModel):
+    user_id: UUID
+    resource_id: int
+    bookmarked: bool   # True = save, False = unsave
+
+
+@router.post("/bookmark")
+def toggle_bookmark(
+    body: BookmarkRequest,
+    db: Session = Depends(get_db),
+    current_user_id: str = Depends(get_current_user_id),
+):
+    """
+    Save or unsave a resource for the current user.
+    Creates a UserLearningResource row if one does not exist yet.
+    """
+    user = db.query(User).filter(User.id == body.user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    resource = db.query(LearningResource).filter(LearningResource.id == body.resource_id).first()
+    if not resource:
+        raise HTTPException(status_code=404, detail="Resource not found")
+
+    existing = db.query(UserLearningResource).filter(
+        UserLearningResource.user_id == body.user_id,
+        UserLearningResource.learning_resource_id == body.resource_id,
+    ).first()
+
+    if existing:
+        existing.is_bookmarked = body.bookmarked
+    else:
+        db.add(UserLearningResource(
+            user_id=body.user_id,
+            learning_resource_id=body.resource_id,
+            is_bookmarked=body.bookmarked,
+        ))
+
+    db.commit()
+    return {"bookmarked": body.bookmarked}
+
+
+@router.get("/bookmarks/{user_id}")
+def get_bookmarks(
+    user_id: UUID,
+    db: Session = Depends(get_db),
+    current_user_id: str = Depends(get_current_user_id),
+):
+    """Return all bookmarked resources for a user."""
+    rows = (
+        db.query(UserLearningResource)
+        .filter(
+            UserLearningResource.user_id == user_id,
+            UserLearningResource.is_bookmarked == True,
+        )
+        .all()
+    )
+    resource_ids = [r.learning_resource_id for r in rows]
+    if not resource_ids:
+        return {"items": []}
+
+    resources = (
+        db.query(LearningResource)
+        .filter(LearningResource.id.in_(resource_ids))
+        .all()
+    )
+    return {
+        "items": [
+            {
+                "id": r.id,
+                "title": r.title,
+                "description": r.description,
+                "topic": r.topic,
+                "subtopic": r.subtopic,
+                "resource_type": r.resource_type,
+                "difficulty": r.difficulty,
+                "vark_style": r.vark_style,
+                "duration_minutes": r.duration_minutes,
+                "is_short": r.is_short,
+                "external_url": r.external_url,
+                "tags": r.tags,
+            }
+            for r in resources
+        ]
+    }
+
+
+# ── Skip / "see another" ──────────────────────────────────────────────────────
+
+class SkipRequest(BaseModel):
+    user_id: UUID
+    resource_id: int
+
+
+@router.post("/skip")
+def skip_resource(
+    body: SkipRequest,
+    db: Session = Depends(get_db),
+    current_user_id: str = Depends(get_current_user_id),
+):
+    """
+    Mark a resource as skipped so it disappears from the current session
+    but can be recovered from the 'Skipped' tab.
+    """
+    user = db.query(User).filter(User.id == body.user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    existing = db.query(UserLearningResource).filter(
+        UserLearningResource.user_id == body.user_id,
+        UserLearningResource.learning_resource_id == body.resource_id,
+    ).first()
+
+    if existing:
+        existing.is_skipped = True
+    else:
+        db.add(UserLearningResource(
+            user_id=body.user_id,
+            learning_resource_id=body.resource_id,
+            is_skipped=True,
+        ))
+
+    db.commit()
+    return {"skipped": True}
+
+
+@router.post("/unskip")
+def unskip_resource(
+    body: SkipRequest,
+    db: Session = Depends(get_db),
+    current_user_id: str = Depends(get_current_user_id),
+):
+    """Restore a previously skipped resource back into the feed."""
+    existing = db.query(UserLearningResource).filter(
+        UserLearningResource.user_id == body.user_id,
+        UserLearningResource.learning_resource_id == body.resource_id,
+    ).first()
+
+    if existing:
+        existing.is_skipped = False
+        db.commit()
+
+    return {"skipped": False}
+
+
+@router.get("/skipped/{user_id}")
+def get_skipped(
+    user_id: UUID,
+    db: Session = Depends(get_db),
+    current_user_id: str = Depends(get_current_user_id),
+):
+    """Return all resources the user has skipped."""
+    rows = (
+        db.query(UserLearningResource)
+        .filter(
+            UserLearningResource.user_id == user_id,
+            UserLearningResource.is_skipped == True,
+        )
+        .all()
+    )
+    resource_ids = [r.learning_resource_id for r in rows]
+    if not resource_ids:
+        return {"items": []}
+
+    resources = (
+        db.query(LearningResource)
+        .filter(LearningResource.id.in_(resource_ids))
+        .all()
+    )
+    return {
+        "items": [
+            {
+                "id": r.id,
+                "title": r.title,
+                "description": r.description,
+                "topic": r.topic,
+                "subtopic": r.subtopic,
+                "resource_type": r.resource_type,
+                "difficulty": r.difficulty,
+                "vark_style": r.vark_style,
+                "duration_minutes": r.duration_minutes,
+                "is_short": r.is_short,
+                "external_url": r.external_url,
+                "tags": r.tags,
+            }
+            for r in resources
+        ]
     }

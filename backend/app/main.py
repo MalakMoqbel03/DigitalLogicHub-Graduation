@@ -41,6 +41,7 @@ from app.api import auth
 from app.api import assessment
 from app.api import recommender
 from app.api import users          # ← new
+from app.api import resource_quiz  # ← new
 
 app = FastAPI(title="DigitalLogicHub API")
 
@@ -61,6 +62,7 @@ app.include_router(auth.router,        prefix="/auth",        tags=["Auth"])
 app.include_router(assessment.router,  prefix="/assessment",  tags=["Assessment"])
 app.include_router(recommender.router, prefix="/recommender", tags=["Recommender"])
 app.include_router(users.router,       prefix="/users",       tags=["Users"])
+app.include_router(resource_quiz.router, prefix="/quiz",      tags=["Resource Quiz"])
 
 
 @app.get("/")

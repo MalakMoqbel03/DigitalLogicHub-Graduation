@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 from passlib.context import CryptContext
 from pydantic import BaseModel, EmailStr
-from typing import List
+from typing import List, Optional
 from uuid import UUID
 import random
 
@@ -20,7 +20,11 @@ CODE_EXPIRY_MINUTES = 15
 def is_code_expired(sent_at) -> bool:
     if not sent_at:
         return True
-    return datetime.utcnow() - sent_at > timedelta(minutes=CODE_EXPIRY_MINUTES)
+    # Normalise to UTC-aware for safe comparison (handles both naive and aware)
+    if sent_at.tzinfo is None:
+        from datetime import timezone as _tz
+        sent_at = sent_at.replace(tzinfo=_tz.utc)
+    return datetime.now(tz=timezone.utc) - sent_at > timedelta(minutes=CODE_EXPIRY_MINUTES)
 
 router = APIRouter()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -44,6 +48,9 @@ class RegisterRequest(BaseModel):
     name: str
     email: EmailStr
     password: str
+    university_name: Optional[str] = None
+    major: Optional[str] = None
+    study_year: Optional[str] = None
 
 class VerifyRequest(BaseModel):
     email: EmailStr
@@ -138,16 +145,31 @@ def register(body: RegisterRequest, db: Session = Depends(get_db)):
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
 
+    # Validate password strength (mirrors frontend validatePassword)
+    import re
+    pwd = body.password
+    if not (8 <= len(pwd) <= 15):
+        raise HTTPException(status_code=422, detail="Password must be 8–15 characters long")
+    if not re.search(r"[A-Z]", pwd):
+        raise HTTPException(status_code=422, detail="Password must contain at least one uppercase letter")
+    if not re.search(r"[a-z]", pwd):
+        raise HTTPException(status_code=422, detail="Password must contain at least one lowercase letter")
+    if not re.search(r"[0-9]", pwd):
+        raise HTTPException(status_code=422, detail="Password must contain at least one number")
+    if not re.search(r"[^A-Za-z0-9]", pwd):
+        raise HTTPException(status_code=422, detail="Password must contain at least one special character (e.g. !@#$%)")
+
     code = generate_verification_code()
     new_user = User(
         name=body.name.strip(),
         email=body.email.lower(),
         password_hash=hash_password(body.password),
         verification_code=code,
-        verification_code_sent_at=datetime.utcnow(),
+        verification_code_sent_at=datetime.now(tz=timezone.utc),
         is_verified=False,
-          
-
+        university_name=body.university_name,
+        major=body.major,
+        study_year=body.study_year,
     )
     db.add(new_user)
     db.commit()
@@ -168,7 +190,12 @@ def resend_verification(body: ResendRequest, db: Session = Depends(get_db)):
 
     # Rate-limit: don't resend if a code was sent within the last 60 seconds
     if user.verification_code_sent_at:
-        seconds_since = (datetime.utcnow() - user.verification_code_sent_at).total_seconds()
+        if user.verification_code_sent_at.tzinfo is None:
+            from datetime import timezone as _tz
+            sent_at_aware = user.verification_code_sent_at.replace(tzinfo=_tz.utc)
+        else:
+            sent_at_aware = user.verification_code_sent_at
+        seconds_since = (datetime.now(tz=timezone.utc) - sent_at_aware).total_seconds()
         if seconds_since < 60:
             raise HTTPException(
                 status_code=429,
@@ -177,7 +204,7 @@ def resend_verification(body: ResendRequest, db: Session = Depends(get_db)):
 
     code = generate_verification_code()
     user.verification_code = code
-    user.verification_code_sent_at = datetime.utcnow()
+    user.verification_code_sent_at = datetime.now(tz=timezone.utc)
     db.commit()
 
     send_verification_email(user.email, code)
@@ -242,7 +269,7 @@ def forgot_password(body: ForgotRequest, db: Session = Depends(get_db)):
 
     code = generate_verification_code()
     user.verification_code = code
-    user.verification_code_sent_at = datetime.utcnow()
+    user.verification_code_sent_at = datetime.now(tz=timezone.utc)
     db.commit()
 
     send_verification_email(user.email, code)
