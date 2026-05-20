@@ -145,6 +145,7 @@ export default function App() {
         user={user}
         onComplete={handleAssessmentComplete}
         onBack={() => setCurrentPage("dashboard")}
+        onNavigate={setCurrentPage}
       />
     );
   }

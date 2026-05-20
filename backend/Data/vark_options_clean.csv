@@ -1,49 +1,37 @@
 ﻿id,question_id,option_text,vark_type
-1,1,Find out where the shop is in relation to somewhere I know.,kinesthetic
 2,1,Ask my friend to tell me the directions.,auditory
 3,1,Write down the street directions I need to remember.,reading
 4,1,Use a map.,visual
 5,2,Seeing the diagrams.,visual
 6,2,Listening to the explanation.,auditory
 7,2,Reading the written instructions.,reading
-8,2,Watching the actions being performed.,kinesthetic
-9,3,Applying my knowledge in real situations.,kinesthetic
 10,3,Communicating with others through discussion.,auditory
 11,3,"Working with designs, maps, or charts.",visual
 12,3,Using words well in written communications.,reading
 13,4,Like to talk things through.,auditory
 14,4,See patterns and visual connections.,visual
-15,4,Use examples and real-life applications.,kinesthetic
 16,4,"Read books, articles, and handouts.",reading
 17,5,Read the written instructions.,reading
 18,5,Talk with people who know about the program.,auditory
-19,5,Start using it and learn by trial and error.,kinesthetic
 20,5,Follow diagrams in a tutorial.,visual
-21,6,Demonstrations and practical sessions.,kinesthetic
 22,6,Question-and-answer and group discussion.,auditory
 23,6,"Handouts, books, or readings.",reading
 24,6,"Diagrams, charts, or graphs.",visual
-25,7,Based on examples of what I did.,kinesthetic
 26,7,Provided as a written report.,reading
 27,7,Explained through a conversation.,auditory
 28,7,Shown using graphs or charts.,visual
 29,8,Sketching charts and diagrams.,visual
 30,8,Leading discussion and paraphrasing aloud.,auditory
 31,8,Organizing written notes and outlines.,reading
-32,8,Setting up demonstrations or experiments.,kinesthetic
 33,9,Sketch visuals related to the content.,visual
 34,9,Repeat key points out loud.,auditory
 35,9,Copy exact phrases and definitions.,reading
-36,9,"Move, fidget, or model ideas physically.",kinesthetic
 37,10,Step-by-step photos.,visual
 38,10,Someone talking through the techniques.,auditory
 39,10,Exact written instructions.,reading
-40,10,"A chance to try, taste, and adjust.",kinesthetic
 41,11,Graphs or charts showing performance.,visual
 42,11,A written report with comments.,reading
 43,11,A conversation about my results.,auditory
-44,11,Hands-on examples of how to improve.,kinesthetic
 45,12,A short video or infographic.,visual
 46,12,An audio explanation or podcast.,auditory
 47,12,A detailed written document.,reading
-48,12,An interactive example or simulation.,kinesthetic

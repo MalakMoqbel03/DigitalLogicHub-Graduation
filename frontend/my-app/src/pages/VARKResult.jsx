@@ -14,10 +14,6 @@ const descriptions = {
     title: "Read/Write Learner",
     tips: ["Rewrite notes", "Read textbooks", "Make summaries"],
   },
-  kinesthetic: {
-    title: "Kinesthetic Learner",
-    tips: ["Practice hands-on", "Use real-life examples", "Study while moving"],
-  },
 };
 
 export default function VARKResult({ result, onBack }) {

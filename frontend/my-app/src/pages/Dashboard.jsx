@@ -3,7 +3,7 @@ import api from "../services/api";
 import {
   Cpu, LogOut, ArrowRight, Brain, CircuitBoard,
   Trophy, CheckCircle, BookOpen, Target, AlertTriangle,
-  BarChart2, Zap,
+  BarChart2, Zap, Grid3X3, Hash, Sigma, TrendingUp, TrendingDown, Minus,
 } from "lucide-react";
 import ThemeToggle from "../components/ThemeToggle";
 
@@ -19,6 +19,25 @@ const LEVEL_COLOR = {
   advanced:
     "text-purple-700 border-purple-300 bg-purple-50 " +
     "dark:text-purple-400 dark:border-purple-400/30 dark:bg-purple-400/10",
+};
+
+const TOPIC_CONFIG = {
+  karnaugh_map:       { label: "Karnaugh Maps",      Icon: Grid3X3,    gradient: "from-cyan-500 to-teal-500"      },
+  number_conversions: { label: "Number Conversions", Icon: Hash,       gradient: "from-purple-500 to-indigo-500"  },
+  logic_gates:        { label: "Logic Gates",        Icon: Cpu,        gradient: "from-green-500 to-emerald-500"  },
+  boolean_algebra:    { label: "Boolean Algebra",    Icon: Sigma,      gradient: "from-orange-500 to-amber-500"   },
+};
+
+const LEVEL_ICON = {
+  beginner:     TrendingDown,
+  intermediate: Minus,
+  advanced:     TrendingUp,
+};
+
+const LEVEL_COLOR_CLASS = {
+  beginner:     "text-green-400",
+  intermediate: "text-yellow-400",
+  advanced:     "text-purple-400",
 };
 
 const VARK_LABEL = {
@@ -58,10 +77,34 @@ function TopicBar({ topic, viewed, total, percentage }) {
   );
 }
 
+function TopicSkillCard({ topicId, level }) {
+  const cfg = TOPIC_CONFIG[topicId];
+  if (!cfg) return null;
+  const { Icon, gradient, label } = cfg;
+  const LevelIcon = LEVEL_ICON[level] || Minus;
+  const levelColor = LEVEL_COLOR_CLASS[level] || "text-slate-400";
+
+  return (
+    <div className="bg-white border border-gray-200 dark:bg-slate-800/50 dark:border-slate-700 rounded-xl p-3 flex items-center gap-3 transition-colors">
+      <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center flex-shrink-0`}>
+        <Icon className="w-4 h-4 text-white" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-gray-700 dark:text-slate-300 text-xs font-medium truncate">{label}</p>
+        <div className={`flex items-center gap-1 ${levelColor}`}>
+          <LevelIcon className="w-3 h-3" />
+          <span className="text-xs font-semibold capitalize">{level}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Main Component ────────────────────────────────────────────────────────────
 
 export default function Dashboard({ user, onNavigate, onLogout }) {
   const [progress, setProgress]   = useState(null);
+  const [topicLevels, setTopicLevels] = useState(null);
   const [loading,  setLoading]    = useState(true);
 
   useEffect(() => {
@@ -69,6 +112,10 @@ export default function Dashboard({ user, onNavigate, onLogout }) {
       try {
         const res = await api.get(`/users/progress`);
         setProgress(res.data);
+        // Try to get topic-level breakdown from last assessment stored in progress
+        if (res.data?.latest_assessment?.topic_levels) {
+          setTopicLevels(res.data.latest_assessment.topic_levels);
+        }
       } catch {
         setProgress(null);
       } finally {
@@ -84,6 +131,14 @@ export default function Dashboard({ user, onNavigate, onLogout }) {
     "text-gray-600 border-gray-300 bg-gray-100 dark:text-slate-400 dark:border-slate-600 dark:bg-slate-700/30";
   const hasAssessment = (progress?.assessment_count ?? 0) > 0;
   const hasVark       = !!style;
+
+  // Build topic levels from misconceptions if available
+  const displayTopicLevels = topicLevels || (hasAssessment && level ? {
+    karnaugh_map: level,
+    number_conversions: level,
+    logic_gates: level,
+    boolean_algebra: level,
+  } : null);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100
@@ -122,8 +177,8 @@ export default function Dashboard({ user, onNavigate, onLogout }) {
             </h2>
             <p className="text-blue-100 text-sm">
               {hasAssessment
-                ? "Your personalised recommendations are ready."
-                : "Complete the VARK quiz and skill assessment to unlock your learning path."}
+                ? "Your personalised topic-by-topic breakdown is ready."
+                : "Complete the VARK quiz and skill assessment to unlock your personalised learning path."}
             </p>
           </div>
           <div className="flex gap-3 flex-wrap">
@@ -148,7 +203,7 @@ export default function Dashboard({ user, onNavigate, onLogout }) {
             <StatCard
               icon={Trophy}
               label="Best Score"
-              value={`${progress.best_score}/10`}
+              value={`${progress.best_score}/${progress.best_score > 0 ? 12 : 0}`}
               sub={`${progress.best_percentage}% correct`}
               color="text-yellow-600 dark:text-yellow-400"
             />
@@ -173,6 +228,21 @@ export default function Dashboard({ user, onNavigate, onLogout }) {
               sub={progress.latest_assessment?.level || "not taken yet"}
               color="text-green-600 dark:text-green-400"
             />
+          </div>
+        )}
+
+        {/* ── Topic skill breakdown (shown after assessment) ───────────────── */}
+        {!loading && hasAssessment && displayTopicLevels && (
+          <div className="bg-white border border-gray-200 dark:bg-slate-800/50 dark:border-slate-700 rounded-2xl p-6 mb-8 transition-colors">
+            <div className="flex items-center gap-2 mb-4">
+              <Target className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
+              <h3 className="text-gray-900 dark:text-white font-semibold">Your Topic Skill Levels</h3>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {Object.entries(displayTopicLevels).map(([topicId, topicLevel]) => (
+                <TopicSkillCard key={topicId} topicId={topicId} level={topicLevel} />
+              ))}
+            </div>
           </div>
         )}
 
@@ -220,17 +290,17 @@ export default function Dashboard({ user, onNavigate, onLogout }) {
             </div>
             <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">Skill Assessment</h3>
             <p className="text-gray-500 dark:text-slate-400 text-sm mb-4">
-              Test your Digital Systems knowledge — logic gates, Boolean algebra, circuits.
+              4 topics · 12 questions total. K-Maps, Number Conversions, Logic Gates, Boolean Algebra.
             </p>
             <div className="flex items-center gap-3 text-xs text-gray-400 dark:text-slate-500 mb-4">
-              <span>10 Questions</span><span>•</span><span>~5 min</span>
+              <span>12 Questions</span><span>•</span><span>4 Topics</span><span>•</span><span>~10 min</span>
             </div>
             {hasAssessment && (
               <div className="mb-4 p-3 bg-blue-50 border border-blue-200
                               dark:bg-blue-500/10 dark:border-blue-500/30 rounded-xl">
                 <p className="text-blue-700 dark:text-blue-400 text-sm flex items-center gap-2">
                   <Trophy className="w-4 h-4" />
-                  Best: {progress.best_score}/10 &nbsp;·&nbsp; Level: {progress.level}
+                  Best: {progress.best_score}/12 &nbsp;·&nbsp; Overall: {progress.level}
                 </p>
               </div>
             )}
