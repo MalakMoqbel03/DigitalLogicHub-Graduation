@@ -13,6 +13,7 @@ REQUIRED_ENV_VARS = {
     "EMAIL_USER":   "Gmail address used to send verification emails, e.g. yourapp@gmail.com",
     "EMAIL_PASS":   "Gmail App Password (NOT your regular password). "
                     "Generate at https://myaccount.google.com/apppasswords",
+    "REDIS_URL":    "Redis connection string, e.g. redis://localhost:6379",   
 }
 
 missing = {k: v for k, v in REQUIRED_ENV_VARS.items() if not os.getenv(k)}
