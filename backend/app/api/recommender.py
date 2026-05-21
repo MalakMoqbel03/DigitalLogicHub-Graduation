@@ -4,7 +4,7 @@ from uuid import UUID
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime, timezone
-
+from app.cache import cache_get, cache_set, cache_delete_pattern
 try:
     from app.models.user_resource_feedback import UserResourceFeedback
 except Exception as e:
@@ -59,17 +59,17 @@ def get_recommendations(
     user_id: UUID,
     limit: int = 20,
     db: Session = Depends(get_db),
-    current_user_id: str = Depends(get_current_user_id),   # Bug #6 fix
+    current_user_id: str = Depends(get_current_user_id),
 ):
-    """
-    Personalised recommendations for a user.
+    # 1. Build a unique cache key for this user + limit combination
+    cache_key = f"recommendations:{user_id}:{limit}"
 
-    Stable ordering rule (first key wins):
-      1. Higher hybrid_score first.
-      2. Tie-break: lower resource id first — gives a predictable, repeatable
-         order for items with identical scores, preventing cards from
-         reshuffling between page visits.
-    """
+    # 2. Check if we already have a cached result
+    cached = cache_get(cache_key)
+    if cached:
+        return cached  # Returns instantly from Redis, no DB queries needed
+
+    # 3. If no cache, run the actual recommendation logic (same as before)
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -91,20 +91,14 @@ def get_recommendations(
     )
     cf_strategy = cf_probe[0]["cf_strategy"] if cf_probe else None
 
-    # Fetch 3x the requested count so the tie-break has breathing room
     scored = get_hybrid_recommendations(db=db, user=user, limit=limit * 3)
-
-    # Stable sort: primary by hybrid_score DESC, tie-break by resource id ASC.
-    # Python's sort is stable, so applying the tie-break first then the main
-    # key yields a proper compound ordering.
     scored.sort(key=lambda item: item["resource"].id)
     scored.sort(key=lambda item: item.get("hybrid_score", 0.0), reverse=True)
-
     scored = scored[:limit]
 
     items = [serialize_resource_with_scores(item, cf_strategy) for item in scored]
 
-    return {
+    result = {
         "user": {
             "id": str(user.id),
             "learning_style": user.learning_style,
@@ -116,6 +110,10 @@ def get_recommendations(
         "items": items,
     }
 
+    # 4. Save result to cache for 1 hour (3600 seconds)
+    cache_set(cache_key, result, ttl_seconds=3600)
+
+    return result
 
 @router.post("/track/{user_id}/{resource_id}")
 def track_resource_interaction(
@@ -151,7 +149,7 @@ def track_resource_interaction(
     user.last_active_at = datetime.now(tz=timezone.utc)
 
     db.commit()
-
+    cache_delete_pattern(f"recommendations:{user_id}:*")
     return {"message": "Tracked successfully"}
 
 
@@ -190,7 +188,7 @@ def submit_feedback(body: FeedbackRequest, db: Session = Depends(get_db)):
 
     db.add(feedback)
     db.commit()
-
+    cache_delete_pattern(f"recommendations:{body.user_id}:*")
     return {"message": "Feedback saved"}
 
 
