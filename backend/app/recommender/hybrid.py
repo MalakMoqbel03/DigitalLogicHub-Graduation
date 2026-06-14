@@ -35,13 +35,40 @@ def _get_disliked_ids(db: Session, user_id) -> List[int]:
 
 
 def _get_viewed_ids(db: Session, user_id) -> List[int]:
-    """Resources the user has already opened/tracked."""
-    rows = (
+    """
+    Resources to exclude from recommendations.
+
+    A viewed resource is excluded ONLY if the user gave no feedback or
+    bad feedback (low rating / dislike). Resources rated 3+ stars or
+    liked are kept in the pool so they keep appearing as reinforcement.
+    """
+    viewed_rows = (
         db.query(UserLearningResource.learning_resource_id)
         .filter(UserLearningResource.user_id == user_id)
         .all()
     )
-    return [r[0] for r in rows]
+    viewed_ids = {r[0] for r in viewed_rows}
+
+    if not viewed_ids:
+        return []
+
+    # IDs with positive feedback (rating >= 3 OR explicitly liked)
+    positive_rows = (
+        db.query(UserResourceFeedback.learning_resource_id)
+        .filter(
+            UserResourceFeedback.user_id == user_id,
+            UserResourceFeedback.learning_resource_id.in_(viewed_ids),
+            (
+                (UserResourceFeedback.rating >= 3) |
+                (UserResourceFeedback.liked == True)
+            ),
+        )
+        .all()
+    )
+    positive_ids = {r[0] for r in positive_rows}
+
+    # Only exclude viewed resources that did NOT receive positive feedback
+    return list(viewed_ids - positive_ids)
 
 
 def _context_multiplier(user: User) -> float:

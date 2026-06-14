@@ -3,7 +3,8 @@ import api from "../services/api";
 import {
   Home, ThumbsUp, ThumbsDown, Star,
   CheckCircle, XCircle, ChevronRight, Award, Loader2,
-  TrendingUp, AlertTriangle, Bookmark, BookmarkCheck, Lightbulb
+  TrendingUp, AlertTriangle, Bookmark, BookmarkCheck, Lightbulb,
+  Check
 } from "lucide-react";
 import ThemeToggle from "../components/ThemeToggle";
 
@@ -33,7 +34,7 @@ function ResourceQuiz({ user, resource, onQuizDone }) {
       }
     };
     load();
-  }, [resource.id]);
+  }, [resource.id, user.id]);
 
   const handleSelect = (questionId, option) => {
     if (result) return;
@@ -212,7 +213,8 @@ export default function ResourceViewer({ user, resource, onBack }) {
   const [rating, setRating] = useState(0);
   const [liked, setLiked] = useState(null);
   const [comment, setComment] = useState("");
-  const [message, setMessage] = useState("");
+  const [saveStatus, setSaveStatus] = useState("idle"); // idle | saving | saved | error
+  const [saveTimer, setSaveTimer] = useState(null);
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizDone, setQuizDone] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
@@ -264,18 +266,44 @@ export default function ResourceViewer({ user, resource, onBack }) {
     }
   };
 
-  const saveFeedback = async () => {
+  // Auto-save feedback whenever rating or liked changes (debounced 600ms)
+  const autoSaveFeedback = async (newRating, newLiked, newComment) => {
+    setSaveStatus("saving");
     try {
       await api.post("/recommender/feedback", {
         user_id: user.id,
         resource_id: resource.id,
-        rating: rating === 0 ? null : rating,        liked,
-        comment,
+        rating: newRating === 0 ? null : newRating,
+        liked: newLiked,
+        comment: newComment,
       });
-      setMessage("Feedback saved successfully");
+      setSaveStatus("saved");
+      setTimeout(() => setSaveStatus("idle"), 2000);
     } catch {
-      setMessage("Failed to save feedback");
+      setSaveStatus("error");
+      setTimeout(() => setSaveStatus("idle"), 2500);
     }
+  };
+
+  const scheduleAutoSave = (newRating, newLiked, newComment) => {
+    if (saveTimer) clearTimeout(saveTimer);
+    const t = setTimeout(() => autoSaveFeedback(newRating, newLiked, newComment), 600);
+    setSaveTimer(t);
+  };
+
+  const handleRatingChange = (s) => {
+    setRating(s);
+    scheduleAutoSave(s, liked, comment);
+  };
+
+  const handleLikedChange = (val) => {
+    setLiked(val);
+    scheduleAutoSave(rating, val, comment);
+  };
+
+  const handleCommentBlur = () => {
+    // Save on textarea blur (when user finishes typing)
+    autoSaveFeedback(rating, liked, comment);
   };
 
   const renderEmbed = () => {
@@ -485,11 +513,30 @@ export default function ResourceViewer({ user, resource, onBack }) {
 
         {/* Feedback */}
         <div className="bg-white border border-gray-200 shadow-sm dark:bg-slate-800/50 dark:border-slate-700 rounded-2xl p-6 transition-colors mt-6">
-          <h2 className="text-xl font-bold mb-4">Your Feedback</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold">Your Feedback</h2>
+            {/* Fix #5: visual save status indicator */}
+            {saveStatus === "saving" && (
+              <span className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-slate-500">
+                <Loader2 className="w-3.5 h-3.5 animate-spin" /> Saving…
+              </span>
+            )}
+            {saveStatus === "saved" && (
+              <span className="flex items-center gap-1.5 text-xs text-green-600 dark:text-green-400 font-medium">
+                <Check className="w-3.5 h-3.5" /> Saved
+              </span>
+            )}
+            {saveStatus === "error" && (
+              <span className="flex items-center gap-1.5 text-xs text-red-500 dark:text-red-400">
+                <XCircle className="w-3.5 h-3.5" /> Failed to save
+              </span>
+            )}
+          </div>
 
+          {/* Fix #1: rating triggers auto-save */}
           <div className="flex gap-2 mb-4">
             {[1, 2, 3, 4, 5].map((s) => (
-              <button key={s} onClick={() => setRating(s)}>
+              <button key={s} onClick={() => handleRatingChange(s)}>
                 <Star className={`w-6 h-6 transition-colors ${
                   s <= rating
                     ? "text-yellow-500 fill-yellow-500 dark:text-yellow-400 dark:fill-yellow-400"
@@ -499,8 +546,9 @@ export default function ResourceViewer({ user, resource, onBack }) {
             ))}
           </div>
 
+          {/* Fix #1: like/dislike triggers auto-save */}
           <div className="flex gap-3 mb-4">
-            <button onClick={() => setLiked(true)}
+            <button onClick={() => handleLikedChange(true)}
               className={`px-4 py-2 rounded-xl flex items-center gap-2 transition-colors ${
                 liked === true
                   ? "bg-green-500 text-white"
@@ -508,7 +556,7 @@ export default function ResourceViewer({ user, resource, onBack }) {
               }`}>
               <ThumbsUp className="w-4 h-4" /> Like
             </button>
-            <button onClick={() => setLiked(false)}
+            <button onClick={() => handleLikedChange(false)}
               className={`px-4 py-2 rounded-xl flex items-center gap-2 transition-colors ${
                 liked === false
                   ? "bg-red-500 text-white"
@@ -521,17 +569,14 @@ export default function ResourceViewer({ user, resource, onBack }) {
           <textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
+            onBlur={handleCommentBlur}
             placeholder="Write your opinion about this material..."
-            className="w-full p-3 rounded-xl mb-4 transition-colors bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 dark:bg-slate-900 dark:border-slate-700 dark:text-white dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+            className="w-full p-3 rounded-xl transition-colors bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 dark:bg-slate-900 dark:border-slate-700 dark:text-white dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
             rows={4}
           />
-
-          <button onClick={saveFeedback}
-            className="px-5 py-3 bg-cyan-500 hover:bg-cyan-400 text-white rounded-xl transition shadow-lg shadow-cyan-500/20">
-            Save Feedback
-          </button>
-
-          {message && <p className="mt-3 text-gray-600 dark:text-slate-300">{message}</p>}
+          <p className="mt-1.5 text-xs text-gray-400 dark:text-slate-500">
+            Feedback is saved automatically when you rate or like/dislike.
+          </p>
         </div>
       </div>
     </div>

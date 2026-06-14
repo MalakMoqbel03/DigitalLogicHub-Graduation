@@ -4,8 +4,10 @@ import {
   Cpu, LogOut, ArrowRight, Brain, CircuitBoard,
   Trophy, CheckCircle, BookOpen, Target, AlertTriangle,
   BarChart2, Zap, Grid3X3, Hash, Sigma, TrendingUp, TrendingDown, Minus,
+  ClipboardList,
 } from "lucide-react";
 import ThemeToggle from "../components/ThemeToggle";
+import StudyAssistant from "../components/StudyAssistant";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -56,7 +58,7 @@ function StatCard({ icon: Icon, label, value, sub, color = "text-cyan-600 dark:t
       <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
       <p className="text-sm font-medium text-gray-600 dark:text-slate-300">{label}</p>
       {sub && <p className="text-xs text-gray-400 dark:text-slate-500">{sub}</p>}
-    </div>
+      </div>
   );
 }
 
@@ -103,6 +105,7 @@ function TopicSkillCard({ topicId, level }) {
 // ── Main Component ────────────────────────────────────────────────────────────
 
 export default function Dashboard({ user, onNavigate, onLogout }) {
+  const [showVarkConfirm, setShowVarkConfirm] = useState(false);
   const [progress, setProgress]   = useState(null);
   const [topicLevels, setTopicLevels] = useState(null);
   const [loading,  setLoading]    = useState(true);
@@ -167,6 +170,38 @@ export default function Dashboard({ user, onNavigate, onLogout }) {
               <LogOut className="w-4 h-4" /> Sign out
             </button>
           </div>
+        </div>
+
+        {/* ── Survey Banner ───────────────────────────────────────────────── */}
+        <div className="flex items-center justify-between gap-4 mb-6
+                        bg-white border border-indigo-200 dark:bg-slate-800/50 dark:border-indigo-500/30
+                        rounded-2xl px-5 py-4 shadow-sm">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-500
+                            flex items-center justify-center flex-shrink-0 shadow-md shadow-indigo-500/20">
+              <ClipboardList className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <p className="text-gray-900 dark:text-white font-semibold text-sm">
+                Share your experience with us 🙏
+              </p>
+              <p className="text-gray-500 dark:text-slate-400 text-xs mt-0.5">
+                Takes less than 3 minutes — your feedback helps us improve DigitalLogicHub.{" "}
+              <span className="text-indigo-400 dark:text-indigo-400 text-xs">↗ opens in new tab</span>
+              </p>
+            </div>
+          </div>
+          <a
+            href="https://forms.gle/ZTAEt5Hx82KmLsAW8"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0 flex items-center gap-2 px-4 py-2
+                       bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600
+                       text-white text-sm font-semibold rounded-xl transition-all shadow-md shadow-indigo-500/20"
+          >
+            Take Survey
+            <ArrowRight className="w-4 h-4" />
+          </a>
         </div>
 
         {/* ── Welcome banner ──────────────────────────────────────────────── */}
@@ -273,7 +308,7 @@ export default function Dashboard({ user, onNavigate, onLogout }) {
               </div>
             )}
             <button
-              onClick={() => onNavigate("vark")}
+              onClick={() => setShowVarkConfirm(true)}
               className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-xl hover:opacity-90 transition flex items-center justify-center gap-2"
             >
               {hasVark ? "Retake Quiz" : "Start Quiz"}
@@ -375,6 +410,41 @@ export default function Dashboard({ user, onNavigate, onLogout }) {
         )}
 
       </div>
+
+      {/* ── VARK retake confirmation modal ─────────────────────────────── */}
+      {showVarkConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-sm w-full shadow-2xl border border-gray-200 dark:border-slate-700">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+              Retake VARK Quiz?
+            </h3>
+            <p className="text-gray-500 dark:text-slate-400 text-sm mb-5">
+              This will reset your current learning style result and update your personalised recommendations. Are you sure?
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowVarkConfirm(false);
+                  onNavigate("vark");
+                }}
+                className="flex-1 py-2.5 bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white font-semibold rounded-xl transition text-sm"
+              >
+                Yes, retake
+              </button>
+              <button
+                onClick={() => setShowVarkConfirm(false)}
+                className="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-300 font-semibold rounded-xl transition text-sm"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── AI Study Assistant — fixed to viewport ───────────────────────── */}
+      <StudyAssistant user={user} />
+
     </div>
   );
 }

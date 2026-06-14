@@ -12,7 +12,13 @@ from jose import JWTError, jwt
 from fastapi import HTTPException, status
 
 # ── Config ────────────────────────────────────────────────────────────────────
-SECRET_KEY = os.getenv("JWT_SECRET", "change-me-in-production")
+_raw_secret = os.getenv("JWT_SECRET")
+if not _raw_secret:
+    raise RuntimeError(
+        "JWT_SECRET environment variable is not set. "
+        "Set it to a long random string before starting the server."
+    )
+SECRET_KEY = _raw_secret
 ALGORITHM  = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7   # 7 days (comfortable for students)
 

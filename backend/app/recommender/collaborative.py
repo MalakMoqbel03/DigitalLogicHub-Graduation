@@ -3,18 +3,19 @@ collaborative.py
 ────────────────
 User-based collaborative filtering.
 
-Neighbour-finding strategy (new):
+Neighbour-finding strategy:
   1. PRIMARY: find users in the same K-Means cluster as the current user.
      This uses the ML-learned similarity (23-dim feature space: VARK style,
      level, topic interests, avg rating, activity) computed by cluster_users.py.
   2. FALLBACK: if the current user has no cluster_id yet (e.g. brand-new user
      registered AFTER the last clustering run), fall back to the older rule:
-     same VARK style AND same level. This keeps recommendations working while
-     the cluster gets refreshed on the next cron / manual run.
+     same VARK style AND same level.
 
-Everything else (Jaccard similarity between interaction sets, top-K neighbours,
-score aggregation + normalisation) is unchanged — only the neighbour-selection
-step benefits from clustering.
+N+1 fix (2024-06):
+  Previously _get_user_liked_resource_ids() was called once per neighbour
+  inside a loop — 3 DB queries × N neighbours = up to 90+ queries per CF run.
+  Replaced with _batch_get_liked_resource_ids() which fetches all neighbours'
+  interactions in 2 batch queries, then groups them in Python.
 """
 
 from sqlalchemy.orm import Session
@@ -27,11 +28,13 @@ from app.models.user_resource_feedback import UserResourceFeedback
 from app.models.learning_resource import LearningResource
 
 
+# ── OLD single-user helper (kept for reference, no longer called in hot path) ─
+
 def _get_user_liked_resource_ids(db: Session, user_id: UUID) -> List[int]:
     """
     Return resource IDs that the user has positively interacted with.
-    'Positive' means: rating >= 4  OR  liked == True  OR  viewed (tracked).
-    We use a union so even users with no explicit ratings still contribute.
+    Only used for the CURRENT user's own interaction set (one call, not N).
+    Neighbours are now fetched in bulk via _batch_get_liked_resource_ids.
     """
     explicit = (
         db.query(UserResourceFeedback.learning_resource_id)
@@ -61,6 +64,65 @@ def _get_user_liked_resource_ids(db: Session, user_id: UUID) -> List[int]:
     return list(ids)
 
 
+# ── NEW batch helper — replaces the N-query loop ──────────────────────────────
+
+def _batch_get_liked_resource_ids(
+    db: Session,
+    user_ids: List[UUID],
+) -> Dict[UUID, set]:
+    """
+    Fetch positive interactions for ALL neighbours in 2 queries instead of 3×N.
+
+    Returns a dict mapping user_id → set of resource_ids they positively
+    interacted with (liked, rated ≥4, or viewed).
+
+    Query 1: all feedback rows (liked=True OR rating>=4) for the full neighbour list
+    Query 2: all view-tracking rows for the full neighbour list
+
+    Both queries use the ix_urf_user_id / ix_ulr_user_id indexes and benefit
+    from PostgreSQL's ability to evaluate IN(…) against an index in one pass.
+    """
+    if not user_ids:
+        return {}
+
+    # Initialise a set for every neighbour so absent users return empty sets
+    result: Dict[UUID, set] = {uid: set() for uid in user_ids}
+
+    # Query 1 — explicit positive feedback (liked OR highly rated)
+    feedback_rows = (
+        db.query(
+            UserResourceFeedback.user_id,
+            UserResourceFeedback.learning_resource_id,
+        )
+        .filter(
+            UserResourceFeedback.user_id.in_(user_ids),
+            (
+                (UserResourceFeedback.liked == True) |
+                (UserResourceFeedback.rating >= 4)
+            ),
+        )
+        .all()
+    )
+    for uid, rid in feedback_rows:
+        result[uid].add(rid)
+
+    # Query 2 — all views (even without explicit feedback)
+    view_rows = (
+        db.query(
+            UserLearningResource.user_id,
+            UserLearningResource.learning_resource_id,
+        )
+        .filter(UserLearningResource.user_id.in_(user_ids))
+        .all()
+    )
+    for uid, rid in view_rows:
+        result[uid].add(rid)
+
+    return result
+
+
+# ── Jaccard similarity ────────────────────────────────────────────────────────
+
 def _jaccard_similarity(set_a: set, set_b: set) -> float:
     """Simple Jaccard similarity between two sets of resource IDs."""
     if not set_a or not set_b:
@@ -70,16 +132,14 @@ def _jaccard_similarity(set_a: set, set_b: set) -> float:
     return intersection / union if union else 0.0
 
 
-# ── NEW: cluster-aware neighbour lookup ───────────────────────────────────────
+# ── Cluster-aware neighbour lookup ────────────────────────────────────────────
 
 def _find_candidate_neighbours(db: Session, current_user: User) -> Tuple[List[User], str]:
     """
     Return (neighbours, strategy_used).
 
     strategy_used is "cluster" if we could use K-Means, "style_level" otherwise.
-    Useful for logging / debugging / thesis reports that want to compare the two.
     """
-    # PRIMARY: cluster-based match
     if current_user.cluster_id is not None:
         neighbours = (
             db.query(User)
@@ -92,7 +152,6 @@ def _find_candidate_neighbours(db: Session, current_user: User) -> Tuple[List[Us
         if neighbours:
             return neighbours, "cluster"
 
-    # FALLBACK: original style + level match (works even if cluster is stale)
     neighbours = (
         db.query(User)
         .filter(
@@ -121,53 +180,52 @@ def get_collaborative_scores(
 
     Steps:
       1. Find candidate neighbours (same K-Means cluster, or style+level fallback).
-      2. Compute Jaccard similarity between the current user's interactions
-         and each neighbour's.
-      3. Keep the top-K most similar neighbours.
-      4. Collect resources those neighbours liked that the current user hasn't seen yet.
-      5. Score each candidate resource by the sum of neighbour similarities that
-         liked it, normalised to a 0-1 range so it blends cleanly with the CB score.
+      2. Fetch ALL neighbours' interactions in 2 batch queries (N+1 fix).
+      3. Compute Jaccard similarity between the current user and each neighbour.
+      4. Keep the top-K most similar neighbours above min_similarity.
+      5. Collect resources those neighbours liked that the current user hasn't seen.
+      6. Score each candidate by the sum of neighbour similarities, normalised to [0,1].
 
-    Returns empty list (triggering content-only mode) when:
-      - The user hasn't interacted with anything yet (cold start).
-      - No similar neighbours are found above min_similarity.
+    DB query count:
+      Before fix: 3 + (3 × N_neighbours)   e.g. 3 + 90 = 93 for 30 neighbours
+      After fix:  3 + 2 = 5 regardless of neighbour count
     """
+    # Current user's own interactions (3 queries — unchanged, runs once)
     current_user_resource_ids = set(
         _get_user_liked_resource_ids(db, current_user.id)
     )
 
-    # Cold-start guard: if current user has no interactions, CF can't run
     if not current_user_resource_ids:
-        return []
+        return []  # cold-start: CF can't help without any interactions
 
-    # ── NEW: use cluster-based neighbour lookup ──────────────────────────────
+    # Step 1 — find neighbours (1 query)
     neighbour_users, strategy = _find_candidate_neighbours(db, current_user)
-
     if not neighbour_users:
         return []
 
-    # Compute similarities
-    similarities: Dict[UUID, float] = {}
-    neighbour_resource_map: Dict[UUID, set] = {}
+    # Step 2 — batch fetch ALL neighbours' interactions in 2 queries (N+1 fix)
+    neighbour_ids = [n.id for n in neighbour_users]
+    neighbour_resource_map = _batch_get_liked_resource_ids(db, neighbour_ids)
 
+    # Step 3 — compute Jaccard similarity for each neighbour
+    similarities: Dict[UUID, float] = {}
     for neighbour in neighbour_users:
-        n_resources = set(_get_user_liked_resource_ids(db, neighbour.id))
+        n_resources = neighbour_resource_map.get(neighbour.id, set())
         if not n_resources:
             continue
         sim = _jaccard_similarity(current_user_resource_ids, n_resources)
         if sim >= min_similarity:
             similarities[neighbour.id] = sim
-            neighbour_resource_map[neighbour.id] = n_resources
 
     if not similarities:
         return []
 
-    # Keep top-K neighbours
-    top_neighbours = sorted(similarities.items(), key=lambda x: x[1], reverse=True)[
-        :top_k_neighbors
-    ]
+    # Step 4 — keep top-K neighbours
+    top_neighbours = sorted(
+        similarities.items(), key=lambda x: x[1], reverse=True
+    )[:top_k_neighbors]
 
-    # Aggregate resource scores from top neighbours
+    # Step 5 — aggregate resource scores, excluding already-seen / disliked
     all_excluded = set(excluded_ids + disliked_ids) | current_user_resource_ids
     resource_scores: Dict[int, float] = {}
 
@@ -180,12 +238,11 @@ def get_collaborative_scores(
     if not resource_scores:
         return []
 
-    # Normalise scores to [0, 1]
+    # Step 6 — normalise and fetch resource objects (1 query)
     max_score = max(resource_scores.values())
     if max_score == 0:
         return []
 
-    # Fetch the actual resource objects
     candidate_ids = list(resource_scores.keys())[:limit]
     resources = (
         db.query(LearningResource)
@@ -200,7 +257,6 @@ def get_collaborative_scores(
         scored.append({
             "resource": r,
             "score": normalised,
-            # Expose which strategy was used — handy for debugging and thesis reporting
             "cf_strategy": strategy,
         })
 

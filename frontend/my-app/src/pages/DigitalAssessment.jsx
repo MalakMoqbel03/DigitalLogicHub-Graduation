@@ -2,8 +2,9 @@ import React, { useEffect, useState, useCallback } from "react";
 import api from "../services/api";
 import {
   ArrowLeft, ArrowRight, CheckCircle, XCircle, Trophy,
-  Home, AlertTriangle, BookOpen, Loader2, ChevronRight,
-  Hash, Cpu, Grid3X3, Sigma, Star, TrendingUp, TrendingDown, Minus,
+  Home, AlertTriangle, BookOpen, Loader2,
+  Hash, Cpu, Grid3X3, Sigma, TrendingUp, TrendingDown, Minus,
+  Sparkles,
 } from "lucide-react";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -154,9 +155,18 @@ function ResultTopicCard({ topicId, result, suggestion, section }) {
                 <span className="text-slate-400 text-xs truncate">{d.question_text}</span>
               </div>
               {!d.is_correct && (
-                <div className="space-y-0.5">
+                <div className="space-y-1.5">
                   <p className="text-red-400 text-xs">Your answer: {d.selected_answer}</p>
                   <p className="text-green-400 text-xs">Correct: {d.correct_answer}</p>
+                  {d.ai_explanation && (
+                    <div className="flex items-start gap-1.5 mt-2 p-2.5
+                                    bg-indigo-500/10 border border-indigo-500/20 rounded-lg">
+                      <Sparkles className="w-3 h-3 text-indigo-400 flex-shrink-0 mt-0.5" />
+                      <p className="text-indigo-300 text-xs leading-relaxed">
+                        {d.ai_explanation}
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

@@ -267,6 +267,19 @@ def forgot_password(body: ForgotRequest, db: Session = Depends(get_db)):
     if not user:
         raise HTTPException(status_code=404, detail="User doesn't have an account")
 
+    # Rate-limit: same 60-second cooldown as /resend
+    if user.verification_code_sent_at:
+        sent_at = user.verification_code_sent_at
+        if sent_at.tzinfo is None:
+            from datetime import timezone as _tz
+            sent_at = sent_at.replace(tzinfo=_tz.utc)
+        seconds_since = (datetime.now(tz=timezone.utc) - sent_at).total_seconds()
+        if seconds_since < 60:
+            raise HTTPException(
+                status_code=429,
+                detail=f"Please wait {int(60 - seconds_since)} seconds before requesting a new code",
+            )
+
     code = generate_verification_code()
     user.verification_code = code
     user.verification_code_sent_at = datetime.now(tz=timezone.utc)

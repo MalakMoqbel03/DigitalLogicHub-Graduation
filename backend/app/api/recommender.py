@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
 from uuid import UUID
 from pydantic import BaseModel
@@ -16,6 +16,7 @@ from app.models.user import User
 from app.models.learning_resource import LearningResource
 from app.models.user_learning_resource import UserLearningResource
 from app.recommender.hybrid import get_hybrid_recommendations
+from app.recommender.explain import get_recommendation_reason
 from app.recommender.collaborative import get_collaborative_scores
 from app.recommender.utils import normalize_style, normalize_level
 
@@ -30,7 +31,7 @@ class FeedbackRequest(BaseModel):
     comment: Optional[str] = None
 
 
-def serialize_resource_with_scores(item: dict, cf_strategy: str | None) -> dict:
+def serialize_resource_with_scores(item: dict, cf_strategy: str | None, reason: str | None = None) -> dict:
     r: LearningResource = item["resource"]
     return {
         "id": r.id,
@@ -51,6 +52,7 @@ def serialize_resource_with_scores(item: dict, cf_strategy: str | None) -> dict:
         "cb_score": item.get("cb_score"),
         "cf_score": item.get("cf_score"),
         "cf_strategy": cf_strategy,
+        "reason": reason,
     }
 
 
@@ -119,8 +121,9 @@ def get_recommendations(
 def track_resource_interaction(
     user_id: UUID,
     resource_id: int,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
-    current_user_id: str = Depends(get_current_user_id),   # BUG FIX #2
+    current_user_id: str = Depends(get_current_user_id),
 ):
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
@@ -136,6 +139,9 @@ def track_resource_interaction(
     ).first()
 
     if existing:
+        # Still refresh last_active_at so the context multiplier stays accurate
+        user.last_active_at = datetime.now(tz=timezone.utc)
+        db.commit()
         return {"message": "Already tracked"}
 
     row = UserLearningResource(
@@ -145,16 +151,17 @@ def track_resource_interaction(
 
     db.add(row)
 
-    # Task 10: update last_active_at on every resource interaction
+    # Update last_active_at on every resource interaction
     user.last_active_at = datetime.now(tz=timezone.utc)
 
     db.commit()
-    cache_delete_pattern(f"recommendations:{user_id}:*")
+    background_tasks.add_task(cache_delete_pattern, f"recommendations:{user_id}:*")
+    background_tasks.add_task(cache_delete_pattern, f"topics_pool:{user_id}")
     return {"message": "Tracked successfully"}
 
 
 @router.post("/feedback")
-def submit_feedback(body: FeedbackRequest, db: Session = Depends(get_db)):
+def submit_feedback(body: FeedbackRequest, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == body.user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -176,6 +183,8 @@ def submit_feedback(body: FeedbackRequest, db: Session = Depends(get_db)):
         existing.liked = body.liked
         existing.comment = body.comment
         db.commit()
+        background_tasks.add_task(cache_delete_pattern, f"recommendations:{body.user_id}:*")
+        background_tasks.add_task(cache_delete_pattern, f"topics_pool:{body.user_id}")
         return {"message": "Feedback updated"}
 
     feedback = UserResourceFeedback(
@@ -188,7 +197,8 @@ def submit_feedback(body: FeedbackRequest, db: Session = Depends(get_db)):
 
     db.add(feedback)
     db.commit()
-    cache_delete_pattern(f"recommendations:{body.user_id}:*")
+    background_tasks.add_task(cache_delete_pattern, f"recommendations:{body.user_id}:*")
+    background_tasks.add_task(cache_delete_pattern, f"topics_pool:{body.user_id}")
     return {"message": "Feedback saved"}
 
 
@@ -344,6 +354,20 @@ def get_topic_recommendations(
     Already-viewed resources are excluded so the user always sees fresh content.
     Feedback (liked/disliked) influences ordering via the hybrid score.
 
+    Caching strategy
+    ────────────────
+    The expensive part is get_hybrid_recommendations(limit=200) — 6-8 DB
+    queries plus Python scoring over 519 resources.  This result is cached
+    under "topics_pool:{user_id}" for 1 hour so that page navigation and
+    refreshes are instant.
+
+    The pool key is invalidated (via background task) whenever the user
+    submits feedback or opens a new resource, so the feed stays fresh after
+    meaningful interactions.
+
+    The per-page slice is computed from the cached pool on every request —
+    it is cheap Python and depends on the `page` param so it is never cached.
+
     Query params:
       page       – page number starting at 1 (each page adds per_topic more resources per topic)
       per_topic  – how many resources to expose per topic per page (default 3)
@@ -362,35 +386,79 @@ def get_topic_recommendations(
             detail="User must complete VARK quiz and assessment first"
         )
 
-    # Fetch a large pool and sort by score
-    scored = get_hybrid_recommendations(db=db, user=user, limit=200)
-    scored.sort(key=lambda item: item["resource"].id)
-    scored.sort(key=lambda item: item.get("hybrid_score", 0.0), reverse=True)
+    # ── Layer 1: try to load the scored pool from Redis ───────────────────
+    pool_cache_key = f"topics_pool:{user_id}"
+    cached_pool = cache_get(pool_cache_key)
 
-    # Group by topic
+    if cached_pool is not None:
+        # Pool is a list of plain dicts (resources serialized for JSON storage)
+        scored_dicts = cached_pool
+    else:
+        # Cache miss — run the full hybrid recommender and store the result
+        scored = get_hybrid_recommendations(db=db, user=user, limit=200)
+        scored.sort(key=lambda item: item["resource"].id)
+        scored.sort(key=lambda item: item.get("hybrid_score", 0.0), reverse=True)
+
+        # Serialize the pool to plain dicts so it can be stored in Redis as JSON.
+        # We store everything needed for the response + reason generation.
+        scored_dicts = [
+            {
+                "id":            item["resource"].id,
+                "title":         item["resource"].title,
+                "description":   item["resource"].description,
+                "topic":         item["resource"].topic,
+                "subtopic":      item["resource"].subtopic,
+                "resource_type": item["resource"].resource_type,
+                "difficulty":    item["resource"].difficulty,
+                "vark_style":    item["resource"].vark_style,
+                "duration_minutes": item["resource"].duration_minutes,
+                "is_short":      item["resource"].is_short,
+                "source":        item["resource"].source,
+                "external_url":  item["resource"].external_url,
+                "tags":          item["resource"].tags,
+                "method":        item.get("method"),
+                "hybrid_score":  item.get("hybrid_score", 0.0),
+                "cb_score":      item.get("cb_score", 0.0),
+                "cf_score":      item.get("cf_score", 0.0),
+            }
+            for item in scored
+        ]
+
+        # Cache for 1 hour — same TTL as the flat recommendations endpoint
+        cache_set(pool_cache_key, scored_dicts, ttl_seconds=3600)
+
+    # ── Layer 2: group and slice (pure Python, instant) ─────────────────
     topics: dict = defaultdict(list)
-    for item in scored:
-        r = item["resource"]
-        topics[r.topic].append(item)
+    for d in scored_dicts:
+        topics[d["topic"]].append(d)
 
-    # Progressive slice: expose page * per_topic items per topic
     limit_per_topic = page * per_topic
     offset = (page - 1) * per_topic
 
-    result_topics = []
+    # Collect the page slice first — fast, no I/O
+    page_slices: list[tuple[str, list, list]] = []
     for topic, items in sorted(topics.items()):
         full_slice = items[:limit_per_topic]
         page_slice = full_slice[offset:limit_per_topic]
+        if page_slice:
+            page_slices.append((topic, items, page_slice))
 
-        serialized = [serialize_resource_with_scores(item, None) for item in page_slice]
-        if serialized:
-            result_topics.append({
-                "topic": topic,
-                "pretty_topic": topic.replace("_", " ").title() if topic else "",
-                "total_available": len(items),
-                "has_more": len(items) > limit_per_topic,
-                "resources": serialized,
-            })
+    # ── Layer 3: assemble response — no AI calls here ───────────────────
+    # Reasons are fetched separately via POST /recommender/reasons
+    # so this endpoint returns instantly regardless of cache state.
+    result_topics = []
+    for topic, items, page_slice in page_slices:
+        serialized = [
+            {**d, "cf_strategy": None, "reason": None}
+            for d in page_slice
+        ]
+        result_topics.append({
+            "topic": topic,
+            "pretty_topic": topic.replace("_", " ").title() if topic else "",
+            "total_available": len(items),
+            "has_more": len(items) > limit_per_topic,
+            "resources": serialized,
+        })
 
     return {
         "user": {
@@ -403,6 +471,76 @@ def get_topic_recommendations(
         "topic_count": len(result_topics),
         "topics": result_topics,
     }
+
+
+
+# ── AI Reasons (deferred, parallel) ──────────────────────────────────────────
+
+class ReasonsRequest(BaseModel):
+    user_id: UUID
+    resources: list[dict]   # [{id, title, topic, resource_type, vark_style, cb_score, cf_score}, ...]
+
+
+@router.post("/reasons")
+def get_reasons(
+    body: ReasonsRequest,
+    db: Session = Depends(get_db),
+    current_user_id: str = Depends(get_current_user_id),
+):
+    """
+    Fetch AI "why this was recommended" explanations for a list of resources.
+    Called by the frontend AFTER /topics already returned and resources are
+    displayed — so the user sees content immediately and reasons fill in after.
+
+    All reason calls run in parallel (ThreadPoolExecutor).
+    Cache hits (Redis) return in <5ms per resource.
+    Cache misses call Claude Haiku concurrently — total wall time ≈ slowest single call.
+
+    Returns: { reasons: { resource_id: explanation_string | null } }
+    """
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
+    user = db.query(User).filter(User.id == body.user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    style = normalize_style(user.learning_style) or "reading"
+    level = normalize_level(user.level) or "beginner"
+
+    def fetch_one(r: dict) -> tuple[int, str | None]:
+        misc_match = r.get("cb_score", 0) > 0.55
+        cf_sig = r.get("cf_score", 0) > 0.1
+        reason = get_recommendation_reason(
+            user_id=str(body.user_id),
+            resource_id=r["id"],
+            resource_title=r.get("title") or "",
+            resource_topic=(r.get("topic") or "").replace("_", " "),
+            resource_type=r.get("resource_type") or "",
+            resource_vark=r.get("vark_style") or "",
+            user_level=level,
+            user_style=style,
+            misconception_match=misc_match,
+            cf_signal=cf_sig,
+            hybrid_score=r.get("hybrid_score", 0.0),
+            cb_score=r.get("cb_score", 0.0),
+            cf_score=r.get("cf_score", 0.0),
+        )
+        return r["id"], reason
+
+    results: dict[int, str | None] = {}
+    resources = body.resources[:20]   # safety cap — never more than 20 at once
+
+    if resources:
+        with ThreadPoolExecutor(max_workers=min(8, len(resources))) as pool:
+            futures = {pool.submit(fetch_one, r): r["id"] for r in resources}
+            for future in as_completed(futures, timeout=12):
+                try:
+                    rid, reason = future.result()
+                    results[rid] = reason
+                except Exception:
+                    results[futures[future]] = None
+
+    return {"reasons": results}
 
 # ── Bookmarks ─────────────────────────────────────────────────────────────────
 

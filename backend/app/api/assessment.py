@@ -10,6 +10,7 @@ from app.dependencies import get_db
 from app.models.user import User
 from app.models.assessment import Question, Answer, AssessmentSession, UserResponse
 from app.models.user_misconception import UserMisconception
+from app.recommender.misconception_explain import get_misconception_explanation
 
 router = APIRouter()
 
@@ -292,6 +293,17 @@ def submit_assessment(body: SubmitAssessmentRequest, db: Session = Depends(get_d
                 topic_misconceptions.append(misconception_tag)
                 all_misconceptions.append(misconception_tag)
 
+            # AI explanation — only generated for wrong answers with a known tag.
+            # Returns None silently on failure; UI degrades gracefully.
+            ai_explanation = None
+            if not is_correct and misconception_tag and question_text:
+                ai_explanation = get_misconception_explanation(
+                    question_text=question_text,
+                    selected_answer=selected_text,
+                    correct_answer=correct_text,
+                    concept_tag=misconception_tag,
+                )
+
             topic_details.append({
                 "difficulty": difficulty,
                 "question_text": question_text,
@@ -299,6 +311,7 @@ def submit_assessment(body: SubmitAssessmentRequest, db: Session = Depends(get_d
                 "correct_answer": correct_text,
                 "is_correct": is_correct,
                 "misconception_tag": misconception_tag,
+                "ai_explanation": ai_explanation,
             })
 
         topic_level = _score_to_topic_level(topic_correct)

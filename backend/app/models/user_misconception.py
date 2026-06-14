@@ -13,7 +13,7 @@ class UserMisconception(Base):
     __tablename__ = "user_misconceptions"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
 
     # The concept/topic tag this misconception belongs to
     # e.g. "boolean_algebra", "karnaugh_map", "flip_flop"

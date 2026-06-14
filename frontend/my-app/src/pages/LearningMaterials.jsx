@@ -60,6 +60,15 @@ export default function LearningMaterials({ user, onBack, onOpenResource }) {
 
   useEffect(() => { loadInitial(); }, [loadInitial]);
 
+  // Fix #4: refresh recommendations when the user navigates back from ResourceViewer
+  useEffect(() => {
+    const handleFocus = () => {
+      if (tab === TAB_RECOMMENDED) loadInitial();
+    };
+    window.addEventListener("focus", handleFocus);
+    return () => window.removeEventListener("focus", handleFocus);
+  }, [loadInitial, tab]);
+
   // ── Fetch next page for a topic and append ─────────────────────────────────
   const loadMoreForTopic = async (topicName) => {
     setLoadingMore((prev) => ({ ...prev, [topicName]: true }));
@@ -200,10 +209,40 @@ export default function LearningMaterials({ user, onBack, onOpenResource }) {
                 <Loader2 className="w-4 h-4 animate-spin" /> Loading recommendations…
               </div>
             )}
-            {error && <p className="text-red-600 dark:text-red-400">{error}</p>}
+            {error && !error.includes("complete") && (
+              <p className="text-red-600 dark:text-red-400">{error}</p>
+            )}
             {!loading && !error && topics.length === 0 && (
-              <div className="p-6 rounded-xl bg-gray-50 border border-gray-200 dark:bg-slate-800/50 dark:border-slate-700 transition-colors">
-                <p>No matching materials found yet.</p>
+              <div className="p-8 rounded-2xl bg-gray-50 border border-gray-200 dark:bg-slate-800/50 dark:border-slate-700 transition-colors text-center max-w-md mx-auto">
+                <div className="text-4xl mb-3">🎓</div>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+                  Almost there!
+                </h3>
+                <p className="text-gray-500 dark:text-slate-400 text-sm leading-relaxed mb-4">
+                  To unlock personalised learning materials, please complete both steps first:
+                </p>
+                <ol className="text-left text-sm space-y-2 mb-5">
+                  <li className={`flex items-center gap-2 ${(style && style !== "Not set") ? "text-green-600 dark:text-green-400" : "text-gray-600 dark:text-slate-300"}`}>
+                    <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${(style && style !== "Not set") ? "bg-green-100 dark:bg-green-500/20" : "bg-gray-200 dark:bg-slate-700"}`}>
+                      {(style && style !== "Not set") ? "✓" : "1"}
+                    </span>
+                    VARK Learning Style Quiz
+                    {(style && style !== "Not set") && <span className="ml-auto text-xs">Done ✓</span>}
+                  </li>
+                  <li className={`flex items-center gap-2 ${(level && level !== "Not set") ? "text-green-600 dark:text-green-400" : "text-gray-600 dark:text-slate-300"}`}>
+                    <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${(level && level !== "Not set") ? "bg-green-100 dark:bg-green-500/20" : "bg-gray-200 dark:bg-slate-700"}`}>
+                      {(level && level !== "Not set") ? "✓" : "2"}
+                    </span>
+                    Digital Logic Assessment
+                    {(level && level !== "Not set") && <span className="ml-auto text-xs">Done ✓</span>}
+                  </li>
+                </ol>
+                <button
+                  onClick={onBack}
+                  className="px-5 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-white text-sm font-semibold rounded-xl transition shadow-lg shadow-cyan-500/20"
+                >
+                  Go to Dashboard →
+                </button>
               </div>
             )}
 
