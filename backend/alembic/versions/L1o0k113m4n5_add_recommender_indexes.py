@@ -12,6 +12,15 @@ and 519 resources the hottest tables (user_resource_feedback,
 user_learning_resources) can have 100 k+ rows.  These indexes convert each
 seq scan into an O(log n) B-tree lookup.
 
+Idempotency note (2026-06-19)
+──────────────────────────────
+This migration uses raw `CREATE INDEX IF NOT EXISTS` / `DROP INDEX IF EXISTS`
+via op.execute() instead of op.create_index()/op.drop_index().  Alembic's
+op.create_index() does NOT support an `if_not_exists` flag in this version —
+passing postgresql_if_not_exists raised ArgumentError.  Raw SQL is the
+correct and portable way to make this idempotent, since the database was
+previously left in a partially-applied state by an earlier failed deploy.
+
 Index-by-index rationale
 ─────────────────────────
 1.  ix_ulr_user_id
@@ -58,84 +67,63 @@ depends_on = None
 
 
 def upgrade():
-    # NOTE: postgresql_if_not_exists=True makes every CREATE INDEX idempotent.
-    # This migration was previously re-run after a failed deploy attempt had
-    # already created some of these indexes, causing DuplicateTable errors.
-    # if_not_exists lets Alembic safely re-apply this migration on a database
-    # that already has some (or all) of these indexes from a prior partial run.
+    # Raw SQL with IF NOT EXISTS — safe to re-run even if some/all of these
+    # indexes already exist from a prior partial deploy.
 
     # ── user_learning_resources ────────────────────────────────────────────
-    op.create_index(
-        'ix_ulr_user_id',
-        'user_learning_resources',
-        ['user_id'],
-        postgresql_if_not_exists=True,
+    op.execute(
+        "CREATE INDEX IF NOT EXISTS ix_ulr_user_id "
+        "ON user_learning_resources (user_id)"
     )
-    op.create_index(
-        'ix_ulr_resource_id',
-        'user_learning_resources',
-        ['learning_resource_id'],
-        postgresql_if_not_exists=True,
+    op.execute(
+        "CREATE INDEX IF NOT EXISTS ix_ulr_resource_id "
+        "ON user_learning_resources (learning_resource_id)"
     )
 
     # ── user_resource_feedback ─────────────────────────────────────────────
-    op.create_index(
-        'ix_urf_user_id',
-        'user_resource_feedback',
-        ['user_id'],
-        postgresql_if_not_exists=True,
+    op.execute(
+        "CREATE INDEX IF NOT EXISTS ix_urf_user_id "
+        "ON user_resource_feedback (user_id)"
     )
-    op.create_index(
-        'ix_urf_resource_id',
-        'user_resource_feedback',
-        ['learning_resource_id'],
-        postgresql_if_not_exists=True,
+    op.execute(
+        "CREATE INDEX IF NOT EXISTS ix_urf_resource_id "
+        "ON user_resource_feedback (learning_resource_id)"
     )
     # Composite index — most critical; covers the 2-column WHERE pattern
-    op.create_index(
-        'ix_urf_user_resource',
-        'user_resource_feedback',
-        ['user_id', 'learning_resource_id'],
-        postgresql_if_not_exists=True,
+    op.execute(
+        "CREATE INDEX IF NOT EXISTS ix_urf_user_resource "
+        "ON user_resource_feedback (user_id, learning_resource_id)"
     )
 
     # ── learning_resources ─────────────────────────────────────────────────
-    op.create_index(
-        'ix_lr_difficulty',
-        'learning_resources',
-        ['difficulty'],
-        postgresql_if_not_exists=True,
+    op.execute(
+        "CREATE INDEX IF NOT EXISTS ix_lr_difficulty "
+        "ON learning_resources (difficulty)"
     )
-    op.create_index(
-        'ix_lr_vark_style',
-        'learning_resources',
-        ['vark_style'],
-        postgresql_if_not_exists=True,
+    op.execute(
+        "CREATE INDEX IF NOT EXISTS ix_lr_vark_style "
+        "ON learning_resources (vark_style)"
     )
 
     # ── user_misconceptions ────────────────────────────────────────────────
-    op.create_index(
-        'ix_um_user_id',
-        'user_misconceptions',
-        ['user_id'],
-        postgresql_if_not_exists=True,
+    op.execute(
+        "CREATE INDEX IF NOT EXISTS ix_um_user_id "
+        "ON user_misconceptions (user_id)"
     )
     # Composite: covers ORDER BY count DESC after the user_id filter
-    op.create_index(
-        'ix_um_user_count',
-        'user_misconceptions',
-        ['user_id', 'count'],
-        postgresql_if_not_exists=True,
+    op.execute(
+        "CREATE INDEX IF NOT EXISTS ix_um_user_count "
+        "ON user_misconceptions (user_id, count)"
     )
 
 
 def downgrade():
-    op.drop_index('ix_um_user_count',    table_name='user_misconceptions', postgresql_if_exists=True)
-    op.drop_index('ix_um_user_id',       table_name='user_misconceptions', postgresql_if_exists=True)
-    op.drop_index('ix_lr_vark_style',    table_name='learning_resources', postgresql_if_exists=True)
-    op.drop_index('ix_lr_difficulty',    table_name='learning_resources', postgresql_if_exists=True)
-    op.drop_index('ix_urf_user_resource',table_name='user_resource_feedback', postgresql_if_exists=True)
-    op.drop_index('ix_urf_resource_id',  table_name='user_resource_feedback', postgresql_if_exists=True)
-    op.drop_index('ix_urf_user_id',      table_name='user_resource_feedback', postgresql_if_exists=True)
-    op.drop_index('ix_ulr_resource_id',  table_name='user_learning_resources', postgresql_if_exists=True)
-    op.drop_index('ix_ulr_user_id',      table_name='user_learning_resources', postgresql_if_exists=True)
+    op.execute("DROP INDEX IF EXISTS ix_um_user_count")
+    op.execute("DROP INDEX IF EXISTS ix_um_user_id")
+    op.execute("DROP INDEX IF EXISTS ix_lr_vark_style")
+    op.execute("DROP INDEX IF EXISTS ix_lr_difficulty")
+    op.execute("DROP INDEX IF EXISTS ix_urf_user_resource")
+    op.execute("DROP INDEX IF EXISTS ix_urf_resource_id")
+    op.execute("DROP INDEX IF EXISTS ix_urf_user_id")
+    op.execute("DROP INDEX IF EXISTS ix_ulr_resource_id")
+    op.execute("DROP INDEX IF EXISTS ix_ulr_user_id")
