@@ -2,7 +2,12 @@
 app/core/jwt.py
 ───────────────
 JWT token creation and verification.
-Uses the JWT_SECRET from .env — never hardcode this.
+Uses the SECRET_KEY from .env — never hardcode this.
+
+Note: this used to read from JWT_SECRET, which didn't match the variable
+name main.py validates at startup (SECRET_KEY). Renamed to SECRET_KEY so
+both checks agree and the app doesn't fail startup even when the secret
+IS set, just under the other name.
 """
 import os
 from datetime import datetime, timedelta, timezone
@@ -12,10 +17,10 @@ from jose import JWTError, jwt
 from fastapi import HTTPException, status
 
 # ── Config ────────────────────────────────────────────────────────────────────
-_raw_secret = os.getenv("JWT_SECRET")
+_raw_secret = os.getenv("SECRET_KEY")
 if not _raw_secret:
     raise RuntimeError(
-        "JWT_SECRET environment variable is not set. "
+        "SECRET_KEY environment variable is not set. "
         "Set it to a long random string before starting the server."
     )
 SECRET_KEY = _raw_secret
