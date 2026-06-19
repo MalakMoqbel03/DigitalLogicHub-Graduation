@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import {
   Home, BookOpen, ExternalLink, ChevronDown, ChevronUp,
-  Loader2, Bookmark, BookmarkCheck, Trash2
+  Loader2, Bookmark, BookmarkCheck, Trash2, Sparkles
 } from "lucide-react";
 import api from "../services/api";
 import ThemeToggle from "../components/ThemeToggle";
@@ -22,6 +22,9 @@ export default function LearningMaterials({ user, onBack, onOpenResource }) {
   // per-topic pagination: { [topicName]: { pages: [[...resources]], currentPageIdx, hasMore } }
   const [topicPagination, setTopicPagination] = useState({});
   const [loadingMore, setLoadingMore] = useState({});
+
+  // ── AI reasons (loaded async after resources appear) ─────────────────────
+  const [reasons, setReasons] = useState({});   // { [resource_id]: string }
 
   // ── Bookmarks tab ──────────────────────────────────────────────────────────
   const [bookmarks, setBookmarks]           = useState([]);
@@ -51,6 +54,30 @@ export default function LearningMaterials({ user, onBack, onOpenResource }) {
         };
       }
       setTopicPagination(pag);
+
+      // ── Fetch AI reasons asynchronously AFTER resources are already shown ──
+      // Resources render immediately; reasons trickle in and fill the ✦ pills.
+      const allVisible = incoming.flatMap((t) => t.resources).slice(0, 20);
+      if (allVisible.length > 0) {
+        api.post("/recommender/reasons", {
+          user_id: user.id,
+          resources: allVisible.map((r) => ({
+            id: r.id,
+            title: r.title,
+            topic: r.topic,
+            resource_type: r.resource_type,
+            vark_style: r.vark_style,
+            cb_score: r.cb_score,
+            cf_score: r.cf_score,
+            hybrid_score: r.hybrid_score,
+          })),
+        })
+          .then((rRes) => {
+            const reasonMap = rRes.data.reasons || {};
+            setReasons((prev) => ({ ...prev, ...reasonMap }));
+          })
+          .catch(() => {}); // reasons are non-critical — fail silently
+      }
     } catch (err) {
       setError(err.response?.data?.detail || err.message || "Failed to load recommendations");
     } finally {
@@ -271,7 +298,7 @@ export default function LearningMaterials({ user, onBack, onOpenResource }) {
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {(currentResources || []).map((r) => (
-                        <ResourceCard key={r.id} resource={r} onOpen={onOpenResource} />
+                        <ResourceCard key={r.id} resource={r} onOpen={onOpenResource} reason={reasons[r.id]} />
                       ))}
                     </div>
 
@@ -343,6 +370,7 @@ export default function LearningMaterials({ user, onBack, onOpenResource }) {
                   key={r.id}
                   resource={r}
                   onOpen={onOpenResource}
+                  reason={reasons[r.id]}
                   actionOverride={
                     <div className="mt-auto flex gap-2 flex-wrap">
                       <button
@@ -369,7 +397,7 @@ export default function LearningMaterials({ user, onBack, onOpenResource }) {
   );
 }
 
-function ResourceCard({ resource: r, onOpen, actionOverride }) {
+function ResourceCard({ resource: r, onOpen, actionOverride, reason }) {
   const colors = getTopicColors(r.topic);
   const prettyTopic = r.topic ? r.topic.replace(/_/g, " ") : "";
 
@@ -397,6 +425,18 @@ function ResourceCard({ resource: r, onOpen, actionOverride }) {
         <p className="text-gray-600 dark:text-slate-300 text-sm mb-4 line-clamp-3 flex-1">
           {r.description}
         </p>
+      )}
+
+      {reason && (
+        <div className="flex items-start gap-1.5 mb-3 px-3 py-2
+                        bg-indigo-50 dark:bg-indigo-500/10
+                        border border-indigo-100 dark:border-indigo-500/20
+                        rounded-xl">
+          <Sparkles className="w-3.5 h-3.5 text-indigo-400 dark:text-indigo-400 mt-0.5 flex-shrink-0" />
+          <p className="text-indigo-700 dark:text-indigo-300 text-xs leading-snug">
+            {reason}
+          </p>
+        </div>
       )}
 
       {actionOverride || (
