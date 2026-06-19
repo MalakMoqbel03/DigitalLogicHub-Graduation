@@ -3,7 +3,7 @@ import axios from "axios";
 const SESSION_KEY = "currentSession";
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "https://digitallogichub-graduation-production.up.railway.app",
+  baseURL: "https://digitallogichub-graduation-production.up.railway.app",
   headers: {
     "Content-Type": "application/json",
   },
