@@ -58,16 +58,24 @@ depends_on = None
 
 
 def upgrade():
+    # NOTE: postgresql_if_not_exists=True makes every CREATE INDEX idempotent.
+    # This migration was previously re-run after a failed deploy attempt had
+    # already created some of these indexes, causing DuplicateTable errors.
+    # if_not_exists lets Alembic safely re-apply this migration on a database
+    # that already has some (or all) of these indexes from a prior partial run.
+
     # ── user_learning_resources ────────────────────────────────────────────
     op.create_index(
         'ix_ulr_user_id',
         'user_learning_resources',
         ['user_id'],
+        postgresql_if_not_exists=True,
     )
     op.create_index(
         'ix_ulr_resource_id',
         'user_learning_resources',
         ['learning_resource_id'],
+        postgresql_if_not_exists=True,
     )
 
     # ── user_resource_feedback ─────────────────────────────────────────────
@@ -75,17 +83,20 @@ def upgrade():
         'ix_urf_user_id',
         'user_resource_feedback',
         ['user_id'],
+        postgresql_if_not_exists=True,
     )
     op.create_index(
         'ix_urf_resource_id',
         'user_resource_feedback',
         ['learning_resource_id'],
+        postgresql_if_not_exists=True,
     )
     # Composite index — most critical; covers the 2-column WHERE pattern
     op.create_index(
         'ix_urf_user_resource',
         'user_resource_feedback',
         ['user_id', 'learning_resource_id'],
+        postgresql_if_not_exists=True,
     )
 
     # ── learning_resources ─────────────────────────────────────────────────
@@ -93,11 +104,13 @@ def upgrade():
         'ix_lr_difficulty',
         'learning_resources',
         ['difficulty'],
+        postgresql_if_not_exists=True,
     )
     op.create_index(
         'ix_lr_vark_style',
         'learning_resources',
         ['vark_style'],
+        postgresql_if_not_exists=True,
     )
 
     # ── user_misconceptions ────────────────────────────────────────────────
@@ -105,22 +118,24 @@ def upgrade():
         'ix_um_user_id',
         'user_misconceptions',
         ['user_id'],
+        postgresql_if_not_exists=True,
     )
     # Composite: covers ORDER BY count DESC after the user_id filter
     op.create_index(
         'ix_um_user_count',
         'user_misconceptions',
         ['user_id', 'count'],
+        postgresql_if_not_exists=True,
     )
 
 
 def downgrade():
-    op.drop_index('ix_um_user_count',    table_name='user_misconceptions')
-    op.drop_index('ix_um_user_id',       table_name='user_misconceptions')
-    op.drop_index('ix_lr_vark_style',    table_name='learning_resources')
-    op.drop_index('ix_lr_difficulty',    table_name='learning_resources')
-    op.drop_index('ix_urf_user_resource',table_name='user_resource_feedback')
-    op.drop_index('ix_urf_resource_id',  table_name='user_resource_feedback')
-    op.drop_index('ix_urf_user_id',      table_name='user_resource_feedback')
-    op.drop_index('ix_ulr_resource_id',  table_name='user_learning_resources')
-    op.drop_index('ix_ulr_user_id',      table_name='user_learning_resources')
+    op.drop_index('ix_um_user_count',    table_name='user_misconceptions', postgresql_if_exists=True)
+    op.drop_index('ix_um_user_id',       table_name='user_misconceptions', postgresql_if_exists=True)
+    op.drop_index('ix_lr_vark_style',    table_name='learning_resources', postgresql_if_exists=True)
+    op.drop_index('ix_lr_difficulty',    table_name='learning_resources', postgresql_if_exists=True)
+    op.drop_index('ix_urf_user_resource',table_name='user_resource_feedback', postgresql_if_exists=True)
+    op.drop_index('ix_urf_resource_id',  table_name='user_resource_feedback', postgresql_if_exists=True)
+    op.drop_index('ix_urf_user_id',      table_name='user_resource_feedback', postgresql_if_exists=True)
+    op.drop_index('ix_ulr_resource_id',  table_name='user_learning_resources', postgresql_if_exists=True)
+    op.drop_index('ix_ulr_user_id',      table_name='user_learning_resources', postgresql_if_exists=True)
