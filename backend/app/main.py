@@ -55,9 +55,18 @@ raw_origins = os.getenv(
 
 allowed_origins = [o.strip() for o in raw_origins.split(",") if o.strip()]
 
+# Also allow any Vercel deployment of this project (production + preview URLs
+# like *-git-main-*.vercel.app and *-<hash>-*.vercel.app), plus localhost.
+# Without this, auth requests from preview deployments are blocked by CORS.
+allowed_origin_regex = os.getenv(
+    "CORS_ORIGIN_REGEX",
+    r"https://.*\.vercel\.app|http://localhost(:\d+)?",
+)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
+    allow_origin_regex=allowed_origin_regex,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -174,7 +174,17 @@ def register(body: RegisterRequest, db: Session = Depends(get_db)):
     db.add(new_user)
     db.commit()
 
-    send_verification_email(new_user.email, code)
+    email_sent = send_verification_email(new_user.email, code)
+    if not email_sent:
+        # The account row exists (code saved in DB), but the email never went
+        # out — usually a bad/missing Gmail App Password (EMAIL_PASS) on the
+        # server. Surface it instead of pretending success, so the user isn't
+        # left waiting for a code that will never arrive.
+        raise HTTPException(
+            status_code=502,
+            detail="Account created but the verification email could not be sent. "
+                   "Please try again shortly or contact support.",
+        )
     return {"message": "Verification code sent"}
 
 
