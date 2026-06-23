@@ -15,4 +15,4 @@ build/
 
 # Docker
 pgdata/
-node_modules/
+node_modules/client_secret.json

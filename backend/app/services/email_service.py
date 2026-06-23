@@ -1,100 +1,120 @@
 """
-email_service.py — sends the verification code email.
+email_service.py — sends the verification code email via the Gmail API.
 
-Uses Brevo's transactional email HTTPS API (https://www.brevo.com). Brevo is
-used instead of raw SMTP because Railway blocks outbound SMTP ports below the
-Pro plan, and unlike Resend's free tier it can send to ANY recipient once you
-verify a single sender address — no domain purchase required.
+Sends as your own Gmail account (EMAIL_FROM) using an OAuth2 refresh token.
+All traffic is HTTPS (port 443), which Railway allows — and there is no
+third-party activation gate, unlike Brevo/SendGrid. The server only needs
+httpx; the heavier google libraries are used once, locally, to mint the
+refresh token (see get_gmail_token.py).
 
 Required environment variables (set these in Railway → Variables):
-    BREVO_API_KEY    API key from Brevo → Settings → SMTP & API → API Keys
-                     (it starts with "xkeysib-").
-    EMAIL_FROM       The sender address. This MUST be a sender you have verified
-                     in Brevo (Settings → Senders, Domains & Dedicated IPs →
-                     add the address and click the confirmation link Brevo
-                     emails you). e.g. EMAIL_FROM="digitallogichub1@gmail.com".
+    GMAIL_CLIENT_ID       OAuth client ID from Google Cloud Console
+    GMAIL_CLIENT_SECRET   OAuth client secret
+    GMAIL_REFRESH_TOKEN   Long-lived refresh token (from get_gmail_token.py)
+    EMAIL_FROM            The Gmail address you authorized, e.g.
+                          digitallogichub1@gmail.com
 Optional:
-    EMAIL_FROM_NAME  Display name for the sender (default "DigitalLogicHub").
+    EMAIL_FROM_NAME       Display name (default "DigitalLogicHub")
 """
 
+import base64
 import logging
-import re
+from email.mime.text import MIMEText
 from os import getenv
 from dotenv import load_dotenv
 import httpx
 
 load_dotenv()
 
-BREVO_API_KEY = getenv("BREVO_API_KEY")
+CLIENT_ID = getenv("GMAIL_CLIENT_ID")
+CLIENT_SECRET = getenv("GMAIL_CLIENT_SECRET")
+REFRESH_TOKEN = getenv("GMAIL_REFRESH_TOKEN")
 EMAIL_FROM = getenv("EMAIL_FROM", "")
 EMAIL_FROM_NAME = getenv("EMAIL_FROM_NAME", "DigitalLogicHub")
-BREVO_URL = "https://api.brevo.com/v3/smtp/email"
+
+TOKEN_URL = "https://oauth2.googleapis.com/token"
+SEND_URL = "https://gmail.googleapis.com/gmail/v1/users/me/messages/send"
 
 logger = logging.getLogger(__name__)
 
 
-def _parse_sender(raw: str):
-    """Accept either 'email@x.com' or 'Name <email@x.com>' and return
-    (name, email)."""
-    raw = (raw or "").strip()
-    match = re.match(r"^(.*?)<([^>]+)>$", raw)
-    if match:
-        name = match.group(1).strip().strip('"') or EMAIL_FROM_NAME
-        return name, match.group(2).strip()
-    return EMAIL_FROM_NAME, raw
+def _get_access_token() -> str | None:
+    """Exchange the long-lived refresh token for a short-lived access token."""
+    try:
+        resp = httpx.post(
+            TOKEN_URL,
+            data={
+                "client_id": CLIENT_ID,
+                "client_secret": CLIENT_SECRET,
+                "refresh_token": REFRESH_TOKEN,
+                "grant_type": "refresh_token",
+            },
+            timeout=15,
+        )
+    except httpx.RequestError as e:
+        logger.error(f"Network error getting Gmail access token: {e}")
+        return None
+
+    if resp.status_code != 200:
+        logger.error(
+            f"Could not refresh Gmail access token (HTTP {resp.status_code}): "
+            f"{resp.text} — check GMAIL_CLIENT_ID / GMAIL_CLIENT_SECRET / "
+            f"GMAIL_REFRESH_TOKEN."
+        )
+        return None
+    return resp.json().get("access_token")
 
 
 def send_verification_email(to_email: str, code: str) -> bool:
     """
-    Send the 6-digit verification code via Brevo's HTTP API.
+    Send the 6-digit verification code via the Gmail API.
     Returns True on success, False on any failure (the code is saved in the DB
     regardless, so the user can request a resend).
     """
-    if not BREVO_API_KEY:
+    if not (CLIENT_ID and CLIENT_SECRET and REFRESH_TOKEN):
         logger.error(
-            "BREVO_API_KEY is missing — email sending is disabled. Create a key "
-            "in Brevo → Settings → SMTP & API → API Keys, add it in "
-            "Railway → Variables, then redeploy."
+            "Gmail OAuth is not configured — set GMAIL_CLIENT_ID, "
+            "GMAIL_CLIENT_SECRET and GMAIL_REFRESH_TOKEN in Railway → Variables "
+            "(run get_gmail_token.py once to obtain the refresh token)."
         )
         return False
-
-    sender_name, sender_email = _parse_sender(EMAIL_FROM)
-    if not sender_email:
-        logger.error(
-            "EMAIL_FROM is missing — set it to a sender address you have "
-            "verified in Brevo (Settings → Senders), then redeploy."
-        )
+    if not EMAIL_FROM:
+        logger.error("EMAIL_FROM is missing — set it to your Gmail address.")
         return False
 
-    payload = {
-        "sender": {"name": sender_name, "email": sender_email},
-        "to": [{"email": to_email}],
-        "subject": "DigitalLogicHub — Email Verification",
-        "textContent": (
-            f"Your DigitalLogicHub verification code is: {code}\n\n"
-            f"This code expires in 15 minutes."
-        ),
-    }
-    headers = {
-        "api-key": BREVO_API_KEY,
-        "Content-Type": "application/json",
-        "accept": "application/json",
-    }
+    access_token = _get_access_token()
+    if not access_token:
+        return False
+
+    msg = MIMEText(
+        f"Your DigitalLogicHub verification code is: {code}\n\n"
+        f"This code expires in 15 minutes."
+    )
+    msg["Subject"] = "DigitalLogicHub — Email Verification"
+    msg["From"] = f"{EMAIL_FROM_NAME} <{EMAIL_FROM}>"
+    msg["To"] = to_email
+    raw = base64.urlsafe_b64encode(msg.as_bytes()).decode()
 
     try:
-        resp = httpx.post(BREVO_URL, json=payload, headers=headers, timeout=15)
+        resp = httpx.post(
+            SEND_URL,
+            headers={
+                "Authorization": f"Bearer {access_token}",
+                "Content-Type": "application/json",
+            },
+            json={"raw": raw},
+            timeout=15,
+        )
     except httpx.RequestError as e:
-        logger.error(f"Network error calling Brevo for {to_email}: {e}")
+        logger.error(f"Network error calling Gmail API for {to_email}: {e}")
         return False
 
     if resp.status_code in (200, 201):
-        logger.info(f"Verification email sent to {to_email} via Brevo")
+        logger.info(f"Verification email sent to {to_email} via Gmail API")
         return True
 
-    # Brevo returns a JSON error body, e.g. an invalid key or an unverified
-    # sender address.
     logger.error(
-        f"Brevo rejected email to {to_email} "
+        f"Gmail API rejected email to {to_email} "
         f"(HTTP {resp.status_code}): {resp.text}"
     )
     return False
