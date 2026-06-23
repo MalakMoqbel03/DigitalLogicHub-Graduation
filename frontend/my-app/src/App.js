@@ -124,6 +124,10 @@ export default function App() {
         onSignIn={handleSignIn}
         onSwitchToSignUp={() => setAuthState("signup")}
         onForgotPassword={() => setAuthState("forgot")}
+        onNeedVerification={(email) => {
+          setUser({ email });
+          setAuthState("verify");
+        }}
       />
     );
   }

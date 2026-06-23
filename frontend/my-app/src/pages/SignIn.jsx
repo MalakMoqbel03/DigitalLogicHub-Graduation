@@ -8,6 +8,7 @@ import {
   ArrowRight,
   Cpu,
   XCircle,
+  MailCheck,
 } from "lucide-react";
 import ThemeToggle from "../components/ThemeToggle";
 
@@ -32,6 +33,7 @@ export default function SignIn({
   onSignIn,
   onSwitchToSignUp,
   onForgotPassword,
+  onNeedVerification,
 }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,9 +41,12 @@ export default function SignIn({
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  // True when login fails specifically because the account isn't verified yet.
+  const [needsVerification, setNeedsVerification] = useState(false);
 
   const handleLogin = async () => {
     setError("");
+    setNeedsVerification(false);
     setLoading(true);
 
     try {
@@ -52,10 +57,34 @@ export default function SignIn({
 
       onSignIn(res.data.user);
     } catch (err) {
-      setError(err.response?.data?.detail || "Login failed");
+      const detail = err.response?.data?.detail || "Login failed";
+      setError(detail);
+      // Backend returns "Please verify your email before logging in" (401)
+      // for unverified accounts — show the resend button in that case.
+      if (detail.toLowerCase().includes("verify")) {
+        setNeedsVerification(true);
+      }
     }
 
     setLoading(false);
+  };
+
+  // Send a fresh verification code, then route to the verification page.
+  const handleSendVerification = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      await api.post("/auth/resend", { email: email.toLowerCase() });
+    } catch (err) {
+      // 429 just means a code was sent very recently — still fine to proceed.
+      if (err.response?.status !== 429) {
+        setError(err.response?.data?.detail || "Couldn't send the verification email.");
+        setLoading(false);
+        return;
+      }
+    }
+    setLoading(false);
+    onNeedVerification?.(email.toLowerCase());
   };
 
   return (
@@ -90,6 +119,22 @@ export default function SignIn({
             <XCircle className="w-4 h-4" />
             {error}
           </div>
+        )}
+
+        {needsVerification && (
+          <button
+            onClick={handleSendVerification}
+            disabled={loading}
+            className="w-full mb-4 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold rounded-xl hover:from-green-400 hover:to-emerald-400 transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-green-500/25"
+          >
+            {loading ? (
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            ) : (
+              <>
+                <MailCheck className="w-5 h-5" /> Send verification email
+              </>
+            )}
+          </button>
         )}
 
         <div className="space-y-4">
