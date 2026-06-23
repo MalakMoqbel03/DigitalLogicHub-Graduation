@@ -1,64 +1,77 @@
-import smtplib
+"""
+email_service.py — sends the verification code email.
+
+Uses Resend's HTTPS API (https://resend.com) instead of raw SMTP, because
+Railway blocks outbound SMTP ports (587/465) on all plans below Pro. An HTTPS
+API call goes out over port 443, which is never blocked.
+
+Required environment variables (set these in Railway → Variables):
+    RESEND_API_KEY   API key from https://resend.com/api-keys (starts with "re_")
+    EMAIL_FROM       Sender address. Until you verify your own domain in Resend,
+                     use "onboarding@resend.dev" — but note that the test sender
+                     can ONLY deliver to the email you signed up to Resend with.
+                     To send codes to any student email, add and verify a domain
+                     at https://resend.com/domains, then set e.g.
+                     EMAIL_FROM="DigitalLogicHub <noreply@yourdomain.com>".
+"""
+
 import logging
-from email.mime.text import MIMEText
 from os import getenv
 from dotenv import load_dotenv
+import httpx
 
-# Load .env variables
 load_dotenv()
 
-EMAIL = getenv("EMAIL_USER")
-PASSWORD = getenv("EMAIL_PASS")
-
-SMTP_SERVER = getenv("SMTP_SERVER", "smtp.gmail.com")
-SMTP_PORT = int(getenv("SMTP_PORT", 587))
+RESEND_API_KEY = getenv("RESEND_API_KEY")
+EMAIL_FROM = getenv("EMAIL_FROM", "onboarding@resend.dev")
+RESEND_URL = "https://api.resend.com/emails"
 
 logger = logging.getLogger(__name__)
 
 
 def send_verification_email(to_email: str, code: str) -> bool:
     """
-    Bug #1 fix: wrapped entire SMTP session in try/except so failures are
-    logged clearly instead of crashing the server silently.
-    Returns True on success, False on any failure (caller can still respond
-    to the user — the code is saved in the DB regardless).
+    Send the 6-digit verification code via Resend's HTTP API.
+    Returns True on success, False on any failure (the code is saved in the DB
+    regardless, so the user can request a resend).
     """
-    # Bug #7 fix: clear, actionable error when credentials are missing
-    if not EMAIL or not PASSWORD:
+    if not RESEND_API_KEY:
         logger.error(
-            "EMAIL_USER or EMAIL_PASS is missing from .env — "
-            "email sending is disabled. Add them and restart the server."
+            "RESEND_API_KEY is missing — email sending is disabled. "
+            "Create a key at https://resend.com/api-keys and add it in "
+            "Railway → Variables, then redeploy."
         )
         return False
 
-    msg = MIMEText(
-        f"Your DigitalLogicHub verification code is: {code}\n\n"
-        f"This code expires in 15 minutes."
-    )
-    msg["Subject"] = "DigitalLogicHub — Email Verification"
-    msg["From"] = EMAIL
-    msg["To"] = to_email
+    payload = {
+        "from": EMAIL_FROM,
+        "to": [to_email],
+        "subject": "DigitalLogicHub — Email Verification",
+        "text": (
+            f"Your DigitalLogicHub verification code is: {code}\n\n"
+            f"This code expires in 15 minutes."
+        ),
+    }
+    headers = {
+        "Authorization": f"Bearer {RESEND_API_KEY}",
+        "Content-Type": "application/json",
+    }
 
     try:
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-        server.starttls()
-        server.login(EMAIL, PASSWORD)
-        server.sendmail(EMAIL, to_email, msg.as_string())
-        server.quit()
-        logger.info(f"Verification email sent to {to_email}")
+        resp = httpx.post(RESEND_URL, json=payload, headers=headers, timeout=15)
+    except httpx.RequestError as e:
+        logger.error(f"Network error calling Resend for {to_email}: {e}")
+        return False
+
+    if resp.status_code in (200, 201):
+        logger.info(f"Verification email sent to {to_email} via Resend")
         return True
 
-    except smtplib.SMTPAuthenticationError:
-        logger.error(
-            "SMTP authentication failed — EMAIL_PASS must be a Gmail App Password "
-            "(not your regular password). Generate one at "
-            "https://myaccount.google.com/apppasswords"
-        )
-    except smtplib.SMTPRecipientsRefused:
-        logger.error(f"Recipient address refused by server: {to_email}")
-    except smtplib.SMTPException as e:
-        logger.error(f"SMTP error sending to {to_email}: {e}")
-    except OSError as e:
-        logger.error(f"Network error sending to {to_email}: {e}")
-
+    # Resend returns a JSON error body explaining what went wrong, e.g. an
+    # invalid API key, an unverified sender domain, or a recipient the test
+    # sender isn't allowed to email.
+    logger.error(
+        f"Resend rejected email to {to_email} "
+        f"(HTTP {resp.status_code}): {resp.text}"
+    )
     return False
