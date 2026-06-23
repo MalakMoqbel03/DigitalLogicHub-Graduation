@@ -213,11 +213,21 @@ def resend_verification(body: ResendRequest, db: Session = Depends(get_db)):
             )
 
     code = generate_verification_code()
+
+    # Try to send BEFORE recording the code / timestamp, so a failed send does
+    # not leave a misleading "please wait N seconds" rate-limit behind.
+    email_sent = send_verification_email(user.email, code)
+    if not email_sent:
+        raise HTTPException(
+            status_code=502,
+            detail="The verification email could not be sent. Email is not "
+                   "configured correctly on the server (check RESEND_API_KEY).",
+        )
+
     user.verification_code = code
     user.verification_code_sent_at = datetime.now(tz=timezone.utc)
     db.commit()
 
-    send_verification_email(user.email, code)
     return {"message": "Verification code resent"}
 
 
