@@ -220,8 +220,9 @@ def resend_verification(body: ResendRequest, db: Session = Depends(get_db)):
     if not email_sent:
         raise HTTPException(
             status_code=502,
-            detail="The verification email could not be sent. Email is not "
-                   "configured correctly on the server (check RESEND_API_KEY).",
+            detail="The verification email could not be sent. Please try again "
+                   "shortly. (If this persists, email is misconfigured on the "
+                   "server — check the deploy logs.)",
         )
 
     user.verification_code = code
