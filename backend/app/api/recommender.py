@@ -424,8 +424,12 @@ def get_topic_recommendations(
             for item in scored
         ]
 
-        # Cache for 1 hour — same TTL as the flat recommendations endpoint
-        cache_set(pool_cache_key, scored_dicts, ttl_seconds=3600)
+        # Cache for 1 hour — same TTL as the flat recommendations endpoint.
+        # Never cache an EMPTY pool: if the resource table was momentarily empty
+        # (e.g. before seeding), caching [] would keep returning nothing for an
+        # hour even after data is imported.
+        if scored_dicts:
+            cache_set(pool_cache_key, scored_dicts, ttl_seconds=3600)
 
     # ── Layer 2: group and slice (pure Python, instant) ─────────────────
     topics: dict = defaultdict(list)
