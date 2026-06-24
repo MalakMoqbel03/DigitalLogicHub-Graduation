@@ -59,7 +59,11 @@ export default function VerifyEmail({ email, onVerified, onBack }) {
       });
       setSuccess(res.data?.message || "Account verified successfully!");
       setTimeout(() => {
-        onVerified?.({ email: email.toLowerCase() });
+        // Pass the FULL user payload (which includes the JWT token) so the
+        // logged-in session is authenticated. Falling back to just the email
+        // would log the user in without a token, causing 403s on any
+        // authenticated request (e.g. submitting the VARK quiz).
+        onVerified?.(res.data?.user ?? { email: email.toLowerCase() });
       }, 1500);
     } catch (err) {
       setError(err.response?.data?.detail || "Invalid verification code. Please try again.");
