@@ -374,62 +374,80 @@ def get_topic_recommendations(
     """
     from collections import defaultdict
 
+    # NOTE: we intentionally do NOT 404 / 400 here. The page must always show
+    # materials, even for a brand-new, stale, or unknown session. If the account
+    # isn't fully set up we simply fall back to the catalogue below.
     user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+    style = normalize_style(user.learning_style) if user else None
+    level = normalize_level(user.level) if user else None
 
-    style = normalize_style(user.learning_style)
-    level = normalize_level(user.level)
-    if not style or not level:
-        raise HTTPException(
-            status_code=400,
-            detail="User must complete VARK quiz and assessment first"
-        )
+    def _serialize(r, *, method="browse", hybrid_score=0.0, cb_score=0.0, cf_score=0.0):
+        return {
+            "id":               r.id,
+            "title":            r.title,
+            "description":      r.description,
+            "topic":            r.topic,
+            "subtopic":         r.subtopic,
+            "resource_type":    r.resource_type,
+            "difficulty":       r.difficulty,
+            "vark_style":       r.vark_style,
+            "duration_minutes": r.duration_minutes,
+            "is_short":         r.is_short,
+            "source":           r.source,
+            "external_url":     r.external_url,
+            "tags":             r.tags,
+            "method":           method,
+            "hybrid_score":     hybrid_score,
+            "cb_score":         cb_score,
+            "cf_score":         cf_score,
+        }
 
-    # ── Layer 1: try to load the scored pool from Redis ───────────────────
-    pool_cache_key = f"topics_pool:{user_id}"
-    cached_pool = cache_get(pool_cache_key)
+    scored_dicts = []
 
-    if cached_pool is not None:
-        # Pool is a list of plain dicts (resources serialized for JSON storage)
-        scored_dicts = cached_pool
-    else:
-        # Cache miss — run the full hybrid recommender and store the result
-        scored = get_hybrid_recommendations(db=db, user=user, limit=200)
-        scored.sort(key=lambda item: item["resource"].id)
-        scored.sort(key=lambda item: item.get("hybrid_score", 0.0), reverse=True)
+    # ── Layer 1: personalised pool (only when the account is fully set up) ──
+    if user and style and level:
+        pool_cache_key = f"topics_pool:{user_id}"
+        cached_pool = cache_get(pool_cache_key)
+        if cached_pool is not None:
+            scored_dicts = cached_pool
+        else:
+            scored = get_hybrid_recommendations(db=db, user=user, limit=200)
+            scored.sort(key=lambda item: item["resource"].id)
+            scored.sort(key=lambda item: item.get("hybrid_score", 0.0), reverse=True)
+            scored_dicts = [
+                _serialize(
+                    item["resource"],
+                    method=item.get("method") or "hybrid",
+                    hybrid_score=item.get("hybrid_score", 0.0),
+                    cb_score=item.get("cb_score", 0.0),
+                    cf_score=item.get("cf_score", 0.0),
+                )
+                for item in scored
+            ]
+            # Never cache an EMPTY pool (would otherwise stick for an hour).
+            if scored_dicts:
+                cache_set(pool_cache_key, scored_dicts, ttl_seconds=3600)
 
-        # Serialize the pool to plain dicts so it can be stored in Redis as JSON.
-        # We store everything needed for the response + reason generation.
-        scored_dicts = [
-            {
-                "id":            item["resource"].id,
-                "title":         item["resource"].title,
-                "description":   item["resource"].description,
-                "topic":         item["resource"].topic,
-                "subtopic":      item["resource"].subtopic,
-                "resource_type": item["resource"].resource_type,
-                "difficulty":    item["resource"].difficulty,
-                "vark_style":    item["resource"].vark_style,
-                "duration_minutes": item["resource"].duration_minutes,
-                "is_short":      item["resource"].is_short,
-                "source":        item["resource"].source,
-                "external_url":  item["resource"].external_url,
-                "tags":          item["resource"].tags,
-                "method":        item.get("method"),
-                "hybrid_score":  item.get("hybrid_score", 0.0),
-                "cb_score":      item.get("cb_score", 0.0),
-                "cf_score":      item.get("cf_score", 0.0),
-            }
-            for item in scored
-        ]
-
-        # Cache for 1 hour — same TTL as the flat recommendations endpoint.
-        # Never cache an EMPTY pool: if the resource table was momentarily empty
-        # (e.g. before seeding), caching [] would keep returning nothing for an
-        # hour even after data is imported.
-        if scored_dicts:
-            cache_set(pool_cache_key, scored_dicts, ttl_seconds=3600)
+    # ── Guaranteed fallback: never show an empty page ──────────────────────
+    # If personalisation produced nothing — new/stale/unknown session, missing
+    # VARK/level, or an empty recommender result — show the catalogue instead,
+    # filtered to the user's level when known, otherwise everything.
+    if not scored_dicts:
+        resources = []
+        if level:
+            resources = (
+                db.query(LearningResource)
+                .filter(LearningResource.difficulty.ilike(level))
+                .order_by(LearningResource.id)
+                .all()
+            )
+        if not resources:
+            resources = (
+                db.query(LearningResource)
+                .order_by(LearningResource.id)
+                .all()
+            )
+        scored_dicts = [_serialize(r, method="browse") for r in resources]
 
     # ── Layer 2: group and slice (pure Python, instant) ─────────────────
     topics: dict = defaultdict(list)
@@ -466,9 +484,9 @@ def get_topic_recommendations(
 
     return {
         "user": {
-            "id": str(user.id),
-            "learning_style": user.learning_style,
-            "level": user.level,
+            "id": str(user.id) if user else str(user_id),
+            "learning_style": user.learning_style if user else None,
+            "level": user.level if user else None,
         },
         "page": page,
         "per_topic": per_topic,
