@@ -49,19 +49,6 @@ const VARK_LABEL = {
   kinesthetic:  "🛠  Kinesthetic",
 };
 
-function StatCard({ icon: Icon, label, value, sub, color = "text-cyan-600 dark:text-cyan-400" }) {
-  return (
-    <div className="bg-white border border-gray-200 dark:bg-slate-800/50 dark:border-slate-700 rounded-2xl p-5 flex flex-col gap-1 transition-colors">
-      <div className={`${color} mb-1`}>
-        <Icon className="w-5 h-5" />
-      </div>
-      <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
-      <p className="text-sm font-medium text-gray-600 dark:text-slate-300">{label}</p>
-      {sub && <p className="text-xs text-gray-400 dark:text-slate-500">{sub}</p>}
-      </div>
-  );
-}
-
 function MiniStat({ icon: Icon, label, value, color = "text-cyan-600 dark:text-cyan-400" }) {
   return (
     <div className="flex items-center gap-3 py-2.5">
