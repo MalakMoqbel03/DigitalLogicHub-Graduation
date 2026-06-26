@@ -76,7 +76,7 @@ export default function LearningMaterials({ user, onBack, onOpenResource }) {
             const reasonMap = rRes.data.reasons || {};
             setReasons((prev) => ({ ...prev, ...reasonMap }));
           })
-          .catch(() => {}); // reasons are non-critical — fail silently
+          .catch(() => {}); // reasons are non-critical - fail silently
       }
     } catch (err) {
       setError(err.response?.data?.detail || err.message || "Failed to load recommendations");
@@ -143,7 +143,7 @@ export default function LearningMaterials({ user, onBack, onOpenResource }) {
       if (!pag) return prev;
       const nextIdx = pag.currentPageIdx + 1;
       if (nextIdx < pag.pages.length) {
-        // already fetched — just navigate
+        // already fetched - just navigate
         return { ...prev, [topicName]: { ...pag, currentPageIdx: nextIdx } };
       }
       return prev; // will trigger loadMoreForTopic instead

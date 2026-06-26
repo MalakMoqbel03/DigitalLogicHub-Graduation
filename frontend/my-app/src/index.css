@@ -1,3 +1,35 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ─────────────────────────────────────────────────────────────
+   Academic typography & base polish
+   Inter for body text, Lora (serif) for headings - a calm,
+   scholarly hierarchy that reads as professional and academic.
+   ───────────────────────────────────────────────────────────── */
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Serif page titles and section headers */
+h1,
+h2 {
+  font-family: 'Lora', Georgia, 'Times New Roman', serif;
+  letter-spacing: -0.01em;
+}
+
+/* Comfortable reading rhythm for paragraphs */
+p {
+  line-height: 1.6;
+}
+
+/* Smooth, deliberate transitions on interactive elements */
+button,
+a {
+  transition: color 0.15s ease, background-color 0.15s ease,
+    border-color 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}

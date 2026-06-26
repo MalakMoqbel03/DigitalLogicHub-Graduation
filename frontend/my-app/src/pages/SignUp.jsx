@@ -70,7 +70,7 @@ export default function SignUp({ onSwitchToSignIn }) {
     setError("");
     setSuccess("");
     if (!validatePassword(password)) {
-      setError("Password must be 8–15 chars and include uppercase, lowercase, a number, and a special character (e.g. !@#$%)");
+      setError("Password must be 8-15 chars and include uppercase, lowercase, a number, and a special character (e.g. !@#$%)");
       return;
     }
     if (password !== confirmPassword) {
@@ -199,7 +199,7 @@ export default function SignUp({ onSwitchToSignIn }) {
           {password.length > 0 && (
             <div className="grid grid-cols-2 gap-1 text-xs px-1">
               {[
-                { ok: password.length >= 8 && password.length <= 15, label: "8–15 characters" },
+                { ok: password.length >= 8 && password.length <= 15, label: "8-15 characters" },
                 { ok: /[A-Z]/.test(password), label: "Uppercase letter" },
                 { ok: /[a-z]/.test(password), label: "Lowercase letter" },
                 { ok: /[0-9]/.test(password), label: "Number" },

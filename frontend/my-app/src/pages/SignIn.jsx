@@ -60,7 +60,7 @@ export default function SignIn({
       const detail = err.response?.data?.detail || "Login failed";
       setError(detail);
       // Backend returns "Please verify your email before logging in" (401)
-      // for unverified accounts — show the resend button in that case.
+      // for unverified accounts - show the resend button in that case.
       if (detail.toLowerCase().includes("verify")) {
         setNeedsVerification(true);
       }
@@ -76,7 +76,7 @@ export default function SignIn({
     try {
       await api.post("/auth/resend", { email: email.toLowerCase() });
     } catch (err) {
-      // 429 just means a code was sent very recently — still fine to proceed.
+      // 429 just means a code was sent very recently - still fine to proceed.
       if (err.response?.status !== 429) {
         setError(err.response?.data?.detail || "Couldn't send the verification email.");
         setLoading(false);

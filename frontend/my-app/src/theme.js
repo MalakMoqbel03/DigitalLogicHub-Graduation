@@ -1,4 +1,4 @@
-// theme.js — DigitalLogicHub brand palette
+// theme.js - DigitalLogicHub brand palette
 // Import this in every page: import { T, css } from "../theme";
 
 export const T = {

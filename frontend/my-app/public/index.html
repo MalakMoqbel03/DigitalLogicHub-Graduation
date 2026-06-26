@@ -9,11 +9,75 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>Digital Learning System</title>
+
+    <!-- Academic typography: Lora (serif headings) + Inter (clean body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      // Tell Tailwind to switch dark styles based on a `dark` class on <html>
+      // Tell Tailwind to switch dark styles based on a `dark` class on <html>.
+      // We also remap the bright blue/cyan accents to a calmer, professional
+      // "Oxford navy + muted teal" academic palette, and register the fonts —
+      // so the whole app shifts look without editing every page.
       tailwind.config = {
         darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', 'sans-serif'],
+              serif: ['Lora', 'Georgia', 'serif'],
+            },
+            colors: {
+              // Primary accent — Oxford navy (replaces bright blue)
+              blue: {
+                50:  '#eef2f8', 100: '#d6e0ee', 200: '#aec3dc', 300: '#849fc6',
+                400: '#577caa', 500: '#365b8c', 600: '#2a4870', 700: '#21395a',
+                800: '#1a2d47', 900: '#152339',
+              },
+              // Secondary accent — muted academic teal (replaces bright cyan)
+              cyan: {
+                50:  '#edf6f6', 100: '#d2eaea', 200: '#a6d4d6', 300: '#73b8bb',
+                400: '#479ca0', 500: '#2f8488', 600: '#256a6e', 700: '#1f5457',
+                800: '#1b4446', 900: '#173839',
+              },
+              // Fold the playful purple/indigo/pink into the same academic
+              // palette so no bright purple or pink survives anywhere:
+              // purple + indigo → Oxford navy, pink → muted teal.
+              indigo: {
+                50:  '#eef2f8', 100: '#d6e0ee', 200: '#aec3dc', 300: '#849fc6',
+                400: '#577caa', 500: '#365b8c', 600: '#2a4870', 700: '#21395a',
+                800: '#1a2d47', 900: '#152339',
+              },
+              purple: {
+                50:  '#eef2f8', 100: '#d6e0ee', 200: '#aec3dc', 300: '#849fc6',
+                400: '#577caa', 500: '#365b8c', 600: '#2a4870', 700: '#21395a',
+                800: '#1a2d47', 900: '#152339',
+              },
+              pink: {
+                50:  '#edf6f6', 100: '#d2eaea', 200: '#a6d4d6', 300: '#73b8bb',
+                400: '#479ca0', 500: '#2f8488', 600: '#256a6e', 700: '#1f5457',
+                800: '#1b4446', 900: '#173839',
+              },
+              // violet/fuchsia → muted teal (e.g. the indigo→violet survey button
+              // now reads as a navy→teal gradient like every other CTA)
+              violet: {
+                50:  '#edf6f6', 100: '#d2eaea', 200: '#a6d4d6', 300: '#73b8bb',
+                400: '#479ca0', 500: '#2f8488', 600: '#256a6e', 700: '#1f5457',
+                800: '#1b4446', 900: '#173839',
+              },
+              fuchsia: {
+                50:  '#edf6f6', 100: '#d2eaea', 200: '#a6d4d6', 300: '#73b8bb',
+                400: '#479ca0', 500: '#2f8488', 600: '#256a6e', 700: '#1f5457',
+                800: '#1b4446', 900: '#173839',
+              },
+            },
+          },
+        },
       };
     </script>
     <script>

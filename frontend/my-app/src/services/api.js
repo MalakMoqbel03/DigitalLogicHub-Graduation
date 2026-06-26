@@ -12,7 +12,7 @@ const api = axios.create({
 // ── Request interceptor ───────────────────────────────────────────────────────
 // Automatically attaches the JWT token to every request that needs it.
 // Public routes (register, login, verify) don't need a token, but sending
-// it on those is harmless — the backend simply ignores it.
+// it on those is harmless - the backend simply ignores it.
 api.interceptors.request.use(
   (config) => {
     const session = localStorage.getItem(SESSION_KEY);
@@ -23,7 +23,7 @@ api.interceptors.request.use(
           config.headers["Authorization"] = `Bearer ${user.token}`;
         }
       } catch {
-        // Corrupted session — ignore, login page will handle it
+        // Corrupted session - ignore, login page will handle it
       }
     }
     return config;

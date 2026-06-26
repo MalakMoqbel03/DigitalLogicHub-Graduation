@@ -169,7 +169,7 @@ export default function App() {
         onBack={() => setCurrentPage("dashboard")}
         onOpenResource={(r) => {
           // NOTE: no auto-tracking here anymore.
-          // Interaction signal comes from rate/like inside ResourceViewer —
+          // Interaction signal comes from rate/like inside ResourceViewer -
           // merely peeking at a resource should NOT remove it from the
           // recommendation list or reshuffle the ordering.
           setSelectedResource(r);
